@@ -4,7 +4,7 @@
 public class Year {
 
     /** Return true iff YEAR is a leap year.  */
-    static boolean isLeapYear(int year) {
+    static boolean isLeapYear(int year) { 
         return true;    // TODO: YOUR CODE HERE
     }
 
@@ -35,4 +35,3 @@ public class Year {
         }
     }
 }
-
