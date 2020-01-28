@@ -1,10 +1,11 @@
-public class Max {
+public class max {
     public static void main(String[] args) {
-      System.out.println(max(new int[] {1, 2, 3}));    
+      System.out.println(max(new int[] {1, 2, 3}));
+      System.out.println(max(new int[] {5, 2, 3}));
     }
-    public Max(int[] array){
+    public static int max(int[] array){
         int current = array[0];
-        for (int i = 0; i < array.length-1; i++) {
+        for (int i = 0; i < array.length; i++) {
             if (array[i] > current) {
                 current = array[i];
             }
