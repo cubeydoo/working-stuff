@@ -2,8 +2,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import ucb.junit.textui;
-import utility.java;
-import max.java;
 /** Tests for hw0.
  *  @author YOUR NAMES HERE
  */
