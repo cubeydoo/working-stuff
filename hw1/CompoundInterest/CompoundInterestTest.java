@@ -8,11 +8,17 @@ public class CompoundInterestTest {
         /** Sample assert statement for comparing integers.
 
         assertEquals(0, 0); */
+        assertEquals(30, CompoundInterest.numYears(2050));
+        assertEquals(5, CompoundInterest.numYears(2025));
     }
 
     @Test
     public void testFutureValue() {
         double tolerance = 0.01;
+        assertEquals(12.544, CompoundInterest.futureValue(10, 12, 2022), tolerance);
+        assertEquals(10, CompoundInterest.futureValue(10, 12, 2020), tolerance);
+        assertEquals(112, CompoundInterest.futureValue(100, 12, 2021), tolerance);
+
     }
 
     @Test

@@ -11,7 +11,7 @@ public class CompoundInterest {
      *  should be 1. Throughout the assignment it is OK to assume that
      *  TARGETYEAR is >= THIS_YEAR. */
     static int numYears(int targetYear) {
-        return 0;
+        return (targetYear - THIS_YEAR);
     }
 
     /** Suppose we have an asset worth PRESENTVALUE that appreciates
@@ -23,7 +23,7 @@ public class CompoundInterest {
      *  then the futureValue will be 10*1.12*1.12 = 12.544. */
     static double futureValue(double presentValue, double rate,
                               int targetYear) {
-        return 0;
+        return presentValue * Math.pow(1+(rate/100), numYears(targetYear));
     }
 
     /** Returns returns the value, in THIS_YEAR dollars, of an asset
