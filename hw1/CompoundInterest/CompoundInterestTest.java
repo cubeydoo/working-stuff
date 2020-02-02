@@ -18,12 +18,16 @@ public class CompoundInterestTest {
         assertEquals(12.544, CompoundInterest.futureValue(10, 12, 2022), tolerance);
         assertEquals(10, CompoundInterest.futureValue(10, 12, 2020), tolerance);
         assertEquals(112, CompoundInterest.futureValue(100, 12, 2021), tolerance);
+        assertEquals(45.13, CompoundInterest.futureValue(50, -5, 2022), tolerance);
 
     }
 
     @Test
     public void testFutureValueReal() {
         double tolerance = 0.01;
+        assertEquals(11.8026496, CompoundInterest.futureValueReal(10, 12, 2022, 3), tolerance);
+        assertEquals(100, CompoundInterest.futureValueReal(100, 12, 2020, 3), tolerance);
+        assertEquals(116.4, CompoundInterest.futureValueReal(100, 20, 2021, 3), tolerance);
     }
 
 

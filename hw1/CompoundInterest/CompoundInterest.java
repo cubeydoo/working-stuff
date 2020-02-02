@@ -37,7 +37,7 @@ public class CompoundInterest {
      *  2020 dollars, we get 12.544 * 0.97 * 0.97 = 11.8026496 dollars. */
     static double futureValueReal(double presentValue, double rate,
                                   int targetYear, double inflationRate) {
-        return 0;
+        return futureValue(presentValue, rate, targetYear) * Math.pow(1 - inflationRate/100, numYears(targetYear));
     }
 
     /** Suppose you invest PERYEAR dollars at the end of every year until
