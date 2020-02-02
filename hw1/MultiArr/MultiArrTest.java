@@ -7,6 +7,10 @@ public class MultiArrTest {
     public void testMaxValue() {
         //TODO: Your code here!
     }
+    @Test
+    public void testRowCol() {
+        MultiArr.printRowAndCol(new int[][]{{1,2,3}, {1,4,5}});
+    }
 
     @Test
     public void testAllRowSums() {

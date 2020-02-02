@@ -1,4 +1,6 @@
-/** Multidimensional array 
+import net.sf.saxon.lib.SaxonOutputKeys;
+
+/** Multidimensional array
  *  @author Zoe Plaxco
  */
 
@@ -15,6 +17,13 @@ public class MultiArr {
     */
     public static void printRowAndCol(int[][] arr) {
         //TODO: Your code here!
+        int columns = 0;
+        int rows = arr.length;
+        for (int i = 0; i < arr.length; i++){
+            columns = Math.max(columns, arr[0].length);
+        }
+        System.out.println("Rows: " + rows);
+        System.out.println("Columns: " + columns);
     } 
 
     /**
