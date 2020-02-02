@@ -48,7 +48,11 @@ public class CompoundInterest {
      *  then the result will be 5000*1.1*1.1 + 5000*1.1 + 5000 =
      *  16550. */
     static double totalSavings(double perYear, int targetYear, double rate) {
-        return 0;
+        double total = perYear;
+        for (int current_year = 2020; current_year<targetYear; current_year++){
+            total += perYear*(Math.pow(1+ (rate/100), targetYear-current_year));
+        }
+        return total;
     }
 
     /** Returns totalSavings(PERYEAR, TARGETYEAR, RATE) converted to
@@ -56,7 +60,7 @@ public class CompoundInterest {
      *  INFLATIONRATE. */
     static double totalSavingsReal(double perYear, int targetYear, double rate,
                                double inflationRate) {
-        return 0;
+        return totalSavings(perYear, targetYear, rate) * Math.pow(1 - inflationRate/100, numYears(targetYear));
     }
 
     /** Prints out the future inflation-adjusted value of a dollar in
@@ -65,8 +69,8 @@ public class CompoundInterest {
      *  INFLATIONRATE. */
     static void printDollarFV(int targetYear, double returnRate,
                               double inflationRate) {
-        double nominalDollarValue = 0; // replace 0 with your code
-        double realDollarValue = 0;    // replace 0 with your code
+        double nominalDollarValue = futureValue(1, returnRate, targetYear); // replace 0 with your code
+        double realDollarValue = futureValueReal(1, returnRate, targetYear, inflationRate);    // replace 0 with your code
 
         // Do not change anything in this method below this line
         String dollarSummary =
@@ -85,8 +89,8 @@ public class CompoundInterest {
     static void printSavingsFV(int targetYear, double returnRate,
                                double inflationRate, double perYear) {
 
-        double nominalSavings = 0; // replace 0 with your code
-        double realSavings = 0;    // replace 0 with your code
+        double nominalSavings = totalSavings(perYear, targetYear, returnRate); // replace 0 with your code
+        double realSavings = totalSavingsReal(perYear, targetYear, inflationRate, inflationRate);    // replace 0 with your code
 
         // Do not change anything in this method below this line
 
