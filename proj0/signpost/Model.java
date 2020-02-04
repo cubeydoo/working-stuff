@@ -521,7 +521,16 @@ class Model implements Iterable<Model.Sq> {
          */
         boolean connectable(Sq s1) {
             // FIXME
-            return true;
+            boolean predecessorCheck = s1.predecessor() == null && this.successor() == null;
+            boolean directionCheck = Place.dirOf(this.x, this.y, s1.x, s1.y) == this.direction();
+            boolean sequenceCheck = true;
+            boolean numberCheck = s1.sequenceNum() != 1 && this.sequenceNum() != 16;
+            if (s1.sequenceNum() != 0 && this.sequenceNum() != 0) {
+                sequenceCheck = this.sequenceNum() == s1.sequenceNum() - 1;
+            } else if (s1.sequenceNum() == 0 && this.sequenceNum() == 0){
+                sequenceCheck = s1.group() != this.group() || (s1.group() == -1 && this.group() == -1);
+            }
+            return predecessorCheck && directionCheck && sequenceCheck && numberCheck;
         }
 
         /** Connect this square to S1, if both are connectable; otherwise do
