@@ -1,5 +1,7 @@
 package signpost;
 
+import net.sf.saxon.lib.SaxonOutputKeys;
+
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Formatter;
@@ -96,14 +98,14 @@ class Model implements Iterable<Model.Sq> {
         // FIXME: Remove everything down to and including
         // "// END DUMMY SETUP".
         _board = new Sq[][] {
-            { new Sq(0, 0, 0, false, 2, -1), new Sq(0, 1, 0, false, 2, -1),
-              new Sq(0, 2, 0, false, 4, -1), new Sq(0, 3, 1, true, 2, 0) },
-            { new Sq(1, 0, 0, false, 2, -1), new Sq(1, 1, 0, false, 2, -1),
-              new Sq(1, 2, 0, false, 6, -1), new Sq(1, 3, 0, false, 2, -1) },
-            { new Sq(2, 0, 0, false, 6, -1), new Sq(2, 1, 0, false, 2, -1),
-              new Sq(2, 2, 0, false, 6, -1), new Sq(2, 3, 0, false, 2, -1) },
-            { new Sq(3, 0, 16, true, 0, 0), new Sq(3, 1, 0, false, 5, -1),
-              new Sq(3, 2, 0, false, 6, -1), new Sq(3, 3, 0, false, 4, -1) }
+                { new Sq(0, 0, 0, false, 2, -1), new Sq(0, 1, 0, false, 2, -1),
+                        new Sq(0, 2, 0, false, 4, -1), new Sq(0, 3, 1, true, 2, 0) },
+                { new Sq(1, 0, 0, false, 2, -1), new Sq(1, 1, 0, false, 2, -1),
+                        new Sq(1, 2, 0, false, 6, -1), new Sq(1, 3, 0, false, 2, -1) },
+                { new Sq(2, 0, 0, false, 6, -1), new Sq(2, 1, 0, false, 2, -1),
+                        new Sq(2, 2, 0, false, 6, -1), new Sq(2, 3, 0, false, 2, -1) },
+                { new Sq(3, 0, 16, true, 0, 0), new Sq(3, 1, 0, false, 5, -1),
+                        new Sq(3, 2, 0, false, 6, -1), new Sq(3, 3, 0, false, 4, -1) }
         };
         for (Sq[] col: _board) {
             for (Sq sq : col) {
@@ -522,15 +524,16 @@ class Model implements Iterable<Model.Sq> {
         boolean connectable(Sq s1) {
             // FIXME
             boolean predecessorCheck = s1.predecessor() == null && this.successor() == null;
-            boolean directionCheck = Place.dirOf(this.x, this.y, s1.x, s1.y) == this.direction();
+            boolean directionCheck = Place.dirOf(this.x, this.y, s1.x, s1.y) == this.direction() && (this.x != s1.x && this.y != s1.y);
             boolean sequenceCheck = true;
-            boolean numberCheck = s1.sequenceNum() != 1 && this.sequenceNum() != 16;
+            boolean numberCheck = s1.sequenceNum() != 1 && this.sequenceNum() != _width * _height;
             if (s1.sequenceNum() != 0 && this.sequenceNum() != 0) {
                 sequenceCheck = this.sequenceNum() == s1.sequenceNum() - 1;
             } else if (s1.sequenceNum() == 0 && this.sequenceNum() == 0){
-                sequenceCheck = s1.group() != this.group() || (s1.group() == -1 && this.group() == -1);
+                sequenceCheck = s1.group() != this.group()  || (s1.group() == -1 && this.group() == -1);
             }
-            return predecessorCheck && directionCheck && sequenceCheck && numberCheck;
+            System.out.println(predecessorCheck && directionCheck && sequenceCheck && numberCheck);
+            return (predecessorCheck && directionCheck && sequenceCheck && numberCheck);
         }
 
         /** Connect this square to S1, if both are connectable; otherwise do
@@ -538,6 +541,7 @@ class Model implements Iterable<Model.Sq> {
          *  Assumes S1 is in the proper arrow direction from this square. */
         boolean connect(Sq s1) {
             if (!connectable(s1)) {
+                System.out.println("Not connecting.");
                 return false;
             }
             int sgroup = s1.group();
@@ -559,6 +563,34 @@ class Model implements Iterable<Model.Sq> {
             //        + If both this square and S1 are unnumbered, set the
             //          group of this square's head to the result of joining
             //          the two groups.
+            System.out.println("Connecting " + this + " and " + s1);
+            this._successor = s1;
+            s1._predecessor = this;
+            if (this.sequenceNum() != 0){
+                Sq current = this;
+                while (current.successor() != null){
+                    current = current.successor();
+                    current._sequenceNum = current.predecessor().sequenceNum() +1;
+                }
+            }
+            if (s1.sequenceNum() != 0){
+                Sq current = this;
+                while (current.predecessor() != null){
+                    current = current.predecessor();
+                    current._sequenceNum = current.successor().sequenceNum() -1;
+                }
+            }
+            Sq iterator = this;
+            while (iterator.successor() != null){
+                iterator = iterator.successor();
+                iterator._head = this.head();
+            }
+            if (this.sequenceNum() == 0 && s1.sequenceNum() == 0){
+                this.head()._group = joinGroups(this.group(), s1.group());
+            }
+
+
+
 
             return true;
         }
@@ -646,7 +678,7 @@ class Model implements Iterable<Model.Sq> {
         private int _dir;
         /** The current predecessor of this square, or null if there is
          *  currently no predecessor. */
-        private Sq _predecessor;
+        private Sq _predecessor = this;
         /** The current successor of this square, or null if there is
          *  currently no successor. */
         private Sq _successor;
