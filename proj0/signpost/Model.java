@@ -524,7 +524,7 @@ class Model implements Iterable<Model.Sq> {
         boolean connectable(Sq s1) {
             // FIXME
             boolean predecessorCheck = s1.predecessor() == null && this.successor() == null;
-            boolean directionCheck = Place.dirOf(this.x, this.y, s1.x, s1.y) == this.direction() && (this.x != s1.x && this.y != s1.y);
+            boolean directionCheck = Place.dirOf(this.x, this.y, s1.x, s1.y) == this.direction();
             boolean sequenceCheck = true;
             boolean numberCheck = s1.sequenceNum() != 1 && this.sequenceNum() != _width * _height;
             if (s1.sequenceNum() != 0 && this.sequenceNum() != 0) {
@@ -566,15 +566,17 @@ class Model implements Iterable<Model.Sq> {
             if (this.sequenceNum() != 0){
                 Sq current = this;
                 while (current.successor() != null){
+                    System.out.println(current.sequenceNum());
                     current = current.successor();
-                    current._sequenceNum = current.predecessor().sequenceNum() +1;
+                    current._sequenceNum = current.predecessor().sequenceNum() + 1;
+                    System.out.println(current.sequenceNum());
                 }
             }
             if (s1.sequenceNum() != 0){
-                Sq current = this;
-                while (current.predecessor() != null){
-                    current = current.predecessor();
-                    current._sequenceNum = current.successor().sequenceNum() -1;
+                Sq current2 = s1;
+                while (current2.predecessor() != null){
+                    current2 = current2.predecessor();
+                    current2._sequenceNum = current2.successor().sequenceNum() -1;
                 }
             }
             Sq iterator = this;

@@ -221,6 +221,7 @@ public class ModelTests {
         checkSquare(s1, s1, null, s3, 2, 0);
         checkSquare(s5, s5, null, null, 8, 0);
 
+
         assertTrue("These squares should be connectable.", s6.connect(s1));
         checkSquare(s1, s6, s6, s3, 2, 0);
         checkSquare(s6, s6, null, s1, 1, 0);
