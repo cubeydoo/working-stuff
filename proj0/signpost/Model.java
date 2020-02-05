@@ -532,7 +532,6 @@ class Model implements Iterable<Model.Sq> {
             } else if (s1.sequenceNum() == 0 && this.sequenceNum() == 0){
                 sequenceCheck = s1.group() != this.group()  || (s1.group() == -1 && this.group() == -1);
             }
-            System.out.println(predecessorCheck && directionCheck && sequenceCheck && numberCheck);
             return (predecessorCheck && directionCheck && sequenceCheck && numberCheck);
         }
 
@@ -541,7 +540,6 @@ class Model implements Iterable<Model.Sq> {
          *  Assumes S1 is in the proper arrow direction from this square. */
         boolean connect(Sq s1) {
             if (!connectable(s1)) {
-                System.out.println("Not connecting.");
                 return false;
             }
             int sgroup = s1.group();
@@ -563,7 +561,6 @@ class Model implements Iterable<Model.Sq> {
             //        + If both this square and S1 are unnumbered, set the
             //          group of this square's head to the result of joining
             //          the two groups.
-            System.out.println("Connecting " + this + " and " + s1);
             this._successor = s1;
             s1._predecessor = this;
             if (this.sequenceNum() != 0){
@@ -584,6 +581,11 @@ class Model implements Iterable<Model.Sq> {
             while (iterator.successor() != null){
                 iterator = iterator.successor();
                 iterator._head = this.head();
+            }
+            if (this.group() == 0 && s1.group() != 0){
+                releaseGroup(s1.group());
+            } else if (this.group() != 0 && s1.group() == 0){
+                releaseGroup(this.group());
             }
             if (this.sequenceNum() == 0 && s1.sequenceNum() == 0){
                 this.head()._group = joinGroups(this.group(), s1.group());
@@ -678,7 +680,7 @@ class Model implements Iterable<Model.Sq> {
         private int _dir;
         /** The current predecessor of this square, or null if there is
          *  currently no predecessor. */
-        private Sq _predecessor = this;
+        private Sq _predecessor;
         /** The current successor of this square, or null if there is
          *  currently no successor. */
         private Sq _successor;
