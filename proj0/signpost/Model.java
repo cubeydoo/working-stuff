@@ -601,16 +601,16 @@ class Model implements Iterable<Model.Sq> {
                 if (thispointer.hasFixedNum()){
                     return true;
                 }
-                thispointer = this.predecessor();
+                thispointer = thispointer.predecessor();
             }
             return false;
         }
-        boolean checkFixNumSuccesors(Sq thispointer){ //Check if any square in a group has a fixed number
-            while (thispointer != null){
-                if (thispointer.hasFixedNum()){
+        boolean checkFixNumSuccesors(Sq nextpointer){ //Check if any square in a group has a fixed number
+            while (nextpointer != null){
+                if (nextpointer.hasFixedNum()){
                     return true;
                 }
-                thispointer = this.successor();
+                nextpointer = nextpointer.successor();
             }
             return false;
         }
@@ -662,7 +662,7 @@ class Model implements Iterable<Model.Sq> {
                             pointer = pointer.predecessor();
                         }
                         if (this.predecessor() != null){
-                            this._group = newGroup();
+                            this._head._group = newGroup();
                         }
                     }
                     else {
@@ -677,16 +677,11 @@ class Model implements Iterable<Model.Sq> {
                         }
                         if (next.successor() != null) {
                             next._group = newGroup();
-                            Sq debugPoint = next;
-                            while (debugPoint != null){
-                                debugPoint._group = next._group;
-                                debugPoint = debugPoint.successor();
-                            }
                         }
-                        }
-                    else {
+                    } else {
                         next._group = -1;
                     }
+
             }
             // FIXME: Set the _head of next and all squares in its group to
             //        next.
