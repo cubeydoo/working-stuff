@@ -566,10 +566,8 @@ class Model implements Iterable<Model.Sq> {
             if (this.sequenceNum() != 0){
                 Sq current = this;
                 while (current.successor() != null){
-                    System.out.println(current.sequenceNum());
                     current = current.successor();
                     current._sequenceNum = current.predecessor().sequenceNum() + 1;
-                    System.out.println(current.sequenceNum());
                 }
             }
             if (s1.sequenceNum() != 0){
@@ -598,6 +596,24 @@ class Model implements Iterable<Model.Sq> {
 
             return true;
         }
+        boolean checkFixNum(Sq thispointer){ //Check if any square in a group has a fixed number
+            while (thispointer != null){
+                if (thispointer.hasFixedNum()){
+                    return true;
+                }
+                thispointer = this.predecessor();
+            }
+            return false;
+        }
+        boolean checkFixNumSuccesors(Sq thispointer){ //Check if any square in a group has a fixed number
+            while (thispointer != null){
+                if (thispointer.hasFixedNum()){
+                    return true;
+                }
+                thispointer = this.successor();
+            }
+            return false;
+        }
 
         /** Disconnect this square from its current successor, if any. */
         void disconnect() {
@@ -616,6 +632,18 @@ class Model implements Iterable<Model.Sq> {
                 //        number.
                 //        Otherwise, the group has been split into two multi-
                 //        element groups.  Create a new group for next.
+                if (this.predecessor() == null && next.successor() == null){
+                    releaseGroup(this.group());
+                    this._group = next._group = -1;
+                } else if (this.predecessor() == null) {
+                    next._group = this._group; // piazza comment -Possibly prevents next from seeing its own group
+                    this._group = -1;
+                } else if (next.successor() == null) {
+                    next._group = 1;
+                } else {
+                    next._group = newGroup();
+                }
+
             } else {
                 // FIXME: If neither this nor any square in its group that
                 //        precedes it has a fixed sequence number, set all
@@ -627,9 +655,47 @@ class Model implements Iterable<Model.Sq> {
                 //        their sequence numbers to 0 and create a new
                 //        group for them if next has a current successor
                 //        (otherwise set next's group to -1.)
+                    if (!checkFixNum(this)) {
+                        Sq pointer = this;
+                        while (pointer != null) {
+                            pointer._sequenceNum = 0;
+                            pointer = pointer.predecessor();
+                        }
+                        if (this.predecessor() != null){
+                            this._group = newGroup();
+                        }
+                    }
+                    else {
+                        this._group = -1;
+                    }
+
+                    if (!checkFixNumSuccesors(next)) {
+                        Sq pointer = next;
+                        while (pointer != null) {
+                            pointer._sequenceNum = 0;
+                            pointer = pointer.successor();
+                        }
+                        if (next.successor() != null) {
+                            next._group = newGroup();
+                            Sq debugPoint = next;
+                            while (debugPoint != null){
+                                debugPoint._group = next._group;
+                                debugPoint = debugPoint.successor();
+                            }
+                        }
+                        }
+                    else {
+                        next._group = -1;
+                    }
             }
             // FIXME: Set the _head of next and all squares in its group to
             //        next.
+            Sq nextCopy = next;
+            next._head = next;
+            while (nextCopy.successor() != null){
+                nextCopy = nextCopy.successor();
+                nextCopy._head = next;
+            }
         }
 
         @Override
