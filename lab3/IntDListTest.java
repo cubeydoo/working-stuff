@@ -183,6 +183,7 @@ public class IntDListTest {
 
         d = new IntDList(5, 10, 15, 20);
         d.insertAtIndex(13, 2);
+        d.size();
         assertEquals("Size after insert should be 5", 5, d.size());
         assertEquals("First element after insert should be 5", 5, d.get(0));
         assertEquals("Second element after insert should be 10", 10, d.get(1));
