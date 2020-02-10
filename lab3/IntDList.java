@@ -149,22 +149,20 @@ public class IntDList {
         } else {
             if (i == -1){
                 insertBack(d);
+            } else if (this.size() == 0 || this.size() + i == -1){
+                insertFront(d);
             } else {
                 DNode pointer = this._back;
                 while (i != -2){
                     pointer = pointer._prev;
                     i++;
                 }
-                if (this.size() == 0){
-                    insertFront(d);
-                } else {
                     DNode temp = new DNode(pointer._prev, d, pointer);
                     pointer._prev._next = temp;
                     pointer._prev = temp;
                 }
             }
         }
-    }
 
     /**
      * Removes the first item in the IntDList and returns it.
