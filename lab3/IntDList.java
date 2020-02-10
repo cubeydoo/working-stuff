@@ -48,7 +48,13 @@ public class IntDList {
      */
     public int size() {
         // FIXME: Implement this method and return correct value
-        return 0;
+        DNode pointer = _back;
+        int i = 0;
+        while (pointer != null){
+            pointer = pointer._prev;
+            i++;
+        }
+        return i;
     }
 
     /**
@@ -63,7 +69,12 @@ public class IntDList {
      */
     public int get(int i) {
         // FIXME: Implement this method and return correct value
-        return 0;
+        DNode pointer = this._back;
+        while (i != 0){
+            pointer = pointer._prev;
+            i++;
+        }
+        return pointer._val;
     }
 
     /**
@@ -71,6 +82,10 @@ public class IntDList {
      */
     public void insertFront(int d) {
         // FIXME: Implement this method
+        DNode temp = _front;
+        temp._val = d;
+        temp._next = _front;
+        _front = temp;
     }
 
     /**
@@ -78,6 +93,13 @@ public class IntDList {
      */
     public void insertBack(int d) {
         // FIXME: Implement this method
+        if (_back != null){
+            DNode temp = new DNode(_back, d, null);
+            _back = temp;
+        } else {
+            _front = _back = new DNode(null, d, null);
+        }
+
     }
 
     /**

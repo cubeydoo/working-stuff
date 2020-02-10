@@ -21,6 +21,7 @@ public class IntDListTest {
         d = new IntDList(5);
         assertEquals("Size of singleton", 1, d.size());
         d = new IntDList(5, 10, 15);
+        d.size();
         assertEquals("Size of 3-element list", 3, d.size());
     }
 
