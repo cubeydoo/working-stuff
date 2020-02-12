@@ -9,8 +9,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Arrays;
 
-import static signpost.Place.pl;
-import static signpost.Place.PlaceList;
+import static signpost.Place.*;
 import static signpost.Utils.*;
 
 /** The state of a Signpost puzzle.  Each cell has coordinates (x, y),
@@ -264,8 +263,13 @@ class Model implements Iterable<Model.Sq> {
      *  successor, or 0 if it has none. */
     private int arrowDirection(int x, int y) {
         int seq0 = _solution[x][y];
-        // FIXME
-        return 0;
+        Sq seq0next = solnNumToSq(seq0 + 1);
+        Place solPlace = solnNumToPlace(seq0);
+        if (solPlace._successor != null){
+            return dirOf(x, y, seq0next.x, seq0next.y)
+        } else {
+            return 0;
+        }
     }
 
     /** Return a new, currently unused group number > 0.  Selects the
