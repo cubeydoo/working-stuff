@@ -261,12 +261,13 @@ class Model implements Iterable<Model.Sq> {
 
     /** Return the direction from cell (X, Y) in the solution to its
      *  successor, or 0 if it has none. */
+
     private int arrowDirection(int x, int y) {
         int seq0 = _solution[x][y];
         Sq seq0next = solnNumToSq(seq0 + 1);
         Place solPlace = solnNumToPlace(seq0);
-        if (seq0next != null){ 
-            return dirOf(x, y, seq0next.x, seq0next.y)
+        if (seq0next != null){
+            return Place.dirOf(x, y, seq0next.x, seq0next.y);
         } else {
             return 0;
         }
