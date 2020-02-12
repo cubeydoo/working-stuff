@@ -265,7 +265,7 @@ class Model implements Iterable<Model.Sq> {
         int seq0 = _solution[x][y];
         Sq seq0next = solnNumToSq(seq0 + 1);
         Place solPlace = solnNumToPlace(seq0);
-        if (solPlace._successor != null){
+        if (seq0next != null){ // if seq0's successors number sequence is not greater than the total sequence
             return dirOf(x, y, seq0next.x, seq0next.y)
         } else {
             return 0;
