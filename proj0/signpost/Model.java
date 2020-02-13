@@ -119,12 +119,16 @@ class Model implements Iterable<Model.Sq> {
         for (int x = 0; x <= _width - 1; x++) {
             for (int y = 0; y <= _height - 1; y++) {
                 if (_solution[x][y] == 1 || _solution[x][y] == _width * _height) {
-                    Sq square = new Sq(x, y, _solution[x][y], true, arrowDirection(x, y), 0);
+                    int dir = arrowDirection(x, y);
+                    Sq square = new Sq(x, y, _solution[x][y], true, dir, 0);
+                    square._predecessors = new PlaceList();
                     _allSquares.add(square);
                     _board[x][y] = square;
                     square._successors = M[x][y][0];
                 } else {
-                    Sq square = new Sq(x, y, 0, false, arrowDirection(x, y), -1);
+                    int dir = arrowDirection(x, y);
+                    Sq square = new Sq(x, y, 0, false, dir, -1);
+                    square._predecessors = new PlaceList();
                     _allSquares.add(square);
                     _board[x][y] = square;
                     square._successors = M[x][y][0];
@@ -287,7 +291,7 @@ class Model implements Iterable<Model.Sq> {
 
     public int arrowDirection(int x, int y) {
         int seq0 = _solution[x][y];
-        if (seq0 > _width *_height){
+        if (seq0 < _width *_height){
             Place seq0next = solnNumToPlace(seq0 + 1);
             return Place.dirOf(x, y, seq0next.x, seq0next.y);
         } else {
