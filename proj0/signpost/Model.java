@@ -153,7 +153,16 @@ class Model implements Iterable<Model.Sq> {
         //        the Sq objects in MODEL other than their _successor,
         //        _predecessor, and _head fields (which can't necessarily be
         //        set until all the Sq objects are first created.)
+        for (int i = 0; i <= model._allSquares.size() - 1; i++){
+            Sq curr = model._allSquares.get(i);
+            if (curr.hasFixedNum()){
+                Sq copy = new Sq(curr.x, curr.y, curr.sequenceNum(), true, curr.direction(), curr.group());
+            } else {
+                Sq copy = new Sq(curr.x, curr.y, curr.sequenceNum(), false, curr.direction(), curr.group());
 
+            }
+
+        }
         // FIXME: Once all the new Sq objects are in place, fill in their
         //        _successor, _predecessor, and _head fields.  For example,
         //        if in MODEL, the _successor field of the Sq at
