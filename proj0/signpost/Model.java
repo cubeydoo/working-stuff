@@ -148,6 +148,8 @@ class Model implements Iterable<Model.Sq> {
         _solution = model._solution;
         _usedGroups.addAll(model._usedGroups);
         _allSuccessors = model._allSuccessors;
+        _board = new Sq[_width][_height];
+        _allSquares = new ArrayList<Sq>();
 
         // FIXME: Initialize _board and _allSquares to contain copies of the
         //        the Sq objects in MODEL other than their _successor,
@@ -157,9 +159,16 @@ class Model implements Iterable<Model.Sq> {
             Sq curr = model._allSquares.get(i);
             if (curr.hasFixedNum()){
                 Sq copy = new Sq(curr.x, curr.y, curr.sequenceNum(), true, curr.direction(), curr.group());
+                copy._successors = curr.successors();
+                copy._predecessors = curr._predecessors;
+                _board[copy.x][copy.y] = copy;
+                _allSquares.add(copy);
             } else {
                 Sq copy = new Sq(curr.x, curr.y, curr.sequenceNum(), false, curr.direction(), curr.group());
-
+                copy._successors = curr.successors();
+                copy._predecessors = curr._predecessors;
+                _board[copy.x][copy.y] = copy;
+                _allSquares.add(copy);
             }
 
         }
@@ -172,7 +181,18 @@ class Model implements Iterable<Model.Sq> {
         //        position (4, 1) in this copy.  Be careful NOT to have
         //        any of these fields in the copy pointing at the old Sqs in
         //        MODEL.
-    }
+        for (int i = 0; i <= _allSquares.size() - 1; i++){
+            Sq copy = _allSquares.get(i);
+            Sq original = model._allSquares.get(i);
+            if (original._successor != null) {
+                original._successor
+            } if (original._predecessor != null) {
+
+            } if (original._head != null) {
+
+            }
+        }
+        }
 
     /** Returns the width (number of columns of cells) of the board. */
     final int width() {
