@@ -103,7 +103,7 @@ class Model implements Iterable<Model.Sq> {
         //        contains sequence number k.  Check that all numbers from
         //        1 - last appear; else throw IllegalArgumentException (see
         //        badArgs utility).
-        _board = new Sq[_width - 1][_height - 1];
+        _board = new Sq[_width][_height];
         _solnNumToPlace = new Place[last + 1];
         for (int x = 0; x <= _width - 1; x++) {
             for (int y = 0; y <= _height - 1; y++) {
@@ -115,16 +115,19 @@ class Model implements Iterable<Model.Sq> {
                 throw badArgs("Not all numbers are present in Sol");
             }
         }
-        for (int x = 0; x < _width - 1; x++) {
-            for (int y = 0; y < _height - 1; y++) {
-                if (_solution[x][y] == 1 || _solution[x][y] == _width*_height) {
+        PlaceList[][][] M = successorCells(width(), height());
+        for (int x = 0; x <= _width - 1; x++) {
+            for (int y = 0; y <= _height - 1; y++) {
+                if (_solution[x][y] == 1 || _solution[x][y] == _width * _height) {
                     Sq square = new Sq(x, y, _solution[x][y], true, arrowDirection(x, y), 0);
                     _allSquares.add(square);
                     _board[x][y] = square;
+                    square._successors = M[x][y][0];
                 } else {
-                    Sq square = new Sq(x, y, _solution[x][y], false, arrowDirection(x, y), -1);
+                    Sq square = new Sq(x, y, 0, false, arrowDirection(x, y), -1);
                     _allSquares.add(square);
                     _board[x][y] = square;
+                    square._successors = M[x][y][0];
                 }
             }
         }
@@ -136,6 +139,16 @@ class Model implements Iterable<Model.Sq> {
         //        in the direction of its arrow).
         //        Likewise, set its _predecessors list to the list of
         //        all cells that might connect to it.
+        for (int i = 0; i <= _allSquares.size() - 1; i++){
+            Sq current = _allSquares.get(i);
+            for (int s = 0; s <= current._successors.size() - 1; s++){
+                Place pPlace = current._successors.get(s);
+                Sq potential = get(pPlace.x, pPlace.y);
+                if (dirOf(potential.x, potential.y, current.x, current.y) == potential.direction()){
+                    current._predecessors.add(pPlace);
+                }
+            }
+        }
 
 
         _unconnected = last - 1;
