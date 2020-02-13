@@ -185,11 +185,11 @@ class Model implements Iterable<Model.Sq> {
             Sq copy = _allSquares.get(i);
             Sq original = model._allSquares.get(i);
             if (original._successor != null) {
-                original._successor
+                copy._successor = get(original.successor().x, original.successor().y);
             } if (original._predecessor != null) {
-
+                copy._predecessor = get(original.predecessor().x, original.predecessor().y);
             } if (original._head != null) {
-
+                copy._head = get(original.head().x, original.head().y);
             }
         }
         }
