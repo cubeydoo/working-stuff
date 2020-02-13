@@ -120,6 +120,23 @@ class Model implements Iterable<Model.Sq> {
         //        contains sequence number k.  Check that all numbers from
         //        1 - last appear; else throw IllegalArgumentException (see
         //        badArgs utility).
+        for (int x = 0; x < _width - 1; x++){
+            for (int y = 0; y < _height - 1; y++){
+                if (_solution[x][y] == 1 || _solution[x][y] == _width*_height){
+                    Sq square = new Sq(x, y, _solution[x][y], true, arrowDirection(x, y), 0);
+                    _allSquares.add(square);
+                } else {
+                    Sq square = new Sq(x, y, _solution[x][y], false, arrowDirection(x, y), -1);
+                    _allSquares.add(square);
+                }
+                _solnNumToPlace[_solution[x][y]] = pl(x, y);
+            }
+        }
+        for (int i = 1; i <= _width * _height; i++){
+            if (_solnNumToPlace[i] == null){
+                throw badArgs("Solution is invalid, not all numbers are present");
+            }
+        }
 
         // FIXME: For each Sq object on the board, set its _successors list
         //        to the list of locations of all cells that it might
@@ -262,7 +279,7 @@ class Model implements Iterable<Model.Sq> {
     /** Return the direction from cell (X, Y) in the solution to its
      *  successor, or 0 if it has none. */
 
-    private int arrowDirection(int x, int y) {
+    public int arrowDirection(int x, int y) {
         int seq0 = _solution[x][y];
         Sq seq0next = solnNumToSq(seq0 + 1);
         Place solPlace = solnNumToPlace(seq0);
