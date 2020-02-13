@@ -65,7 +65,7 @@ import static signpost.Utils.*;
  *  0) and all cells with fixed sequence numbers appear at the
  *  corresponding position in that sequence.
  *
- *  @author
+ *  @author ??
  */
 class Model implements Iterable<Model.Sq> {
 
@@ -110,14 +110,14 @@ class Model implements Iterable<Model.Sq> {
                 _solnNumToPlace[_solution[x][y]] = pl(x, y);
             }
         }
-        for (int i = 1; i <= last; i++){
-            if (_solnNumToPlace[i] == null){
-                throw badArgs("Solution is invalid, not all numbers are present");
+        for (int i = 1; i <= last; i++) {
+            if (_solnNumToPlace[i] == null) {
+                throw badArgs("Not all numbers are present in Sol");
             }
         }
-        for (int x = 0; x < _width - 1; x++){
-            for (int y = 0; y < _height - 1; y++){
-                if (_solution[x][y] == 1 || _solution[x][y] == _width*_height){
+        for (int x = 0; x < _width - 1; x++) {
+            for (int y = 0; y < _height - 1; y++) {
+                if (_solution[x][y] == 1 || _solution[x][y] == _width*_height) {
                     Sq square = new Sq(x, y, _solution[x][y], true, arrowDirection(x, y), 0);
                     _allSquares.add(square);
                     _board[x][y] = square;
@@ -136,7 +136,7 @@ class Model implements Iterable<Model.Sq> {
         //        in the direction of its arrow).
         //        Likewise, set its _predecessors list to the list of
         //        all cells that might connect to it.
-        
+
 
         _unconnected = last - 1;
     }
@@ -536,17 +536,16 @@ class Model implements Iterable<Model.Sq> {
          *    they are not part of the same connected sequence.
          */
         boolean connectable(Sq s1) {
-            // FIXME
-            boolean predecessorCheck = s1.predecessor() == null && this.successor() == null;
-            boolean directionCheck = Place.dirOf(this.x, this.y, s1.x, s1.y) == this.direction();
+            boolean pred = s1.predecessor() == null && this.successor() == null;
+            boolean dir = dirOf(this.x, this.y, s1.x, s1.y) == this.direction();
             boolean sequenceCheck = true;
             boolean numberCheck = s1.sequenceNum() != 1 && this.sequenceNum() != _width * _height;
             if (s1.sequenceNum() != 0 && this.sequenceNum() != 0) {
                 sequenceCheck = this.sequenceNum() == s1.sequenceNum() - 1;
-            } else if (s1.sequenceNum() == 0 && this.sequenceNum() == 0){
-                sequenceCheck = s1.group() != this.group()  || (s1.group() == -1 && this.group() == -1);
+            } else if (s1.sequenceNum() == 0 && this.sequenceNum() == 0) {
+                sequenceCheck = s1.group() != this.group()  || (s1.group() == - 1 && this.group() == - 1);
             }
-            return (predecessorCheck && directionCheck && sequenceCheck && numberCheck);
+            return (pred && dir && sequenceCheck && numberCheck);
         }
 
         /** Connect this square to S1, if both are connectable; otherwise do
@@ -557,71 +556,53 @@ class Model implements Iterable<Model.Sq> {
                 return false;
             }
             int sgroup = s1.group();
-
             _unconnected -= 1;
-
-            // FIXME: Connect this square to its successor:
-            //        + Set this square's _successor field and S1's
-            //          _predecessor field.
-            //        + If this square has a number, number all its successors
-            //          accordingly (if needed).
-            //        + If S1 is numbered, number this square and its
-            //          predecessors accordingly (if needed).
-            //        + Set the _head fields of this square's successors this
-            //          square's _head.
-            //        + If either of this square or S1 used to be unnumbered
-            //          and is now numbered, release its group of whichever
-            //          was unnumbered, so that it can be reused.
-            //        + If both this square and S1 are unnumbered, set the
-            //          group of this square's head to the result of joining
-            //          the two groups.
             this._successor = s1;
             s1._predecessor = this;
-            if (this.sequenceNum() != 0){
+            if (this.sequenceNum() != 0) {
                 Sq current = this;
-                while (current.successor() != null){
+                while (current.successor() != null) {
                     current = current.successor();
                     current._sequenceNum = current.predecessor().sequenceNum() + 1;
                 }
             }
             if (s1.sequenceNum() != 0){
                 Sq current2 = s1;
-                while (current2.predecessor() != null){
+                while (current2.predecessor() != null) {
                     current2 = current2.predecessor();
-                    current2._sequenceNum = current2.successor().sequenceNum() -1;
+                    current2._sequenceNum = current2.successor().sequenceNum() - 1;
                 }
             }
             Sq iterator = this;
-            while (iterator.successor() != null){
+            while (iterator.successor() != null) {
                 iterator = iterator.successor();
                 iterator._head = this.head();
             }
-            if (this.group() == 0 && s1.group() != 0){
+            if (this.group() == 0 && s1.group() != 0) {
                 releaseGroup(s1.group());
-            } else if (this.group() != 0 && s1.group() == 0){
+            } else if (this.group() != 0 && s1.group() == 0) {
                 releaseGroup(this.group());
             }
-            if (this.sequenceNum() == 0 && s1.sequenceNum() == 0){
+            if (this.sequenceNum() == 0 && s1.sequenceNum() == 0) {
                 this.head()._group = joinGroups(this.group(), s1.group());
             }
 
-
-
-
             return true;
         }
-        boolean checkFixNum(Sq thispointer){ //Check if any square in a group has a fixed number
-            while (thispointer != null){
-                if (thispointer.hasFixedNum()){
+        /** Check if any square in a group has a fixed number. */
+        boolean checkFixNum(Sq thispointer) {
+            while (thispointer != null) {
+                if (thispointer.hasFixedNum()) {
                     return true;
                 }
                 thispointer = thispointer.predecessor();
             }
             return false;
         }
-        boolean checkFixNumSuccesors(Sq nextpointer){ //Check if any square in a group has a fixed number
-            while (nextpointer != null){
-                if (nextpointer.hasFixedNum()){
+        /** Check if any square in a group has a fixed number. */
+        boolean checkFixNumSuccesors(Sq nextpointer) {
+            while (nextpointer != null) {
+                if (nextpointer.hasFixedNum()) {
                     return true;
                 }
                 nextpointer = nextpointer.successor();
@@ -638,19 +619,11 @@ class Model implements Iterable<Model.Sq> {
             _unconnected += 1;
             next._predecessor = _successor = null;
             if (_sequenceNum == 0) {
-                // FIXME: If both this and next are now one-element groups,
-                //        release their former group and set both group
-                //        numbers to -1.
-                //        Otherwise, if either is now a one-element group, set
-                //        its group number to -1 without releasing the group
-                //        number.
-                //        Otherwise, the group has been split into two multi-
-                //        element groups.  Create a new group for next.
-                if (this.predecessor() == null && next.successor() == null){
+                if (this.predecessor() == null && next.successor() == null) {
                     releaseGroup(this.group());
                     this._group = next._group = -1;
                 } else if (this.predecessor() == null) {
-                    next._group = this._group; // piazza comment -Possibly prevents next from seeing its own group
+                    next._group = this._group;
                     this._group = -1;
                 } else if (next.successor() == null) {
                     next._group = 1;
@@ -659,49 +632,34 @@ class Model implements Iterable<Model.Sq> {
                 }
 
             } else {
-                // FIXME: If neither this nor any square in its group that
-                //        precedes it has a fixed sequence number, set all
-                //        their sequence numbers to 0 and create a new group
-                //        for them if this has a current predecessor (other
-                //        set group to -1).
-                // FIXME: If neither next nor any square in its group that
-                //        follows it has a fixed sequence number, set all
-                //        their sequence numbers to 0 and create a new
-                //        group for them if next has a current successor
-                //        (otherwise set next's group to -1.)
-                    if (!checkFixNum(this)) {
-                        Sq pointer = this;
-                        while (pointer != null) {
-                            pointer._sequenceNum = 0;
-                            pointer = pointer.predecessor();
-                        }
-                        if (this.predecessor() != null){
-                            this._head._group = newGroup();
-                        }
+                if (!checkFixNum(this)) {
+                    Sq pointer = this;
+                    while (pointer != null) {
+                        pointer._sequenceNum = 0;
+                        pointer = pointer.predecessor();
                     }
-                    else {
-                        this._group = -1;
+                    if (this.predecessor() != null) {
+                        this._head._group = newGroup();
                     }
-
-                    if (!checkFixNumSuccesors(next)) {
-                        Sq pointer = next;
-                        while (pointer != null) {
-                            pointer._sequenceNum = 0;
-                            pointer = pointer.successor();
-                        }
-                        if (next.successor() != null) {
-                            next._group = newGroup();
-                        }
-                    } else {
-                        next._group = -1;
+                } else {
+                    this._group = -1;
+                }
+                if (!checkFixNumSuccesors(next)) {
+                    Sq pointer = next;
+                    while (pointer != null) {
+                        pointer._sequenceNum = 0;
+                        pointer = pointer.successor();
                     }
-
+                    if (next.successor() != null) {
+                        next._group = newGroup();
+                    }
+                } else {
+                    next._group = -1;
+                }
             }
-            // FIXME: Set the _head of next and all squares in its group to
-            //        next.
             Sq nextCopy = next;
             next._head = next;
-            while (nextCopy.successor() != null){
+            while (nextCopy.successor() != null) {
                 nextCopy = nextCopy.successor();
                 nextCopy._head = next;
             }
