@@ -91,18 +91,7 @@ class Model implements Iterable<Model.Sq> {
         _solution = new int[_width][_height];
         deepCopy(solution, _solution);
 
-        // DUMMY SETUP
-        // This is a particular puzzle provided as a filler until the
-        // puzzle-generation software is complete.
 
-
-        // FIXME: Initialize _board so that _board[x][y] contains the Sq object
-        //        representing the contents at cell (x, y), _allSquares
-        //        contains the list of all Sq objects on the board, and
-        //        _solnNumToPlace[k] contains the Place in _solution that
-        //        contains sequence number k.  Check that all numbers from
-        //        1 - last appear; else throw IllegalArgumentException (see
-        //        badArgs utility).
         _board = new Sq[_width][_height];
         _solnNumToPlace = new Place[last + 1];
         for (int x = 0; x <= _width - 1; x++) {
@@ -136,13 +125,6 @@ class Model implements Iterable<Model.Sq> {
             }
         }
 
-
-        // FIXME: For each Sq object on the board, set its _successors list
-        //        to the list of locations of all cells that it might
-        //        connect to (i.e., all cells that are a queen move away
-        //        in the direction of its arrow).
-        //        Likewise, set its _predecessors list to the list of
-        //        all cells that might connect to it.
         for (int i = 0; i <= _allSquares.size() - 1; i++){
             Sq current = _allSquares.get(i);
             for (int s = 0; s <= current._successors.size() - 1; s++){
