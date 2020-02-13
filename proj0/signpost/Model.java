@@ -296,7 +296,6 @@ class Model implements Iterable<Model.Sq> {
     /** Sets the numbers in this board's squares to the solution from which
      *  this board was last initialized by the constructor. */
     void solve() {
-        // FIXME
         restart();
         for (int x = 0; x <= _width - 1; x++) {
             for (int y = 0; y <= _height - 1; y++) {

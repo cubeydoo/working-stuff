@@ -127,8 +127,9 @@ class PuzzleGenerator implements PuzzleSource {
      *  numbered square in the proper direction from START (with the next
      *  number in sequence). */
     static Sq findUniqueSuccessor(Model model, Sq start) {
-        // FIXME: Fill in to satisfy the comment.
-        return null;
+        if (start.hasFixedNum()){
+            
+        }
     }
 
     /** Make all unique backward connections in MODEL (those in which there is
