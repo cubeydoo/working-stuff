@@ -151,10 +151,6 @@ class Model implements Iterable<Model.Sq> {
         _board = new Sq[_width][_height];
         _allSquares = new ArrayList<Sq>();
 
-        // FIXME: Initialize _board and _allSquares to contain copies of the
-        //        the Sq objects in MODEL other than their _successor,
-        //        _predecessor, and _head fields (which can't necessarily be
-        //        set until all the Sq objects are first created.)
         for (int i = 0; i <= model._allSquares.size() - 1; i++){
             Sq curr = model._allSquares.get(i);
             if (curr.hasFixedNum()){
@@ -172,15 +168,7 @@ class Model implements Iterable<Model.Sq> {
             }
 
         }
-        // FIXME: Once all the new Sq objects are in place, fill in their
-        //        _successor, _predecessor, and _head fields.  For example,
-        //        if in MODEL, the _successor field of the Sq at
-        //        position (2, 3) pointed to the Sq in MODEL at position
-        //        (4, 1), then the Sq at position (2, 3) in this copy
-        //        will have a _successor field pointing to the Sq at
-        //        position (4, 1) in this copy.  Be careful NOT to have
-        //        any of these fields in the copy pointing at the old Sqs in
-        //        MODEL.
+
         for (int i = 0; i <= _allSquares.size() - 1; i++){
             Sq copy = _allSquares.get(i);
             Sq original = model._allSquares.get(i);
@@ -287,7 +275,22 @@ class Model implements Iterable<Model.Sq> {
      *  unconnected and are separated by a queen move.  Returns true iff
      *  any changes were made. */
     boolean autoconnect() {
-        return false; // FIXME
+        int first = 1;
+        int second = 2;
+        boolean flag = false;
+        while (second <= _width * _height) {
+            Sq fSquare = solnNumToSq(first);
+            Sq secSquare = solnNumToSq(second);
+            if (fSquare != null && secSquare != null){
+                if (fSquare.connectable(secSquare)) {
+                    fSquare.connect(secSquare);
+                    flag = true;
+                }
+            }
+            first++;
+            second++;
+        }
+        return flag;
     }
 
     /** Sets the numbers in this board's squares to the solution from which
