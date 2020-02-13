@@ -297,6 +297,20 @@ class Model implements Iterable<Model.Sq> {
      *  this board was last initialized by the constructor. */
     void solve() {
         // FIXME
+        restart();
+        for (int x = 0; x <= _width - 1; x++) {
+            for (int y = 0; y <= _height - 1; y++) {
+                Sq current = get(x, y);
+                current._sequenceNum = _solution[x][y];
+            }
+        }
+        for (int i = 2; i <= _width * _height; i++){
+            Sq current = solnNumToSq(i);
+            Sq prev = solnNumToSq(i - 1);
+            if (prev.connectable(current)) {
+                prev.connect(current);
+            }
+        }
         _unconnected = 0;
     }
 
