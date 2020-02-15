@@ -53,8 +53,11 @@ class Arrays {
      *  {{1, 3, 7}, {5}, {4, 6, 9, 10}}. */
     static int[][] naturalRuns(int[] A) {
         /* *Replace this body with the solution. */
+        int[] nullpoint = {};
         if (A == null) {
             return null;
+        } else if (A == nullpoint){
+            return new int[][] {nullpoint};
         }
         int size = 1;
         int length = 0;

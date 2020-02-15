@@ -33,6 +33,7 @@ public class MatrixUtils {
      *    get(double[][] e, int r, int c): Returns the e[r][c] if
      *         r and c are valid. Double.POSITIVE_INFINITY otherwise
      *
+     *
      *  An example is shown below. See the assignment spec for a
      *  detailed explanation of this example.
      *
@@ -52,10 +53,28 @@ public class MatrixUtils {
      *  2089520   1162923   1124919   2098278
      *  2162923   2124919   2124919   2124919
      *
+     * @return
      */
-
+    public static double get(double[][] e, int r, int c) {
+        if (r >= 0 && r <= e.length && c >= 0 && c < e[0].length) {
+            return e[r][c];
+        } else {
+            return Double.POSITIVE_INFINITY;
+        }
+    }
+    public static double accumulateOnce(double[][] m, int r, int c) {
+        double first = m[r][c] + get(m,r-1,c);
+        double second = m[r][c] + get(m,r-1,c+1);
+        double third = m[r][c] + get(m,r-1,c-1);
+        return Math.min(first, Math.min(second, third));
+    }
     public static double[][] accumulateVertical(double[][] m) {
-        return null; //your code here
+        for (int r = 1; r <= m.length - 1; r++){
+            for (int c = 0; c <= m[0].length - 1; c++){
+                m[r][c] = accumulateOnce(m, r, c);
+            }
+        }
+        return m;
     }
 
     /** Non-destructively accumulates a matrix M along the specified
@@ -71,7 +90,7 @@ public class MatrixUtils {
      *  accumulateVertical(mT) returns the correct result.
      *
      *  accumulate should be very short (only a few lines). Most of the
-     *  work should be done in creaing the helper function (and even
+     *  work should be done in creating the helper function (and even
      *  that function should be pretty short and straightforward).
      *
      *  The important lesson here is that you should never have big
