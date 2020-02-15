@@ -24,17 +24,19 @@ class Lists {
         if (L == null) {
             return null;
         } else {
-            while (L.tail != null){
+            while (L != null){
                 IntList pointer = L;
                 while (L.tail != null && L.head < L.tail.head){
                     L = L.tail;
                 }
                 IntList next = L.tail;
                 L.tail = null;
-                pointy.head = pointer;
+                IntListList placeholder = new IntListList(pointer, null);
+                pointy.tail = placeholder;
                 pointy = pointy.tail;
+                L = next;
             }
-            return listy;
+            return listy.tail;
         }
 
     }

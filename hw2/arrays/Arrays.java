@@ -6,7 +6,7 @@ package arrays;
 /** HW #2 */
 
 /** Array utilities.
- *  @author
+ *  @author Tyler Rathkamp
  */
 class Arrays {
 
@@ -14,16 +14,28 @@ class Arrays {
     /** Returns a new array consisting of the elements of A followed by the
      *  the elements of B. */
     static int[] catenate(int[] A, int[] B) {
-        /* *Replace this body with the solution. */
-        return null;
+        int[] array = new int[A.length + B.length];
+        for (int i = 0; i <= A.length - 1; i++) {
+            array[i] = A[i];
+        }
+        for (int i = A.length; i <= array.length - 1; i++) {
+            array[i] = B[i - A.length];
+        }
+        return array;
     }
 
     /* C2. */
     /** Returns the array formed by removing LEN items from A,
      *  beginning with item #START. */
     static int[] remove(int[] A, int start, int len) {
-        /* *Replace this body with the solution. */
-        return null;
+        int[] array = new int[A.length - len];
+        for (int i = 0; i < start; i++) {
+            array[i] = A[i];
+        }
+        for (int i = (start + len); i <= A.length - 1; i++) {
+            array[i - len] = A[i];
+        }
+        return array;
     }
 
     /* C3. */

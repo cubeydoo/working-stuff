@@ -13,12 +13,24 @@ public class ListsTest {
      */
     @Test
     public void testNaturalRuns(){
-        IntList test1 = new IntList(1, 2, 3, 2);
-        IntList piece1 = new IntList(1, 2, 3);
-        IntList piece2 = new IntList(2);
-        IntListList listtest = new IntListList(piece1, piece2);
+        int[] ints = new int[]{1, 2};
+        int[] int2 = new int[]{1, 2, 1};
+        int[] p1 = new int[]{1, 2};
+        int[] p2 = new int[]{1};
+        IntList test2 = IntList.list(int2);
 
+        IntList x = IntList.list(ints);
+        IntList piece1 = IntList.list(p1);
+        IntList piece2 = IntList.list(p2);
+        IntListList y = IntListList.list(x);
+        IntListList z = IntListList.list(piece1, piece2);
+        assertTrue(y.equals(Lists.naturalRuns(x)));
+        IntListList test1 = Lists.naturalRuns(test2);
+        assertEquals(z, test1);
     }
+
+
+
 
     // It might initially seem daunting to try to set up
     // IntListList expected.
