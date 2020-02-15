@@ -53,18 +53,21 @@ class Arrays {
      *  {{1, 3, 7}, {5}, {4, 6, 9, 10}}. */
     static int[][] naturalRuns(int[] A) {
         /* *Replace this body with the solution. */
+        if (A == null) {
+            return null;
+        }
         int size = 1;
         int length = 0;
         int index = 0;
         for (int i = 1; i <= A.length - 1; i++) {
-            if (A[i] < A[i - 1]) {
+            if (A[i] <= A[i - 1]) {
                 size++;
             }
         }
         int[][] array = new int[size][1];
         int[] curr = {A[0]};
         for (int i = 1; i <= A.length - 1; i++) {
-            if (A[i] < A[i - 1]) {
+            if (A[i] <= A[i - 1]) {
                 array[index] = curr;
                 curr = null;
                 index++;
