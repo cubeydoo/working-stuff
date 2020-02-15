@@ -6,7 +6,7 @@ package lists;
 /** HW #2, Problem #1. */
 
 /** List problem.
- *  @author
+ *  @author Tyler Rathkamp
  */
 class Lists {
 
@@ -24,9 +24,9 @@ class Lists {
         if (L == null) {
             return null;
         } else {
-            while (L != null){
+            while (L != null) {
                 IntList pointer = L;
-                while (L.tail != null && L.head < L.tail.head){
+                while (L.tail != null && L.head < L.tail.head) {
                     L = L.tail;
                 }
                 IntList next = L.tail;
