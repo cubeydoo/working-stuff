@@ -19,7 +19,23 @@ class Lists {
      *  Destructive: creates no new IntList items, and may modify the
      *  original list pointed to by L. */
     static IntListList naturalRuns(IntList L) {
-        /* *Replace this body with the solution. */
-        return null;
+        IntListList listy = new IntListList(null, null);
+        IntListList pointy = listy;
+        if (L == null) {
+            return null;
+        } else {
+            while (L.tail != null){
+                IntList pointer = L;
+                while (L.tail != null && L.head < L.tail.head){
+                    L = L.tail;
+                }
+                IntList next = L.tail;
+                L.tail = null;
+                pointy.head = pointer;
+                pointy = pointy.tail;
+            }
+            return listy;
+        }
+
     }
 }

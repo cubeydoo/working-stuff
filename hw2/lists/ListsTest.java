@@ -3,14 +3,22 @@ package lists;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/** FIXME
+/** Tests for the code written in List.java
  *
- *  @author FIXME
+ *  @author Tyler Rathkamp
  */
 
 public class ListsTest {
     /** FIXME
      */
+    @Test
+    public void testNaturalRuns(){
+        IntList test1 = new IntList(1, 2, 3, 2);
+        IntList piece1 = new IntList(1, 2, 3);
+        IntList piece2 = new IntList(2);
+        IntListList listtest = new IntListList(piece1, piece2);
+
+    }
 
     // It might initially seem daunting to try to set up
     // IntListList expected.
