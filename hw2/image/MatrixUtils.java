@@ -56,13 +56,13 @@ public class MatrixUtils {
      * @return
      */
     public static double get(double[][] e, int r, int c) {
-        if (r >= 0 && r <= e.length && c >= 0 && c < e[0].length) {
+        if (r >= 0 && r < e.length && c >= 0 && c < e[0].length) {
             return e[r][c];
         } else {
             return Double.POSITIVE_INFINITY;
         }
     }
-    public static double accumulateOnce(double[][] m, int r, int c) {
+    public static double accumulateOnceVertical(double[][] m, int r, int c) {
         double first = m[r][c] + get(m,r-1,c);
         double second = m[r][c] + get(m,r-1,c+1);
         double third = m[r][c] + get(m,r-1,c-1);
@@ -71,7 +71,7 @@ public class MatrixUtils {
     public static double[][] accumulateVertical(double[][] m) {
         for (int r = 1; r <= m.length - 1; r++){
             for (int c = 0; c <= m[0].length - 1; c++){
-                m[r][c] = accumulateOnce(m, r, c);
+                m[r][c] = accumulateOnceVertical(m, r, c);
             }
         }
         return m;
@@ -99,9 +99,27 @@ public class MatrixUtils {
      *  for project 1, but in a more complex way.
      *
      */
+    public static double accumulateOnceHorizontal(double[][] m, int r, int c) {
+        double first = m[r][c] + get(m,r,c-1);
+        double second = m[r][c] + get(m,r+1,c-1);
+        double third = m[r][c] + get(m,r-1,c-1);
+        return Math.min(first, Math.min(second, third));
+    }
+    public static double[][] accumulateHorizontal(double[][] m) {
+        for (int c = 1; c <= m[0].length - 1; c++){
+            for (int r = 0; r <= m.length - 1; r++){
+                m[r][c] = accumulateOnceHorizontal(m, r, c);
+            }
+        }
+        return m;
+    }
 
     public static double[][] accumulate(double[][] m, Orientation orientation) {
-        return null; //your code here
+        if (orientation == Orientation.VERTICAL) {
+            return accumulateVertical(m);
+        } else {
+            return accumulateHorizontal(m);
+        }
     }
 
     /** Finds the vertical seam VERTSEAM of the given matrix M.

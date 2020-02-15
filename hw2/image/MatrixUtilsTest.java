@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
  */
 public class MatrixUtilsTest {
     @Test
-    public void testaccum() {
+    public void testAccumulate() {
 
         double[][] M = {{1000000, 1000000, 1000000, 1000000},
                 {1000000, 75990, 30003, 1000000},
@@ -23,6 +23,17 @@ public class MatrixUtilsTest {
                 {2089520, 1162923, 1124919, 2098278},
                 {2162923, 2124919, 2124919, 2124919}};
         assertEquals(MatrixUtils.accumulateVertical(M), A);
+    }
+    @Test
+    public void testAccumulateOrientation() {
+
+        double[][] A = {{1, 3, 6, 9},
+                        {1, 3, 5, 8},
+                        {4, 2, 4, 7}};
+        double[][] M = {{1, 2, 3, 4},
+                        {1, 2, 3, 4},
+                        {4, 1, 2, 3}};
+        assertEquals(MatrixUtils.accumulate(M, MatrixUtils.Orientation.HORIZONTAL), A);
     }
     public static void main(String[] args) {
         System.exit(ucb.junit.textui.runClasses(MatrixUtilsTest.class));
