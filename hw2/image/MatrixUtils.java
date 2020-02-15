@@ -53,7 +53,14 @@ public class MatrixUtils {
      *  2089520   1162923   1124919   2098278
      *  2162923   2124919   2124919   2124919
      *
-     * @return
+     */
+
+    /**
+     * processes a row vertically.
+     * @param e Matrix.
+     * @param r Row.
+     * @param c Column.
+     * @return Number at a specific index, or infinity if the index is invalid.
      */
     public static double get(double[][] e, int r, int c) {
         if (r >= 0 && r < e.length && c >= 0 && c < e[0].length) {
@@ -62,15 +69,28 @@ public class MatrixUtils {
             return Double.POSITIVE_INFINITY;
         }
     }
+
+    /**
+     * processes a row vertically.
+     * @param m Matrix.
+     * @param r Row.
+     * @param c Column.
+     * @return Matrix with one column accumulated.
+     */
     public static double accumulateOnceVertical(double[][] m, int r, int c) {
-        double first = m[r][c] + get(m,r-1,c);
-        double second = m[r][c] + get(m,r-1,c+1);
-        double third = m[r][c] + get(m,r-1,c-1);
+        double first = m[r][c] + get(m, r - 1, c);
+        double second = m[r][c] + get(m, r - 1, c + 1);
+        double third = m[r][c] + get(m, r - 1, c - 1);
         return Math.min(first, Math.min(second, third));
     }
+    /**
+     * processes an image vertically.
+     * @param m Matrix.
+     * @return Matrix with one column accumulated.
+     */
     public static double[][] accumulateVertical(double[][] m) {
-        for (int r = 1; r <= m.length - 1; r++){
-            for (int c = 0; c <= m[0].length - 1; c++){
+        for (int r = 1; r <= m.length - 1; r++) {
+            for (int c = 0; c <= m[0].length - 1; c++) {
                 m[r][c] = accumulateOnceVertical(m, r, c);
             }
         }
@@ -99,21 +119,38 @@ public class MatrixUtils {
      *  for project 1, but in a more complex way.
      *
      */
+    /**
+     * processes a row horizontally.
+     * @param m Matrix.
+     * @param r Row.
+     * @param c Column.
+     * @return Matrix with one column accumulated.
+     */
     public static double accumulateOnceHorizontal(double[][] m, int r, int c) {
-        double first = m[r][c] + get(m,r,c-1);
-        double second = m[r][c] + get(m,r+1,c-1);
-        double third = m[r][c] + get(m,r-1,c-1);
+        double first = m[r][c] + get(m, r, c - 1);
+        double second = m[r][c] + get(m, r + 1, c - 1);
+        double third = m[r][c] + get(m, r - 1, c - 1);
         return Math.min(first, Math.min(second, third));
     }
+    /**
+     * processes an image horizontally.
+     * @param m Matrix.
+     * @return Matrix with all columns accumulated.
+     */
     public static double[][] accumulateHorizontal(double[][] m) {
-        for (int c = 1; c <= m[0].length - 1; c++){
-            for (int r = 0; r <= m.length - 1; r++){
+        for (int c = 1; c <= m[0].length - 1; c++) {
+            for (int r = 0; r <= m.length - 1; r++) {
                 m[r][c] = accumulateOnceHorizontal(m, r, c);
             }
         }
         return m;
     }
-
+    /**
+     * processes a row vertically.
+     * @param m Matrix.
+     * @param orientation Vertical or Horizontal.
+     * @return Processed column.
+     */
     public static double[][] accumulate(double[][] m, Orientation orientation) {
         if (orientation == Orientation.VERTICAL) {
             return accumulateVertical(m);
@@ -152,7 +189,7 @@ public class MatrixUtils {
      */
 
     public static int[] findVerticalSeam(double[][] m) {
-        return null; //your code here
+        return null;
     }
 
     /** Returns the SEAM of M with the given ORIENTATION.
@@ -161,7 +198,7 @@ public class MatrixUtils {
      */
 
     public static int[] findSeam(double[][] m, Orientation orientation) {
-        return null; //your code here
+        return null;
     }
 
     /** does nothing. ARGS not used. use for whatever purposes you'd like */
