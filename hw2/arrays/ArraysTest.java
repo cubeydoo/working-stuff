@@ -51,6 +51,8 @@ public class ArraysTest {
                 assertEquals(answer[i][x], answer2[i][x]);
             }
         }
+        int[] nullpoint = {};
+        Arrays.naturalRuns(nullpoint);
     }
     public static void main(String[] args) {
         System.exit(ucb.junit.textui.runClasses(ArraysTest.class));

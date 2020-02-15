@@ -56,7 +56,7 @@ class Arrays {
         int[] nullpoint = {};
         if (A == null) {
             return null;
-        } else if (A == nullpoint){
+        } if (A.length == 0){
             return new int[][] {nullpoint};
         }
         int size = 1;
