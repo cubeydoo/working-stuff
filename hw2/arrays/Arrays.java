@@ -14,6 +14,13 @@ class Arrays {
     /** Returns a new array consisting of the elements of A followed by the
      *  the elements of B. */
     static int[] catenate(int[] A, int[] B) {
+        if (A == null && B == null) {
+            return null;
+        } else if (A == null) {
+            return B;
+        } else if (B == null) {
+            return A;
+        }
         int[] array = new int[A.length + B.length];
         for (int i = 0; i <= A.length - 1; i++) {
             array[i] = A[i];
@@ -46,6 +53,26 @@ class Arrays {
      *  {{1, 3, 7}, {5}, {4, 6, 9, 10}}. */
     static int[][] naturalRuns(int[] A) {
         /* *Replace this body with the solution. */
-        return null;
+        int size = 1;
+        int length = 0;
+        int index = 0;
+        for (int i = 1; i <= A.length - 1; i++) {
+            if (A[i] < A[i - 1]) {
+                size++;
+            }
+        }
+        int[][] array = new int[size][1];
+        int[] curr = {A[0]};
+        for (int i = 1; i <= A.length - 1; i++) {
+            if (A[i] < A[i - 1]) {
+                array[index] = curr;
+                curr = null;
+                index++;
+            }
+            int[] currindex = {A[i]};
+            curr = catenate(curr, currindex);
+        }
+        array[index] = curr;
+        return array;
     }
 }

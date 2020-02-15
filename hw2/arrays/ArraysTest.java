@@ -32,11 +32,26 @@ public class ArraysTest {
         int a[] = {1, 2, 3, 4, 5, 6, 7, 8};
         int a1[] = Arrays.remove(a, 3, 2);
         int answer1[] = {1, 2, 3, 6, 7, 8};
+        int answer2[] = {1};
+        int a2[] = Arrays.remove(a, 1, 7);
         for (int i = 0; i <= 5; i++) {
             assertEquals(answer1[i], a1[i]);
         }
+        assertEquals(answer2[0], a2[0]);
 
         }
+
+    @Test
+    public void testnaturalRuns() {
+        int[] A =  {1, 3, 7, 5, 4, 6, 9, 10};
+        int[][] Answer = {{1, 3, 7}, {5}, {4, 6, 9, 10}};
+        int[][] answer2 = Arrays.naturalRuns(A);
+        for (int i = 0; i <= 2; i++){
+            for (int x = 0; x <= Answer[i].length - 1; x++){
+                assertEquals(Answer[i][x], answer2[i][x]);
+            }
+        }
+    }
     public static void main(String[] args) {
         System.exit(ucb.junit.textui.runClasses(ArraysTest.class));
     }
