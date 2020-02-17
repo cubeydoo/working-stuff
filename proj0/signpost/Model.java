@@ -610,6 +610,16 @@ class Model implements Iterable<Model.Sq> {
             _unconnected -= 1;
             this._successor = s1;
             s1._predecessor = this;
+            
+            if (this.group() == 0 && s1.group() != 0) {
+                releaseGroup(s1.group());
+            } else if (this.group() != 0 && s1.group() == 0) {
+                releaseGroup(this.group());
+            }
+            if (this.group() == -1 && s1.group() == -1) {
+                this.head()._group = joinGroups(this.group(), s1.group());
+            }
+
             if (this.sequenceNum() != 0) {
                 Sq current = this;
                 while (current.successor() != null) {
@@ -625,18 +635,12 @@ class Model implements Iterable<Model.Sq> {
                             current2.successor().sequenceNum() - 1;
                 }
             }
+
+
             Sq iterator = this;
             while (iterator.successor() != null) {
                 iterator = iterator.successor();
                 iterator._head = this.head();
-            }
-            if (this.group() == 0 && s1.group() != 0) {
-                releaseGroup(s1.group());
-            } else if (this.group() != 0 && s1.group() == 0) {
-                releaseGroup(this.group());
-            }
-            if (this.group() == -1 && s1.group() == -1) {
-                this.head()._group = joinGroups(this.group(), s1.group());
             }
 
             return true;
