@@ -285,7 +285,7 @@ class Model implements Iterable<Model.Sq> {
         while (second <= _width * _height) {
             Sq fSquare = solnNumToSq(first);
             Sq secSquare = solnNumToSq(second);
-            if (fSquare != null && secSquare != null) {
+            if (fSquare != null && secSquare != null && fSquare.sequenceNum() != 0 && secSquare.sequenceNum() != 0) {
                 if (fSquare.connectable(secSquare)) {
                     fSquare.connect(secSquare);
                     flag = true;
