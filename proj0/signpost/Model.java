@@ -616,8 +616,7 @@ class Model implements Iterable<Model.Sq> {
                     current._sequenceNum =
                             current.predecessor().sequenceNum() + 1;
                 }
-            }
-            if (s1.sequenceNum() != 0) {
+            } else if (s1.sequenceNum() != 0) {
                 Sq current2 = s1;
                 while (current2.predecessor() != null) {
                     current2 = current2.predecessor();
