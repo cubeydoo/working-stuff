@@ -605,6 +605,7 @@ class Model implements Iterable<Model.Sq> {
             if (!connectable(s1)) {
                 return false;
             }
+            _usedGroups = _usedGroups;
             int sgroup = s1.group();
             _unconnected -= 1;
             this._successor = s1;
@@ -636,7 +637,6 @@ class Model implements Iterable<Model.Sq> {
             }
             if (this.sequenceNum() == 0 && s1.sequenceNum() == 0) {
                 this.head()._group = joinGroups(this.group(), s1.group());
-                _usedGroups.add(this.group());
             }
 
             return true;
