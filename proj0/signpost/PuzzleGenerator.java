@@ -22,8 +22,7 @@ class PuzzleGenerator implements PuzzleSource {
     public Model getPuzzle(int width, int height, boolean allowFreeEnds) {
         Model model =
             new Model(makePuzzleSolution(width, height, allowFreeEnds));
-        // FIXME: Remove the "//" on the following two lines.
-        // makeSolutionUnique(model);
+        makeSolutionUnique(model);
         model.autoconnect();
         return model;
     }
@@ -53,8 +52,8 @@ class PuzzleGenerator implements PuzzleSource {
         _vals[x0][y0] = 1;
         _vals[x1][y1] = last;
 
-        //boolean ok = findSolutionPathFrom(x0, y0);
-        //assert ok;
+        boolean ok = findSolutionPathFrom(x0, y0);
+        assert ok;
         return _vals;
     }
 
