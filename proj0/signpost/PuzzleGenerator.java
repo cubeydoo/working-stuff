@@ -179,8 +179,21 @@ class PuzzleGenerator implements PuzzleSource {
      *  the only unconnected predecessor.  This is because findUniqueSuccessor
      *  already finds the other cases of numbered, unconnected cells. */
     static Sq findUniquePredecessor(Model model, Sq end) {
-        // FIXME: Replace the following to satisfy the comment.
-        return null;
+        int sNum = 0;
+        Sq rv = end;
+        for (int i = 0; i <= end.predecessors().size() - 1; i++) {
+            Place current = end.predecessors().get(i);
+            Sq curr = model.get(current.x, current.y);
+            if (curr.connectable(end)) {
+                rv = curr;
+                sNum += 1;
+            }
+        }
+        if (sNum != 1) {
+            return null;
+        } else {
+            return rv;
+        }
     }
 
     /** Remove all links in MODEL and unfix numbers (other than the first and
