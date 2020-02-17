@@ -1,7 +1,5 @@
 package signpost;
 
-import net.sf.saxon.lib.SaxonOutputKeys;
-
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Formatter;
@@ -65,7 +63,7 @@ import static signpost.Utils.*;
  *  0) and all cells with fixed sequence numbers appear at the
  *  corresponding position in that sequence.
  *
- *  @author ??
+ *  @author Tyler Rathkamp
  */
 class Model implements Iterable<Model.Sq> {
 
@@ -90,8 +88,6 @@ class Model implements Iterable<Model.Sq> {
         _allSuccessors = Place.successorCells(_width, _height);
         _solution = new int[_width][_height];
         deepCopy(solution, _solution);
-
-
         _board = new Sq[_width][_height];
         _solnNumToPlace = new Place[last + 1];
         for (int x = 0; x <= _width - 1; x++) {
@@ -107,7 +103,8 @@ class Model implements Iterable<Model.Sq> {
         PlaceList[][][] M = successorCells(width(), height());
         for (int x = 0; x <= _width - 1; x++) {
             for (int y = 0; y <= _height - 1; y++) {
-                if (_solution[x][y] == 1 || _solution[x][y] == _width * _height) {
+                if (_solution[x][y] == 1
+                        || _solution[x][y] == _width * _height) {
                     int dir = arrowDirection(x, y);
                     Sq square = new Sq(x, y, _solution[x][y], true, dir, 0);
                     square._predecessors = new PlaceList();
@@ -125,12 +122,13 @@ class Model implements Iterable<Model.Sq> {
             }
         }
 
-        for (int i = 0; i <= _allSquares.size() - 1; i++){
+        for (int i = 0; i <= _allSquares.size() - 1; i++) {
             Sq current = _allSquares.get(i);
-            for (int s = 0; s <= current._successors.size() - 1; s++){
+            for (int s = 0; s <= current._successors.size() - 1; s++) {
                 Place pPlace = current._successors.get(s);
                 Sq potential = get(pPlace.x, pPlace.y);
-                if (dirOf(potential.x, potential.y, current.x, current.y) == potential.direction()){
+                if (dirOf(potential.x, potential.y,
+                        current.x, current.y) == potential.direction()) {
                     current._predecessors.add(pPlace);
                 }
             }
@@ -151,16 +149,18 @@ class Model implements Iterable<Model.Sq> {
         _board = new Sq[_width][_height];
         _allSquares = new ArrayList<Sq>();
 
-        for (int i = 0; i <= model._allSquares.size() - 1; i++){
+        for (int i = 0; i <= model._allSquares.size() - 1; i++) {
             Sq curr = model._allSquares.get(i);
-            if (curr.hasFixedNum()){
-                Sq copy = new Sq(curr.x, curr.y, curr.sequenceNum(), true, curr.direction(), curr.group());
+            if (curr.hasFixedNum()) {
+                Sq copy = new Sq(curr.x, curr.y, curr.sequenceNum(),
+                        true, curr.direction(), curr.group());
                 copy._successors = curr.successors();
                 copy._predecessors = curr._predecessors;
                 _board[copy.x][copy.y] = copy;
                 _allSquares.add(copy);
             } else {
-                Sq copy = new Sq(curr.x, curr.y, curr.sequenceNum(), false, curr.direction(), curr.group());
+                Sq copy = new Sq(curr.x, curr.y, curr.sequenceNum(),
+                        false, curr.direction(), curr.group());
                 copy._successors = curr.successors();
                 copy._predecessors = curr._predecessors;
                 _board[copy.x][copy.y] = copy;
@@ -169,18 +169,22 @@ class Model implements Iterable<Model.Sq> {
 
         }
 
-        for (int i = 0; i <= _allSquares.size() - 1; i++){
+        for (int i = 0; i <= _allSquares.size() - 1; i++) {
             Sq copy = _allSquares.get(i);
             Sq original = model._allSquares.get(i);
             if (original._successor != null) {
-                copy._successor = get(original.successor().x, original.successor().y);
-            } if (original._predecessor != null) {
-                copy._predecessor = get(original.predecessor().x, original.predecessor().y);
-            } if (original._head != null) {
+                copy._successor =
+                        get(original.successor().x, original.successor().y);
+            }
+            if (original._predecessor != null) {
+                copy._predecessor =
+                        get(original.predecessor().x, original.predecessor().y);
+            }
+            if (original._head != null) {
                 copy._head = get(original.head().x, original.head().y);
             }
         }
-        }
+    }
 
     /** Returns the width (number of columns of cells) of the board. */
     final int width() {
@@ -281,7 +285,7 @@ class Model implements Iterable<Model.Sq> {
         while (second <= _width * _height) {
             Sq fSquare = solnNumToSq(first);
             Sq secSquare = solnNumToSq(second);
-            if (fSquare != null && secSquare != null){
+            if (fSquare != null && secSquare != null) {
                 if (fSquare.connectable(secSquare)) {
                     fSquare.connect(secSquare);
                     flag = true;
@@ -303,7 +307,7 @@ class Model implements Iterable<Model.Sq> {
                 current._sequenceNum = _solution[x][y];
             }
         }
-        for (int i = 2; i <= _width * _height; i++){
+        for (int i = 2; i <= _width * _height; i++) {
             Sq current = solnNumToSq(i);
             Sq prev = solnNumToSq(i - 1);
             if (prev.connectable(current)) {
@@ -318,7 +322,7 @@ class Model implements Iterable<Model.Sq> {
 
     public int arrowDirection(int x, int y) {
         int seq0 = _solution[x][y];
-        if (seq0 < _width *_height){
+        if (seq0 < _width * _height) {
             Place seq0next = solnNumToPlace(seq0 + 1);
             return Place.dirOf(x, y, seq0next.x, seq0next.y);
         } else {
@@ -583,11 +587,13 @@ class Model implements Iterable<Model.Sq> {
             boolean pred = s1.predecessor() == null && this.successor() == null;
             boolean dir = dirOf(this.x, this.y, s1.x, s1.y) == this.direction();
             boolean sequenceCheck = true;
-            boolean numberCheck = s1.sequenceNum() != 1 && this.sequenceNum() != _width * _height;
+            boolean numberCheck = s1.sequenceNum() != 1
+                    && this.sequenceNum() != _width * _height;
             if (s1.sequenceNum() != 0 && this.sequenceNum() != 0) {
                 sequenceCheck = this.sequenceNum() == s1.sequenceNum() - 1;
             } else if (s1.sequenceNum() == 0 && this.sequenceNum() == 0) {
-                sequenceCheck = s1.group() != this.group()  || (s1.group() == - 1 && this.group() == - 1);
+                sequenceCheck = s1.group() != this.group()
+                        || (s1.group() == -1 && this.group() == -1);
             }
             return (pred && dir && sequenceCheck && numberCheck);
         }
@@ -607,14 +613,16 @@ class Model implements Iterable<Model.Sq> {
                 Sq current = this;
                 while (current.successor() != null) {
                     current = current.successor();
-                    current._sequenceNum = current.predecessor().sequenceNum() + 1;
+                    current._sequenceNum =
+                            current.predecessor().sequenceNum() + 1;
                 }
             }
-            if (s1.sequenceNum() != 0){
+            if (s1.sequenceNum() != 0) {
                 Sq current2 = s1;
                 while (current2.predecessor() != null) {
                     current2 = current2.predecessor();
-                    current2._sequenceNum = current2.successor().sequenceNum() - 1;
+                    current2._sequenceNum =
+                            current2.successor().sequenceNum() - 1;
                 }
             }
             Sq iterator = this;
@@ -633,7 +641,10 @@ class Model implements Iterable<Model.Sq> {
 
             return true;
         }
-        /** Check if any square in a group has a fixed number. */
+        /** Check if any square in a group has a fixed number.
+         * @param thispointer = current spot in list of squares
+         * @return True if any predecessors of a square have a fixedNum
+         * */
         boolean checkFixNum(Sq thispointer) {
             while (thispointer != null) {
                 if (thispointer.hasFixedNum()) {
@@ -643,7 +654,10 @@ class Model implements Iterable<Model.Sq> {
             }
             return false;
         }
-        /** Check if any square in a group has a fixed number. */
+        /** Check if any square in a group has a fixed number.
+         * @param nextpointer = current spot in list of squares
+         * @return True if any successors of a square have a fixedNum
+         * */
         boolean checkFixNumSuccesors(Sq nextpointer) {
             while (nextpointer != null) {
                 if (nextpointer.hasFixedNum()) {

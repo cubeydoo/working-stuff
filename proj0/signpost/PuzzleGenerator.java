@@ -8,7 +8,7 @@ import static signpost.Place.PlaceList;
 import static signpost.Utils.*;
 
 /** A creator of random Signpost puzzles.
- *  @author
+ *  @author Tyler Rathkamp
  */
 class PuzzleGenerator implements PuzzleSource {
 
@@ -132,26 +132,27 @@ class PuzzleGenerator implements PuzzleSource {
             for (int i = 0; i <= start.successors().size() - 1; i++) {
                 Place current = start.successors().get(i);
                 Sq curr = model.get(current.x, current.y);
-                if (start.connectable(curr) && curr.sequenceNum() == start.sequenceNum() + 1) {
+                if (start.connectable(curr)
+                        && curr.sequenceNum() == start.sequenceNum() + 1) {
                     return curr;
                 }
             }
 
         }
-            for (int i = 0; i <= start.successors().size() - 1; i++) {
-                Place current = start.successors().get(i);
-                Sq curr = model.get(current.x, current.y);
-                if (start.connectable(curr)) {
-                    succ = curr;
-                    sNum += 1;
-                }
-            }
-            if (sNum != 1) {
-                return null;
-            } else {
-                return succ;
+        for (int i = 0; i <= start.successors().size() - 1; i++) {
+            Place current = start.successors().get(i);
+            Sq curr = model.get(current.x, current.y);
+            if (start.connectable(curr)) {
+                succ = curr;
+                sNum += 1;
             }
         }
+        if (sNum != 1) {
+            return null;
+        } else {
+            return succ;
+        }
+    }
 
     /** Make all unique backward connections in MODEL (those in which there is
      *  a single possible predecessor).  Return true iff changes made. */
