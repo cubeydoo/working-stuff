@@ -635,7 +635,7 @@ class Model implements Iterable<Model.Sq> {
             } else if (this.group() != 0 && s1.group() == 0) {
                 releaseGroup(this.group());
             }
-            if (this.sequenceNum() == 0 && s1.sequenceNum() == 0) {
+            if (this.group() == -1 && s1.group() == -1) {
                 this.head()._group = joinGroups(this.group(), s1.group());
             }
 
