@@ -636,6 +636,7 @@ class Model implements Iterable<Model.Sq> {
             }
             if (this.sequenceNum() == 0 && s1.sequenceNum() == 0) {
                 this.head()._group = joinGroups(this.group(), s1.group());
+                _usedGroups.add(this.group());
             }
 
             return true;
@@ -678,12 +679,13 @@ class Model implements Iterable<Model.Sq> {
             if (_sequenceNum == 0) {
                 if (this.predecessor() == null && next.successor() == null) {
                     releaseGroup(this.group());
-                    this._group = next._group = -1;
+                    this._group = -1;
+                    next._group = -1;
                 } else if (this.predecessor() == null) {
                     next._group = this._group;
                     this._group = -1;
                 } else if (next.successor() == null) {
-                    next._group = 1;
+                    next._group = -1;
                 } else {
                     next._group = newGroup();
                 }
