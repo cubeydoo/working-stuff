@@ -127,10 +127,32 @@ class PuzzleGenerator implements PuzzleSource {
      *  numbered square in the proper direction from START (with the next
      *  number in sequence). */
     static Sq findUniqueSuccessor(Model model, Sq start) {
-        if (start.hasFixedNum()){
-            
+        int sNum = 0;
+        Sq succ = start;
+        if (start.hasFixedNum()) {
+            for (int i = 0; i <= start.successors().size() - 1; i++) {
+                Place current = start.successors().get(i);
+                Sq curr = model.get(current.x, current.y);
+                if (start.connectable(curr) && curr.sequenceNum() == start.sequenceNum() + 1) {
+                    return curr;
+                }
+            }
+
         }
-    }
+            for (int i = 0; i <= start.successors().size() - 1; i++) {
+                Place current = start.successors().get(i);
+                Sq curr = model.get(current.x, current.y);
+                if (start.connectable(curr)) {
+                    succ = curr;
+                    sNum += 1;
+                }
+            }
+            if (sNum != 1) {
+                return null;
+            } else {
+                return succ;
+            }
+        }
 
     /** Make all unique backward connections in MODEL (those in which there is
      *  a single possible predecessor).  Return true iff changes made. */
