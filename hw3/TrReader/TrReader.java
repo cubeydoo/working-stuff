@@ -33,7 +33,7 @@ public class TrReader extends Reader {
 
     public int read(char[] arr, int offset, int length) throws IOException {
         int counter = 0;
-        if (arr.length == 0 || length == 0) {
+        if (arr.length == 0) {
             return -1;
         } else {
             int numRead = r.read(arr, offset, length);
