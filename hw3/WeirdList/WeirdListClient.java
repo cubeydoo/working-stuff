@@ -1,27 +1,38 @@
-/** Functions to increment and sum the elements of a WeirdList. */
+/** Functions to increment and sum the elements of a WeirdList.
+ * @author Tyler Rathkamp
+ */
 class WeirdListClient {
-private static int val;
+    /** stores the value passed in to add for all numbers. */
+    private static int val;
     /** Return the result of adding N to each element of L. */
     static WeirdList add(WeirdList L, int n) {
         val = n;
-        helper newbie = new helper();
+        Helper newbie = new Helper();
         return L.map(newbie);
     }
 
     /** Return the sum of all the elements in L. */
     static int sum(WeirdList L) {
-        helper2 clever = new helper2();
+        Helper2 clever = new Helper2();
         L.map(clever);
         return clever.total;
     }
-public static class helper implements IntUnaryFunction {
+    /** helper1 allows us to add a number to each _head. */
+    public static class Helper implements IntUnaryFunction {
+        /** Changes each value in a list by val.
+         * @param x _head.
+         * @return _head + val.*/
         public int apply(int x) {
             return x + val;
         }
-}
-
-public static class helper2 implements IntUnaryFunction {
+    }
+    /** helper2 allows us to sum all numbers in a WeirdList. */
+    public static class Helper2 implements IntUnaryFunction {
+        /** sum of the values of the list. */
         private int total = 0;
+        /** adds all the values of the list.
+         * @param x val at an index.
+         * @return pointless, doesn't change anything*/
         public int apply(int x) {
             total += x;
             return x;
