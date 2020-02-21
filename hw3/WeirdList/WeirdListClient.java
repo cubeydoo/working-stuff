@@ -10,7 +10,9 @@ private static int val;
 
     /** Return the sum of all the elements in L. */
     static int sum(WeirdList L) {
-        return 0; // TODO: REPLACE THIS LINE
+        helper2 clever = new helper2();
+        L.map(clever);
+        return clever.total;
     }
 public static class helper implements IntUnaryFunction {
         public int apply(int x) {
@@ -19,7 +21,9 @@ public static class helper implements IntUnaryFunction {
 }
 
 public static class helper2 implements IntUnaryFunction {
+        private int total = 0;
         public int apply(int x) {
+            total += x;
             return x;
         }
     }
