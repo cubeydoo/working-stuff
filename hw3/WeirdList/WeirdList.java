@@ -1,11 +1,11 @@
 /** A WeirdList holds a sequence of integers.
  * @author Tyler Rathkamp
  */
-public class WeirdList {
+public class WeirdList  {
     private int _head;
     private WeirdList _tail;
     /** The empty sequence of integers. */
-    public static final WeirdList EMPTY = new WeirdListEmpty.WeirdL;
+    public static final WeirdList EMPTY = new WeirdL(0, null);
 
     /** A new WeirdList whose head is HEAD and tail is TAIL. */
     public WeirdList(int head, WeirdList tail) { 
@@ -32,7 +32,8 @@ public class WeirdList {
     public WeirdList map(IntUnaryFunction func) {
         return new WeirdList(func.apply(_head), _tail.map(func));
     }
-    
+
+
 
 
 
