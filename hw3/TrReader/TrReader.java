@@ -23,13 +23,13 @@ public class TrReader extends Reader {
     }
 
 
-    /* TODO: IMPLEMENT ANY MISSING ABSTRACT METHODS HERE
+/**
      * NOTE: Until you fill in the necessary methods, the compiler will
      *       reject this file, saying that you must declare TrReader
      *       abstract. Don't do that; define the right methods instead!
      */
     public void close() throws IOException {
-
+        r.close();
     }
 
     public int read(char[] arr, int offset, int length) throws IOException {
