@@ -22,20 +22,18 @@ public class TrReader extends Reader {
         r = reader;
     }
 
-
-    /* TODO: IMPLEMENT ANY MISSING ABSTRACT METHODS HERE
+/**
      * NOTE: Until you fill in the necessary methods, the compiler will
      *       reject this file, saying that you must declare TrReader
      *       abstract. Don't do that; define the right methods instead!
      */
     public void close() throws IOException {
         r.close();
-
     }
 
     public int read(char[] arr, int offset, int length) throws IOException {
         int counter = 0;
-        if (arr.length == 0) {
+        if (arr.length == 0 || length == 0) {
             return -1;
         } else {
             int numRead = r.read(arr, offset, length);
@@ -46,7 +44,7 @@ public class TrReader extends Reader {
                     arr[i] = key.charAt(index);
                 }
             }
-            return length;
+            return numRead;
         }
 
 
