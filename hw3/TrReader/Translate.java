@@ -12,7 +12,8 @@ public class Translate {
         /* NOTE: The try {...} catch is a technicality to keep Java happy. */
         char[] buffer = new char[S.length()];
         try {
-            throw new IOException(); //TODO: REPLACE THIS LINE WITH YOUR CODE.
+            TrReader newread = new TrReader(r, from, to);
+            throw new IOException();
         } catch (IOException e) {
             return null;
         }
