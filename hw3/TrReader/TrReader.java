@@ -29,6 +29,7 @@ public class TrReader extends Reader {
      *       abstract. Don't do that; define the right methods instead!
      */
     public void close() throws IOException {
+        r.close();
 
     }
 
