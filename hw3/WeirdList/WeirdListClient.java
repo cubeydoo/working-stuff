@@ -1,16 +1,28 @@
 /** Functions to increment and sum the elements of a WeirdList. */
 class WeirdListClient {
-
+private static int val;
     /** Return the result of adding N to each element of L. */
     static WeirdList add(WeirdList L, int n) {
-        return null;
+        val = n;
+        helper newbie = new helper();
+        return L.map(newbie);
     }
 
     /** Return the sum of all the elements in L. */
     static int sum(WeirdList L) {
         return 0; // TODO: REPLACE THIS LINE
     }
+public static class helper implements IntUnaryFunction {
+        public int apply(int x) {
+            return x + val;
+        }
+}
 
+public static class helper2 implements IntUnaryFunction {
+        public int apply(int x) {
+            return x;
+        }
+    }
     /* IMPORTANT: YOU ARE NOT ALLOWED TO USE RECURSION IN ADD AND SUM
      *
      * As with WeirdList, you'll need to add an additional class or

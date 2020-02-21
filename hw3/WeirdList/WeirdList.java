@@ -24,7 +24,7 @@ public class WeirdList  {
      *  5, 4, and 2, this returns " 5 4 2". */
     @Override
     public String toString() {
-        return String.valueOf(_head) + " " + _tail.toString();
+        return " " + String.valueOf(_head) + _tail.toString();
     }
 
     /** Part 3b: Apply FUNC.apply to every element of THIS WeirdList in
