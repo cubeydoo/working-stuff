@@ -11,7 +11,8 @@ public class GreaterThanFilter extends TableFilter {
         super(input);
         index1 = input.colNameToIndex(colName);
         table = input;
-        mat = ref;    }
+        mat = ref;
+    }
 
     @Override
     protected boolean keep() {
