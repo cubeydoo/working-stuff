@@ -4,17 +4,24 @@
  * @author Matthew Owen
  */
 public class ColumnMatchFilter extends TableFilter {
-
+    public int index1;
+    public int index2;
+    public Table table;
     public ColumnMatchFilter(Table input, String colName1, String colName2) {
         super(input);
-        // FIXME: Add your code here.
+        index1 = input.colNameToIndex(colName1);
+        index2 = input.colNameToIndex(colName2);
+        table = input;
+
+
     }
 
     @Override
     protected boolean keep() {
-        // FIXME: Replace this line with your code.
+        Table.TableRow current = _next;
+        if (current.getValue(index1) == current.getValue(index2)) {
+            return true;
+        }
         return false;
     }
-
-    // FIXME: Add instance variables?
 }
