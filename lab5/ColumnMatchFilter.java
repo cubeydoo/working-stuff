@@ -12,14 +12,14 @@ public class ColumnMatchFilter extends TableFilter {
         index1 = input.colNameToIndex(colName1);
         index2 = input.colNameToIndex(colName2);
         table = input;
-
-
     }
 
     @Override
     protected boolean keep() {
         Table.TableRow current = _next;
-        if (current.getValue(index1) == current.getValue(index2)) {
+        String one = new String (current.getValue(index1));
+        String two = new String (current.getValue(index2));
+        if (one.equals(two)) {
             return true;
         }
         return false;
