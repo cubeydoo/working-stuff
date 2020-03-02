@@ -91,7 +91,7 @@ public abstract class PermutationTest {
         assertEquals('E', d.invert('E'));
         assertEquals('P', d.invert('L'));
         assertEquals('L', d.invert('P'));
-        assertFalse(d.derangement())
+        assertFalse(d.derangement());
         assertEquals(1, d.invert(0));
         assertEquals('G', d.invert('G'));
         assertEquals('B', d.invert(d.invert('C')));
@@ -107,7 +107,7 @@ public abstract class PermutationTest {
         assertEquals('D', p.permute('C'));
         assertEquals('A', p.permute('B'));
         assertEquals('D', p.permute('C'));
-        Permutation d = getNewPermutation("(BACD)(E)(PL)", getNewAlphabet("ABCDEPLG"));
+        Permutation d = getNewPermutation("(BACD) (E) (PL)", getNewAlphabet("ABCDEPLG"));
         assertEquals('E', d.permute('E'));
         assertEquals('L', d.permute('P'));
         assertEquals('P', d.permute('L'));
