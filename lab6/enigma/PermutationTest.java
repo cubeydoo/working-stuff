@@ -90,7 +90,11 @@ public abstract class PermutationTest {
         assertEquals('E', d.invert('E'));
         assertEquals('P', d.invert('L'));
         assertEquals('L', d.invert('P'));
-        assertEquals('G', d.permute('G'));
+        assertEquals('G', d.invert('G'));
+        assertEquals('B', d.invert(d.invert('C')));
+        Permutation e = getNewPermutation("()", getNewAlphabet("ABC"));
+        assertEquals(e.invert('C'), 'C');
+
     }
     @Test
     public void testPermuteChar() {
@@ -104,6 +108,11 @@ public abstract class PermutationTest {
         assertEquals('L', d.permute('P'));
         assertEquals('P', d.permute('L'));
         assertEquals('G', d.permute('G'));
+        Permutation c = getNewPermutation("(ABCDEFGHI)(J)", getNewAlphabet("ABCDEFGHIJK"));
+        assertEquals('A', c.permute(c.permute(c.permute('G'))));
+        assertEquals('K', c.permute('K'));
+        Permutation e = getNewPermutation("()", getNewAlphabet("ABC"));
+        assertEquals(e.permute('C'), 'C');
 
     }
     @Test(expected = EnigmaException.class)
