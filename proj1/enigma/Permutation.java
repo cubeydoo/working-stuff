@@ -16,25 +16,25 @@ class Permutation {
     Permutation(String cycles, Alphabet alphabet) {
         _alphabet = alphabet;
         cycles.replaceAll(" ", "");
-        String[] permKey = new String[alphabet.size()];
-        String[] invertKey = new String [alphabet.size()];
+        _permKey = new String[alphabet.size()];
+        _invertKey = new String [alphabet.size()];
         for (int i = 0; i < cycles.length(); i++) {
             String current = new String(String.valueOf(cycles.charAt(i)));
             if (current.equals("(")) {
                 i++;
                 current = new String(String.valueOf(cycles.charAt(i)));
-                while (current.equals(")") == false) {
+                while (!current.equals(")")) {
                     int index = alphabet._alphabetString.indexOf(current);
                     if (index == 0) {
-                        permKey[permKey.length - 1] = current;
-                        invertKey[index + 1] = current;
+                        _permKey[_permKey.length - 1] = current;
+                        _invertKey[index + 1] = current;
                     } else if (index == alphabet.size() - 1) {
-                        permKey[index - 1] = current;
-                        invertKey[0] = current;
+                        _permKey[index - 1] = current;
+                        _invertKey[0] = current;
                     }
                     else {
-                        permKey[index - 1] = current;
-                        invertKey[index + 1] = current;
+                        _permKey[index - 1] = current;
+                        _invertKey[index + 1] = current;
                     }
                     i++;
                     current = new String(String.valueOf(cycles.charAt(i)));
@@ -46,7 +46,30 @@ class Permutation {
     /** Add the cycle c0->c1->...->cm->c0 to the permutation, where CYCLE is
      *  c0c1...cm. */
     private void addCycle(String cycle) {
-        // FIXME
+        cycle.replaceAll(" ", "");
+        for (int i = 0; i < cycle.length(); i++) {
+            String current = new String(String.valueOf(cycle.charAt(i)));
+            if (current.equals("(")) {
+                i++;
+                current = new String(String.valueOf(cycle.charAt(i)));
+                while (!current.equals(")")) {
+                    int index = _alphabet._alphabetString.indexOf(current);
+                    if (index == 0) {
+                        _permKey[_permKey.length - 1] = current;
+                        _invertKey[index + 1] = current;
+                    } else if (index == _alphabet.size() - 1) {
+                        _permKey[index - 1] = current;
+                        _invertKey[0] = current;
+                    }
+                    else {
+                        _permKey[index - 1] = current;
+                        _invertKey[index + 1] = current;
+                    }
+                    i++;
+                    current = new String(String.valueOf(cycle.charAt(i)));
+                }
+            }
+        }
     }
 
     /** Return the value of P modulo the size of this permutation. */
@@ -60,7 +83,7 @@ class Permutation {
 
     /** Returns the size of the alphabet I permute. */
     int size() {
-        return 0; // FIXME
+        return _alphabet.size();
     }
 
     /** Return the result of applying this permutation to P modulo the
@@ -78,12 +101,14 @@ class Permutation {
     /** Return the result of applying this permutation to the index of P
      *  in ALPHABET, and converting the result to a character of ALPHABET. */
     char permute(char p) {
-        return 0;  // FIXME
+        int index = _alphabet._alphabetString.indexOf(p);
+        return _permKey[p].charAt(0);
     }
 
     /** Return the result of applying the inverse of this permutation to C. */
     char invert(char c) {
-        return 0;  // FIXME
+        int index = _alphabet._alphabetString.indexOf(c);
+        return _invertKey[c].charAt(0);
     }
 
     /** Return the alphabet used to initialize this Permutation. */
@@ -99,8 +124,8 @@ class Permutation {
 
     /** Alphabet of this permutation. */
     private Alphabet _alphabet;
-    private ArrayList _permKey;
-    private ArrayList _invertKey;
+    private String[] _permKey;
+    private String[] _invertKey;
 
     // FIXME: ADDITIONAL FIELDS HERE, AS NEEDED
 }
