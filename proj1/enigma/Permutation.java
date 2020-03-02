@@ -104,7 +104,9 @@ class Permutation {
     /** Return the result of applying the inverse of this permutation
      *  to  C modulo the alphabet size. */
     int invert(int c) {
-        return 0;  // FIXME
+        c = wrap(c);
+        char p = _alphabet._alphabetString.charAt(c);
+        return _alphabet._alphabetString.indexOf((invert(p)));
     }
 
     /** Return the result of applying this permutation to the index of P
@@ -122,7 +124,11 @@ class Permutation {
     /** Return the result of applying the inverse of this permutation to C. */
     char invert(char c) {
         int index = _alphabet._alphabetString.indexOf(c);
-        return _invertKey[index].charAt(0);
+        if (_invertKey[index] == null) {
+            return c;
+        } else {
+            return _invertKey[index].charAt(0);
+        }
     }
 
     /** Return the alphabet used to initialize this Permutation. */
