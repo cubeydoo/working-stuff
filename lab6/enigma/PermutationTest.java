@@ -90,10 +90,13 @@ public abstract class PermutationTest {
         assertEquals('E', d.invert('E'));
         assertEquals('P', d.invert('L'));
         assertEquals('L', d.invert('P'));
+        assertEquals(7, d.invert(0));
+
         assertEquals('G', d.invert('G'));
         assertEquals('B', d.invert(d.invert('C')));
         Permutation e = getNewPermutation("", getNewAlphabet("ABC"));
         assertEquals(e.invert('C'), 'C');
+        assertEquals(0, e.permute(2));
 
     }
     @Test
@@ -107,11 +110,13 @@ public abstract class PermutationTest {
         assertEquals('E', d.permute('E'));
         assertEquals('L', d.permute('P'));
         assertEquals('P', d.permute('L'));
+        assertEquals(0, d.permute(7));
+        assertEquals(4, d.permute(4));
         assertEquals('G', d.permute('G'));
         Permutation c = getNewPermutation("(ABCDEFGHI)(J)", getNewAlphabet("ABCDEFGHIJK"));
         assertEquals('A', c.permute(c.permute(c.permute('G'))));
         assertEquals('K', c.permute('K'));
-        Permutation e = getNewPermutation("it ", getNewAlphabet("ABC"));
+        Permutation e = getNewPermutation("", getNewAlphabet("ABC"));
         assertEquals(e.permute('C'), 'C');
 
     }
@@ -120,5 +125,9 @@ public abstract class PermutationTest {
         Permutation p = getNewPermutation("(BACD)", getNewAlphabet("ABCD"));
         p.invert('F');
     }
-    // FIXME: Add tests here that pass on a correct Permutation and fail on buggy Permutations.
+    @Test(expected = EnigmaException.class)
+    public void testBadFormattedCycle() {
+        Permutation p = getNewPermutation("()", getNewAlphabet("ABCD"));
+        p.invert('F');
+    }
 }
