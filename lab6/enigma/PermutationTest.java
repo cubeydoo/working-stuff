@@ -98,7 +98,7 @@ public abstract class PermutationTest {
         assertEquals('B', p.permute('D'));
         assertEquals('D', p.permute('C'));
         assertEquals('A', p.permute('B'));
-        assertEquals('A', p.permute('C'));
+        assertEquals('D', p.permute('C'));
         Permutation d = getNewPermutation("(BACD)(E)(PL)", getNewAlphabet("ABCDEPLG"));
         assertEquals('E', d.permute('E'));
         assertEquals('L', d.permute('P'));
