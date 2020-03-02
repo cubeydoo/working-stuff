@@ -33,7 +33,7 @@ class Alphabet {
 
     /** Returns true if CH is in this alphabet. */
     boolean contains(char ch) {
-        return 'A' <= ch && ch <= 'Z'; // FIXME
+        return _alphabetString.indexOf(ch) != -1;
     }
 
     /** Returns character number INDEX in the alphabet, where
