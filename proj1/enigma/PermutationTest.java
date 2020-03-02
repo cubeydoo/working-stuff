@@ -26,7 +26,7 @@ public  class PermutationTest {
      * its alphabet
      * @see Permutation for description of the Permutation conctructor
      */
-    Permutation getNewPermutation(String cycles, Alphabet alphabet){
+    Permutation getNewPermutation(String cycles, Alphabet alphabet) {
         return new Permutation(cycles, alphabet);
     }
 
@@ -37,7 +37,7 @@ public  class PermutationTest {
      * @return an Alphabet with chars as its characters
      * @see Alphabet for description of the Alphabet constructor
      */
-    Alphabet getNewAlphabet(String chars){
+    Alphabet getNewAlphabet(String chars) {
         return new Alphabet(chars);
     }
 

@@ -4,6 +4,7 @@ package enigma;
  *  @author Tyler Rathkamp
  */
 class Alphabet {
+    /** a string of the alphabet's characters*/
     public String _alphabetString;
 
     /** A new alphabet containing CHARS.  Character number #k has index
