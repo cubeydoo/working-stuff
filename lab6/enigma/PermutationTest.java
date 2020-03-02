@@ -94,10 +94,8 @@ public abstract class PermutationTest {
 
         assertEquals('G', d.invert('G'));
         assertEquals('B', d.invert(d.invert('C')));
-        Permutation e = getNewPermutation("", getNewAlphabet("ABC"));
-        assertEquals(e.invert('C'), 'C');
+        Permutation e = getNewPermutation("(ABC)", getNewAlphabet("ABC"));
         assertEquals(0, e.permute(2));
-
     }
     @Test
     public void testPermuteChar() {
@@ -116,8 +114,6 @@ public abstract class PermutationTest {
         Permutation c = getNewPermutation("(ABCDEFGHI)(J)", getNewAlphabet("ABCDEFGHIJK"));
         assertEquals('A', c.permute(c.permute(c.permute('G'))));
         assertEquals('K', c.permute('K'));
-        Permutation e = getNewPermutation("", getNewAlphabet("ABC"));
-        assertEquals(e.permute('C'), 'C');
 
     }
     @Test(expected = EnigmaException.class)
@@ -129,5 +125,11 @@ public abstract class PermutationTest {
     public void testBadFormattedCycle() {
         Permutation p = getNewPermutation("()", getNewAlphabet("ABCD"));
         p.invert('F');
+    }
+    @Test
+    public void checkPermTest() {
+        Alphabet alpha = getNewAlphabet("ABCD");
+        Permutation perm = getNewPermutation("(CD)(AB)", alpha);
+        checkPerm("cycle", 'ABCD', 'BADC', perm, alpha);
     }
 }
