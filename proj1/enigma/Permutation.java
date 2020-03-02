@@ -20,25 +20,32 @@ class Permutation {
         _invertKey = new String [alphabet.size()];
         for (int i = 0; i < cycles.length(); i++) {
             String current = new String(String.valueOf(cycles.charAt(i)));
+            String next;
+            String first;
+            String previous;
             if (current.equals("(")) {
                 i++;
+                first = new String(String.valueOf(cycles.charAt(i)));
                 current = new String(String.valueOf(cycles.charAt(i)));
+                int ogindex = alphabet._alphabetString.indexOf(current);
+                next = new String(String.valueOf(cycles.charAt(i + 1)));
+                previous = new String(String.valueOf(cycles.charAt(i - 1)));
                 while (!current.equals(")")) {
+                    next = new String(String.valueOf(cycles.charAt(i + 1)));
                     int index = alphabet._alphabetString.indexOf(current);
-                    if (index == 0) {
-                        _permKey[_permKey.length - 1] = current;
-                        _invertKey[index + 1] = current;
-                    } else if (index == alphabet.size() - 1) {
-                        _permKey[index - 1] = current;
-                        _invertKey[0] = current;
+                    if (next.equals(")")) {
+                        _permKey[index] = first;
+                        _invertKey[index] = previous;
+                    } else {
+                        _permKey[index] = next;
+                        _invertKey[index] = previous;
                     }
-                    else {
-                        _permKey[index - 1] = current;
-                        _invertKey[index + 1] = current;
-                    }
+
                     i++;
                     current = new String(String.valueOf(cycles.charAt(i)));
+                    previous = new String(String.valueOf(cycles.charAt(i - 1)));
                 }
+                _invertKey[ogindex] = previous;
             }
         }
     }
@@ -102,13 +109,13 @@ class Permutation {
      *  in ALPHABET, and converting the result to a character of ALPHABET. */
     char permute(char p) {
         int index = _alphabet._alphabetString.indexOf(p);
-        return _permKey[p].charAt(0);
+        return _permKey[index].charAt(0);
     }
 
     /** Return the result of applying the inverse of this permutation to C. */
     char invert(char c) {
         int index = _alphabet._alphabetString.indexOf(c);
-        return _invertKey[c].charAt(0);
+        return _invertKey[index].charAt(0);
     }
 
     /** Return the alphabet used to initialize this Permutation. */
@@ -119,7 +126,12 @@ class Permutation {
     /** Return true iff this permutation is a derangement (i.e., a
      *  permutation for which no value maps to itself). */
     boolean derangement() {
-        return true;  // FIXME
+        for (int i = 0; i < _permKey.length; i++) {
+            if (_permKey[i] == null) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /** Alphabet of this permutation. */
@@ -127,5 +139,4 @@ class Permutation {
     private String[] _permKey;
     private String[] _invertKey;
 
-    // FIXME: ADDITIONAL FIELDS HERE, AS NEEDED
 }
