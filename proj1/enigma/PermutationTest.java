@@ -48,9 +48,9 @@ public  class PermutationTest {
      * @return a default Alphabet with characters ABCD...Z
      * @see Alphabet for description of the Alphabet constructor
      */
-     Alphabet getNewAlphabet(){
-         return new Alphabet();
-     }
+    Alphabet getNewAlphabet() {
+        return new Alphabet();
+    }
 
     /** Testing time limit. */
     @Rule
@@ -93,7 +93,8 @@ public  class PermutationTest {
         assertEquals('B', p.invert('A'));
         assertEquals('D', p.invert('B'));
         assertTrue(p.derangement());
-        Permutation d = getNewPermutation("(BACD)(E)(PL)", getNewAlphabet("ABCDEPLG"));
+        Permutation d =
+                getNewPermutation("(BACD)(E)(PL)", getNewAlphabet("ABCDEPLG"));
         assertEquals('E', d.invert('E'));
         assertEquals('P', d.invert('L'));
         assertEquals('L', d.invert('P'));
@@ -108,31 +109,36 @@ public  class PermutationTest {
     }
     @Test
     public void testPermuteChar() {
-        Permutation d = getNewPermutation("(BACD) (E) (PL)", getNewAlphabet("ABCDEPLG"));
+        Permutation d = getNewPermutation
+                ("(BACD) (E) (PL)", getNewAlphabet("ABCDEPLG"));
         assertEquals(7, d.permute(15));
         assertEquals('E', d.permute('E'));
         assertEquals('L', d.permute('P'));
         assertEquals('P', d.permute('L'));
         assertEquals(4, d.permute(4));
         assertEquals('G', d.permute('G'));
-        Permutation p = getNewPermutation("(BACD)", getNewAlphabet("ABCD"));
+        Permutation p = getNewPermutation
+                ("(BACD)", getNewAlphabet("ABCD"));
         assertEquals('B', p.permute('D'));
         assertEquals('D', p.permute('C'));
         assertEquals('A', p.permute('B'));
         assertEquals('D', p.permute('C'));
-        Permutation c = getNewPermutation("(ABCDEFGHI)(J)", getNewAlphabet("ABCDEFGHIJK"));
+        Permutation c = getNewPermutation
+                ("(ABCDEFGHI)(J)", getNewAlphabet("ABCDEFGHIJK"));
         assertEquals('A', c.permute(c.permute(c.permute('G'))));
         assertEquals('K', c.permute('K'));
 
     }
     @Test(expected = EnigmaException.class)
     public void testNotInAlphabet() {
-        Permutation p = getNewPermutation("(BACD)", getNewAlphabet("ABCD"));
+        Permutation p = getNewPermutation
+                ("(BACD)", getNewAlphabet("ABCD"));
         p.invert('F');
     }
     @Test(expected = EnigmaException.class)
     public void testBadFormattedCycle() {
-        Permutation p = getNewPermutation("()", getNewAlphabet("ABCD"));
+        Permutation p = getNewPermutation
+                ("()", getNewAlphabet("ABCD"));
         p.invert('F');
     }
     @Test

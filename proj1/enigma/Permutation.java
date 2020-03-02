@@ -1,7 +1,4 @@
 package enigma;
-import javax.print.attribute.standard.MediaSize;
-import java.util.ArrayList;
-
 
 /** Represents a permutation of a range of integers starting at 0 corresponding
  *  to the characters of an alphabet.
@@ -21,22 +18,22 @@ class Permutation {
         _invertKey = new String [alphabet.size()];
         for (int i = 0; i < cycles.length(); i++) {
             String current = new String(String.valueOf(cycles.charAt(i)));
-            String next;
+            String next = new String(String.valueOf(cycles.charAt(i + 1)));
             String first;
             String previous;
+            if (next.equals(")") && current.equals("(")) {
+                throw new EnigmaException(("Bad forms of cycles"));
+            }
             if (current.equals("(")) {
                 i++;
                 first = new String(String.valueOf(cycles.charAt(i)));
                 current = new String(String.valueOf(cycles.charAt(i)));
-                int ogindex = alphabet._alphabetString.indexOf(current);
+                int ogindex = alphabet.aString().indexOf(current);
                 next = new String(String.valueOf(cycles.charAt(i + 1)));
                 previous = new String(String.valueOf(cycles.charAt(i - 1)));
-                if (next.equals(")")) {
-                    throw new EnigmaException(("Bad forms of cycles"));
-                }
                 while (!current.equals(")")) {
                     next = new String(String.valueOf(cycles.charAt(i + 1)));
-                    int index = alphabet._alphabetString.indexOf(current);
+                    int index = alphabet.aString().indexOf(current);
                     if (next.equals(")")) {
                         _permKey[index] = first;
                         _invertKey[index] = previous;
@@ -64,15 +61,14 @@ class Permutation {
                 i++;
                 current = new String(String.valueOf(cycle.charAt(i)));
                 while (!current.equals(")")) {
-                    int index = _alphabet._alphabetString.indexOf(current);
+                    int index = _alphabet.aString().indexOf(current);
                     if (index == 0) {
                         _permKey[_permKey.length - 1] = current;
                         _invertKey[index + 1] = current;
                     } else if (index == _alphabet.size() - 1) {
                         _permKey[index - 1] = current;
                         _invertKey[0] = current;
-                    }
-                    else {
+                    } else {
                         _permKey[index - 1] = current;
                         _invertKey[index + 1] = current;
                     }
@@ -101,22 +97,22 @@ class Permutation {
      *  alphabet size. */
     int permute(int p) {
         p = wrap(p);
-        char c = _alphabet._alphabetString.charAt(p);
-        return _alphabet._alphabetString.indexOf((permute(c)));
+        char c = _alphabet.aString().charAt(p);
+        return _alphabet.aString().indexOf((permute(c)));
     }
 
     /** Return the result of applying the inverse of this permutation
      *  to  C modulo the alphabet size. */
     int invert(int c) {
         c = wrap(c);
-        char p = _alphabet._alphabetString.charAt(c);
-        return _alphabet._alphabetString.indexOf((invert(p)));
+        char p = _alphabet.aString().charAt(c);
+        return _alphabet.aString().indexOf((invert(p)));
     }
 
     /** Return the result of applying this permutation to the index of P
      *  in ALPHABET, and converting the result to a character of ALPHABET. */
     char permute(char p) {
-        int index = _alphabet._alphabetString.indexOf(p);
+        int index = _alphabet.aString().indexOf(p);
         if (index == -1) {
             throw new EnigmaException("Character not in alphabet.");
         } else if (_permKey[index] == null) {
@@ -128,7 +124,7 @@ class Permutation {
 
     /** Return the result of applying the inverse of this permutation to C. */
     char invert(char c) {
-        int index = _alphabet._alphabetString.indexOf(c);
+        int index = _alphabet.aString().indexOf(c);
         if (index == -1) {
             throw new EnigmaException("Character not in alphabet.");
         } else if (_invertKey[index] == null) {
@@ -156,7 +152,9 @@ class Permutation {
 
     /** Alphabet of this permutation. */
     private Alphabet _alphabet;
+    /** permutations corresponding to alphabet indices. */
     private String[] _permKey;
+    /** inversions corresponding to alphabet indices. */
     private String[] _invertKey;
 
 }

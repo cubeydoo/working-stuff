@@ -4,9 +4,12 @@ package enigma;
  *  @author Tyler Rathkamp
  */
 class Alphabet {
-    /** a string of the alphabet's characters*/
-    public String _alphabetString;
+    /** a string of the alphabet's characters. */
+    private String _alphabetString;
 
+    String aString() {
+        return _alphabetString;
+    }
     /** A new alphabet containing CHARS.  Character number #k has index
      *  K (numbering from 0). No character may be duplicated. */
     Alphabet(String chars) {
