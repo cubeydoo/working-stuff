@@ -2,14 +2,23 @@ package enigma;
 
 /** An alphabet of encodable characters.  Provides a mapping from characters
  *  to and from indices into the alphabet.
- *  @author
+ *  @author Tyler Rathkamp
  */
 class Alphabet {
+    public String _alphabetString;
 
     /** A new alphabet containing CHARS.  Character number #k has index
      *  K (numbering from 0). No character may be duplicated. */
     Alphabet(String chars) {
-        // FIXME
+        String current = new String("");
+        for (int i = 0; i < chars.length(); i++) {
+            if (current.indexOf(chars.charAt(i)) == -1) {
+                current = current + chars.charAt(i);
+            } else {
+                System.out.println("Duplicate characters in alphabet");
+            }
+        }
+        _alphabetString = current;
     }
 
     /** A default alphabet of all upper-case characters. */
@@ -19,7 +28,7 @@ class Alphabet {
 
     /** Returns the size of the alphabet. */
     int size() {
-        return 26; // FIXME
+        return _alphabetString.length();
     }
 
     /** Returns true if CH is in this alphabet. */
@@ -30,13 +39,13 @@ class Alphabet {
     /** Returns character number INDEX in the alphabet, where
      *  0 <= INDEX < size(). */
     char toChar(int index) {
-        return (char) ('A' + index); // FIXME
+        return _alphabetString.charAt(index);
     }
 
     /** Returns the index of character CH which must be in
      *  the alphabet. This is the inverse of toChar(). */
     int toInt(char ch) {
-        return ch - 'A'; // FIXME
+        return _alphabetString.indexOf(ch);
     }
 
 }

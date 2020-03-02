@@ -1,10 +1,10 @@
 package enigma;
+import java.util.ArrayList;
 
-import static enigma.EnigmaException.*;
 
 /** Represents a permutation of a range of integers starting at 0 corresponding
  *  to the characters of an alphabet.
- *  @author
+ *  @author Tyler Rathkamp
  */
 class Permutation {
 
@@ -15,7 +15,20 @@ class Permutation {
      *  Whitespace is ignored. */
     Permutation(String cycles, Alphabet alphabet) {
         _alphabet = alphabet;
-        // FIXME
+        cycles.replaceAll(" ", "");
+        String[] permKey = new String[alphabet.size()];
+        String[] invertKey = new String [alphabet.size()];
+        for (int i = 0; i < cycles.length(); i++) {
+            String current = new String(String.valueOf(cycles.charAt(i)));
+            if (current.equals("(")) {
+                while (current.equals(")") == false) {
+                    current = new String(String.valueOf(cycles.charAt(i)));
+                    alphabet._alphabetString.indexOf(current);
+
+                }
+
+            }
+        }
     }
 
     /** Add the cycle c0->c1->...->cm->c0 to the permutation, where CYCLE is
@@ -74,6 +87,8 @@ class Permutation {
 
     /** Alphabet of this permutation. */
     private Alphabet _alphabet;
+    private ArrayList _permKey;
+    private ArrayList _invertKey;
 
     // FIXME: ADDITIONAL FIELDS HERE, AS NEEDED
 }
