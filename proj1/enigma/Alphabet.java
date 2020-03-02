@@ -1,5 +1,4 @@
 package enigma;
-
 /** An alphabet of encodable characters.  Provides a mapping from characters
  *  to and from indices into the alphabet.
  *  @author Tyler Rathkamp
@@ -16,6 +15,7 @@ class Alphabet {
                 current = current + chars.charAt(i);
             } else {
                 System.out.println("Duplicate characters in alphabet");
+                throw new EnigmaException("Duplicate characters in alphabet");
             }
         }
         _alphabetString = current;

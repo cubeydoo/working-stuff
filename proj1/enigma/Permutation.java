@@ -1,4 +1,5 @@
 package enigma;
+import javax.print.attribute.standard.MediaSize;
 import java.util.ArrayList;
 
 
@@ -30,6 +31,9 @@ class Permutation {
                 int ogindex = alphabet._alphabetString.indexOf(current);
                 next = new String(String.valueOf(cycles.charAt(i + 1)));
                 previous = new String(String.valueOf(cycles.charAt(i - 1)));
+                if (next.equals(")")) {
+                    throw new EnigmaException(("Bad forms of cycles"));
+                }
                 while (!current.equals(")")) {
                     next = new String(String.valueOf(cycles.charAt(i + 1)));
                     int index = alphabet._alphabetString.indexOf(current);
@@ -113,18 +117,21 @@ class Permutation {
      *  in ALPHABET, and converting the result to a character of ALPHABET. */
     char permute(char p) {
         int index = _alphabet._alphabetString.indexOf(p);
-        String answer = _permKey[index];
-        if (_permKey[index] == null) {
+        if (index == -1) {
+            throw new EnigmaException("Character not in alphabet.");
+        } else if (_permKey[index] == null) {
             return p;
         } else {
-            return answer.charAt(0);
+            return _permKey[index].charAt(0);
         }
     }
 
     /** Return the result of applying the inverse of this permutation to C. */
     char invert(char c) {
         int index = _alphabet._alphabetString.indexOf(c);
-        if (_invertKey[index] == null) {
+        if (index == -1) {
+            throw new EnigmaException("Character not in alphabet.");
+        } else if (_invertKey[index] == null) {
             return c;
         } else {
             return _invertKey[index].charAt(0);
