@@ -108,18 +108,18 @@ public  class PermutationTest {
     }
     @Test
     public void testPermuteChar() {
+        Permutation d = getNewPermutation("(BACD) (E) (PL)", getNewAlphabet("ABCDEPLG"));
+        assertEquals(7, d.permute(15));
+        assertEquals('E', d.permute('E'));
+        assertEquals('L', d.permute('P'));
+        assertEquals('P', d.permute('L'));
+        assertEquals(4, d.permute(4));
+        assertEquals('G', d.permute('G'));
         Permutation p = getNewPermutation("(BACD)", getNewAlphabet("ABCD"));
         assertEquals('B', p.permute('D'));
         assertEquals('D', p.permute('C'));
         assertEquals('A', p.permute('B'));
         assertEquals('D', p.permute('C'));
-        Permutation d = getNewPermutation("(BACD) (E) (PL)", getNewAlphabet("ABCDEPLG"));
-        assertEquals('E', d.permute('E'));
-        assertEquals('L', d.permute('P'));
-        assertEquals('P', d.permute('L'));
-        assertEquals(7, d.permute(15));
-        assertEquals(4, d.permute(4));
-        assertEquals('G', d.permute('G'));
         Permutation c = getNewPermutation("(ABCDEFGHI)(J)", getNewAlphabet("ABCDEFGHIJK"));
         assertEquals('A', c.permute(c.permute(c.permute('G'))));
         assertEquals('K', c.permute('K'));
