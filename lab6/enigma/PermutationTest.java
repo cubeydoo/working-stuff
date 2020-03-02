@@ -130,6 +130,6 @@ public abstract class PermutationTest {
     public void checkPermTest() {
         Alphabet alpha = getNewAlphabet("ABCD");
         Permutation perm = getNewPermutation("(CD)(AB)", alpha);
-        checkPerm("cycle", 'ABCD', 'BADC', perm, alpha);
+        checkPerm("cycle", "ABCD", "BADC", perm, alpha);
     }
 }
