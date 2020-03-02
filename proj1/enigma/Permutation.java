@@ -21,12 +21,24 @@ class Permutation {
         for (int i = 0; i < cycles.length(); i++) {
             String current = new String(String.valueOf(cycles.charAt(i)));
             if (current.equals("(")) {
+                i++;
+                current = new String(String.valueOf(cycles.charAt(i)));
                 while (current.equals(")") == false) {
+                    int index = alphabet._alphabetString.indexOf(current);
+                    if (index == 0) {
+                        permKey[permKey.length - 1] = current;
+                        invertKey[index + 1] = current;
+                    } else if (index == alphabet.size() - 1) {
+                        permKey[index - 1] = current;
+                        invertKey[0] = current;
+                    }
+                    else {
+                        permKey[index - 1] = current;
+                        invertKey[index + 1] = current;
+                    }
+                    i++;
                     current = new String(String.valueOf(cycles.charAt(i)));
-                    alphabet._alphabetString.indexOf(current);
-
                 }
-
             }
         }
     }
