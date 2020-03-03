@@ -73,11 +73,12 @@ class Rotor {
     /** Return the conversion of E (an integer in the range 0..size()-1)
      *  according to the inverse of my permutation. */
     int convertBackward(int e) {
-        e = _permutation.invert((e - setting()) % size());
-        if (e >= setting()) {
-            return e - setting();
+        e = _permutation.invert((e + setting()));
+        int rv = e - setting();
+        if (rv < 0) {
+            return rv + size();
         } else {
-            return (e + size()) - setting();
+            return rv;
         }
     }
 
