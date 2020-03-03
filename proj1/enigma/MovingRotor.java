@@ -18,6 +18,16 @@ class MovingRotor extends Rotor {
     }
 
     // FIXME?
+    @Override
+    boolean atNotch() {
+        char p = permutation().alphabet().aString().charAt(_shift);
+        String position = Character.toString(p);
+        if (_notches.indexOf(p) != -1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     @Override
     void advance() {
