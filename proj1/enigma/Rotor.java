@@ -56,19 +56,29 @@ class Rotor {
 
     /** Set setting() to character CPOSN. */
     void set(char cposn) {
-        // FIXME
+        _shift = _permutation.alphabet().aString().indexOf(cposn);
     }
 
     /** Return the conversion of P (an integer in the range 0..size()-1)
      *  according to my permutation. */
     int convertForward(int p) {
-        return _permutation.permute((p + _shift) % size());
+        p = _permutation.permute((p + setting()));
+        if (p >= setting()) {
+            return p - setting();
+        } else {
+            return (p + size()) - setting();
+        }
     }
 
     /** Return the conversion of E (an integer in the range 0..size()-1)
      *  according to the inverse of my permutation. */
     int convertBackward(int e) {
-        return _permutation.invert((e + _shift) % size());  
+        e = _permutation.invert((e - setting()) % size());
+        if (e >= setting()) {
+            return e - setting();
+        } else {
+            return (e + size()) - setting();
+        }
     }
 
     /** Returns true iff I am positioned to allow the rotor to my left
@@ -94,5 +104,5 @@ class Rotor {
 
     // FIXME: ADDITIONAL FIELDS HERE, AS NEEDED
     /** The current shift in position. */
-    private int _shift = 0;
+    protected int _shift;
 }

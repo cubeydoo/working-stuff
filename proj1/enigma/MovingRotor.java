@@ -3,7 +3,7 @@ package enigma;
 import static enigma.EnigmaException.*;
 
 /** Class that represents a rotating rotor in the enigma machine.
- *  @author
+ *  @author Tyler Rathkamp
  */
 class MovingRotor extends Rotor {
 
@@ -14,16 +14,17 @@ class MovingRotor extends Rotor {
      */
     MovingRotor(String name, Permutation perm, String notches) {
         super(name, perm);
-        // FIXME
     }
 
     // FIXME?
 
     @Override
     void advance() {
-        // FIXME
+        _shift = _shift + 1;
+        if (_shift % size() == 0) {
+            _shift = 0;
+        }
     }
 
     // FIXME: ADDITIONAL FIELDS HERE, AS NEEDED
-
 }
