@@ -14,8 +14,5 @@ class FixedRotor extends Rotor {
     }
 
     // FIXME ?
-    @Override
-    void set(int posn) {
-        _shift = 0;
-    }
+
 }

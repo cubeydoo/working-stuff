@@ -149,7 +149,9 @@ class Permutation {
         }
         return true;
     }
-
+    public String[] get_permKey() {
+        return _permKey;
+    }
     /** Alphabet of this permutation. */
     private Alphabet _alphabet;
     /** permutations corresponding to alphabet indices. */

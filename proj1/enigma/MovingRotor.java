@@ -16,8 +16,11 @@ class MovingRotor extends Rotor {
         super(name, perm);
         _notches = notches;
     }
+    @Override
+    boolean rotates() {
+        return true;
+    }
 
-    // FIXME?
     @Override
     boolean atNotch() {
         char p = permutation().alphabet().aString().charAt(_shift);
@@ -37,6 +40,5 @@ class MovingRotor extends Rotor {
         }
     }
 
-    // FIXME: ADDITIONAL FIELDS HERE, AS NEEDED
     private String _notches;
 }
