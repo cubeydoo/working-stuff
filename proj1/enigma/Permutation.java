@@ -14,23 +14,20 @@ class Permutation {
     Permutation(String cycles, Alphabet alphabet) {
         _alphabet = alphabet;
         cycles.replaceAll(" ", "");
+        if (cycles.length() <= 2) {
+            throw new EnigmaException("incorrect cycles");
+        }
         _permKey = new String[alphabet.size()];
         _invertKey = new String [alphabet.size()];
         for (int i = 0; i < cycles.length(); i++) {
             String current = new String(String.valueOf(cycles.charAt(i)));
-            String next = new String(String.valueOf(cycles.charAt(i + 1)));
-            String first;
-            String previous;
-            if (next.equals(")") && current.equals("(")) {
-                throw new EnigmaException(("Bad forms of cycles"));
-            }
             if (current.equals("(")) {
                 i++;
-                first = new String(String.valueOf(cycles.charAt(i)));
+                String first = new String(String.valueOf(cycles.charAt(i)));
                 current = new String(String.valueOf(cycles.charAt(i)));
                 int ogindex = alphabet.aString().indexOf(current);
-                next = new String(String.valueOf(cycles.charAt(i + 1)));
-                previous = new String(String.valueOf(cycles.charAt(i - 1)));
+                String next = new String(String.valueOf(cycles.charAt(i + 1)));
+                String previous = new String(String.valueOf(cycles.charAt(i - 1)));
                 while (!current.equals(")")) {
                     next = new String(String.valueOf(cycles.charAt(i + 1)));
                     int index = alphabet.aString().indexOf(current);
