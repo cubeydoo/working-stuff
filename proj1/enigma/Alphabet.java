@@ -6,7 +6,7 @@ package enigma;
 class Alphabet {
     /** a string of the alphabet's characters. */
     private String _alphabetString;
-
+/** return the string of the alphabets character. */
     String aString() {
         return _alphabetString;
     }
