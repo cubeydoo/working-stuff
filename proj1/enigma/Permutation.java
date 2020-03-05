@@ -14,7 +14,7 @@ class Permutation {
     Permutation(String cycles, Alphabet alphabet) {
         _alphabet = alphabet;
         cycles.replaceAll(" ", "");
-        if (cycles.length() <= 2) {
+        if (cycles.length() == 2) {
             throw new EnigmaException("incorrect cycles");
         }
         _permKey = new String[alphabet.size()];

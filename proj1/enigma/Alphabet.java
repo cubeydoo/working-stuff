@@ -17,8 +17,7 @@ class Alphabet {
         for (int i = 0; i < chars.length(); i++) {
             if (Character.isWhitespace(chars.charAt(i))) {
                 throw new EnigmaException("Malformed alphabet");
-            }
-            if (current.indexOf(chars.charAt(i)) == -1) {
+            } else if (current.indexOf(chars.charAt(i)) == -1) {
                 current = current + chars.charAt(i);
             } else {
                 throw new EnigmaException("Duplicate characters in alphabet");
