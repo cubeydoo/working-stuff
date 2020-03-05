@@ -142,6 +142,11 @@ public  class PermutationTest {
                 ("()", getNewAlphabet("ABCD"));
         p.invert('F');
     }
+    @Test(expected = EnigmaException.class)
+    public void testWhiteSpace() {
+        Permutation p = getNewPermutation
+                ("(ABC)", getNewAlphabet("A BCD"));
+    }
     @Test
     public void checkPermTest() {
         Alphabet alpha = getNewAlphabet("ABCD");
