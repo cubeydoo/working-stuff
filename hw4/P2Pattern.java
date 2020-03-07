@@ -17,9 +17,9 @@ public class P2Pattern {
     public static String P3 = "^([a-z]|[0-9])(\\.|-)?(([a-z]|[0-9]|[A-Z])+(\\.|-))*([a-z]){2,6}";
 
     /* Pattern to match a valid java variable name. Eg: _child13$ */
-    public static String P4 = ""; //FIXME: Add your regex here
+    public static String P4 = "^([a-z]|_|\\$)([a-z]|[A-Z]|\\$|[0-9]|[_])*";
 
     /* Pattern to match a valid IPv4 address. Eg: 127.0.0.1 */
-    public static String P5 = "";; //FIXME: Add your regex here
+    public static String P5 = "((2[0-5][0-5]|[0-1]?[0-9]?[0-9])(\\.)){3}(2[0-5][0-5]|[0-1]?[0-9]?[0-9])$";;
 
 }
