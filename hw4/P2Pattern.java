@@ -1,7 +1,5 @@
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-/** P2Pattern class
+/** P2Pattern class.
  *  @author Josh Hug & Vivant Sakore
  */
 
