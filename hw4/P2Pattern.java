@@ -7,10 +7,8 @@ import java.util.regex.Pattern;
 
 public class P2Pattern {
     /* Pattern to match a valid date of the form MM/DD/YYYY. Eg: 9/22/2019 */
-    public static String P1 = "([0]?[0-9])|([1][0-2])\\/[0-3]?[0-9]\\/[0-9][0-9][0-9][0-9]";
-
-
-
+    public static String P1 = "(0?[0-9]|1[0-2])/([0-2]?[0-9]|3[0-1])/[0-9][0-9][0-9][0-9]";
+    
 
     /** Pattern to match 61b notation for literal IntLists. */
     public static String P2 = ""; //FIXME: Add your regex here
