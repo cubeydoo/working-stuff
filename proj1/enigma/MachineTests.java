@@ -26,7 +26,9 @@ public class MachineTests {
     private String alpha = UPPER_STRING;
     private String testPlugBoard = "(YF)(ZH)";
     private Alphabet alphaa = new Alphabet(UPPER_STRING);
-    private Permutation Plugboard = new Permutation(testPlugBoard, alphaa);
+    private Permutation Plugboard1 = new Permutation(testPlugBoard, alphaa);
+    private Permutation identity = new Permutation("", alphaa);
+
 
     public ArrayList<Rotor> NAVAL = new ArrayList<Rotor>();
     public ArrayList<Rotor> makeNaval() {
@@ -58,7 +60,7 @@ public class MachineTests {
         NAVAL = makeNaval();
         Machine machine1 = new Machine(alphaa, 5, 3, NAVAL);
         machine1.insertRotors(new String[]{"B", "Beta", "III", "IV", "I"});
-        machine1.setPlugboard(Plugboard);
+        machine1.setPlugboard(Plugboard1);
         machine1.setRotors("AXLE");
         int x = machine1.convert(24);
         assertEquals(x, 25);
@@ -66,11 +68,12 @@ public class MachineTests {
     @Test
     public void MachineTest2() {
         NAVAL = makeNaval();
-        Machine machine1 = new Machine(alphaa, 4, 3, NAVAL);
-        machine1.insertRotors(new String[]{"B", "III", "II", "I"});
-        machine1.setPlugboard(Plugboard);
-        int x = machine1.convert(24);
-        assertEquals(x, 4);
+        Machine machine1 = new Machine(alphaa, 5, 4, NAVAL);
+        machine1.insertRotors(new String[]{"B", "Beta", "I", "II", "III"});
+        machine1.setPlugboard(identity);
+        machine1.setRotors("AAAA");
+        String check = machine1.convert("HELLO WORLD");
+        System.out.println(check);
     }
 
 }

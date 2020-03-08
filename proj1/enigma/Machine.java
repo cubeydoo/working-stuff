@@ -119,9 +119,13 @@ class Machine {
         int index = msg.length() - 1;
         for (int i = 0; i <= index; i++) {
             char c = msg.charAt(i);
-            int x = _alphabet.aString().indexOf(c);
-            c = _alphabet.aString().charAt(convert(c));
-            returnme += c;
+            if (Character.isWhitespace(c)) {
+                returnme += " ";
+            } else {
+                int x = _alphabet.aString().indexOf(c);
+                c = _alphabet.aString().charAt(convert(x));
+                returnme += c;
+            }
         }
         return returnme;
     }
