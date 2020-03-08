@@ -40,7 +40,16 @@ class Machine {
      *  Initially, all rotors are set at their 0 setting. */
     void insertRotors(String[] rotors) {
         for (int i = 0; i < rotors.length; i++) {
-            _rotors.add(_allRotors.get(Integer.parseInt(rotors[i])));
+            String name = rotors[i];
+            for (int x = 0; x < _allRotors.size(); x++) {
+                Rotor current = _allRotors.get(x);
+                if (name.equals(current.name())) {
+                    _rotors.add(current);
+                }
+            }
+        }
+        if (!_rotors.get(0).reflecting()) {
+            throw new EnigmaException("Leftmost Rotor must be a reflector.");
         }
     }
 
@@ -76,21 +85,24 @@ class Machine {
      *  index in the range 0..alphabet size - 1), after first advancing
      *  the machine. */
     int convert(int c) {
-        c = _permutation.permute(c);
-        int current = _rotors.size() - 1;
-        int counter = _rotors.size() - 1;
-        Rotor p = _rotors.get(current);
-        p.advance();
-        while (p.atNotch() && current >= 0) {
-            current -= 1;
-            p = _rotors.get(current);
+        if (_pawls > 0) {
+            c = _permutation.permute(c);
+            int current = _rotors.size() - 1;
+            Rotor p = _rotors.get(current);
             p.advance();
+            while (p.atNotch() && current >= 0) {
+                current -= 1;
+                p = _rotors.get(current);
+                p.advance();
+            }
         }
+        int counter = _rotors.size() - 1;
         while (counter >= 0) {
             Rotor pointer = _rotors.get(counter);
             c = pointer.convertForward(c);
             counter -= 1;
         }
+        counter = 1;
         while (counter <= _rotors.size() - 1) {
             Rotor pointer = _rotors.get(counter);
             c = pointer.convertBackward(c);
