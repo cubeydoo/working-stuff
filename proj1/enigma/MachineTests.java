@@ -1,5 +1,6 @@
 package enigma;
 
+import net.sf.saxon.lib.SaxonOutputKeys;
 import org.junit.Test;
 import org.junit.Rule;
 import org.junit.rules.Timeout;
@@ -23,7 +24,7 @@ public class MachineTests {
 
     private Rotor rotor;
     private String alpha = UPPER_STRING;
-    private String testPlugBoard = "(AB)(CD)(EF)(GH)(IJ)(KL)(MN)(OP)(QR)(ST)(UV)(WX)(YZ)";
+    private String testPlugBoard = "(YF)(ZH)";
     private Alphabet alphaa = new Alphabet(UPPER_STRING);
     private Permutation Plugboard = new Permutation(testPlugBoard, alphaa);
 
@@ -56,8 +57,11 @@ public class MachineTests {
     public void MachineTest1() {
         NAVAL = makeNaval();
         Machine machine1 = new Machine(alphaa, 5, 3, NAVAL);
-        System.out.println("?????");
-
+        machine1.insertRotors(new String[]{"B", "Beta", "III", "IV", "I"});
+        machine1.setPlugboard(Plugboard);
+        machine1.setRotors("AXLE");
+        int x = machine1.convert(24);
+        AssertEquals(x, 25);
     }
 
 

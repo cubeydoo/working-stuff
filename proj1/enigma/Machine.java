@@ -130,7 +130,7 @@ class Machine {
     private final Alphabet _alphabet;
     private int _numRotors;
     private int _pawls;
-    private Permutation _permutation;
+    private Permutation _permutation = new Permutation("", new Alphabet());
     private ArrayList<Rotor> _allRotors;
-    private ArrayList<Rotor> _rotors;
+    private ArrayList<Rotor> _rotors = new ArrayList<>();
 }

@@ -77,16 +77,27 @@ public final class Main {
      *  file _config and apply it to the messages in _input, sending the
      *  results to _output. */
     private void process() {
-        // FIXME
+        //FIXME
     }
 
     /** Return an Enigma machine configured from the contents of configuration
      *  file _config. */
     private Machine readConfig() {
         try {
-            // FIXME
-            _alphabet = new Alphabet();
-            return new Machine(_alphabet, 2, 1, null);
+            ArrayList<Rotor> _rotors = new ArrayList<>();
+            _alphabet =  new Alphabet(_config.next());
+            _config.nextLine();
+            int numRotors = _config.nextInt();
+            int numPawls = _config.nextInt();
+            while (_config.hasNextLine()) {
+                _config.nextLine();
+                String name = _config.next();
+                String settings = _config.next();
+                if (settings.length() == 3) {
+
+                }
+            }
+            return new Machine(_alphabet, numRotors, numPawls, null);
         } catch (NoSuchElementException excp) {
             throw error("configuration file truncated");
         }
