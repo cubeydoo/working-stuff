@@ -73,7 +73,7 @@ public class MachineTests {
         machine1.setPlugboard(identity);
         machine1.setRotors("AAAA");
         String check = machine1.convert("HELLO WORLD");
-        System.out.println(check);
+        assertTrue(check.equals("ILBDA AMTAZ"));
     }
 
 }

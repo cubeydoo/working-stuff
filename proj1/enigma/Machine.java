@@ -116,8 +116,7 @@ class Machine {
      *  the rotors accordingly. */
     String convert(String msg) {
         String returnme = "";
-        int index = msg.length() - 1;
-        for (int i = 0; i <= index; i++) {
+        for (int i = 0; i <=  msg.length() - 1; i++) {
             char c = msg.charAt(i);
             if (Character.isWhitespace(c)) {
                 returnme += " ";
