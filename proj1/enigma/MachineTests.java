@@ -78,13 +78,36 @@ public class MachineTests {
     @Test
     public void MachineTest3() {
         NAVAL = makeNaval();
-        Machine machine1 = new Machine(alphaa, 5, 4, NAVAL);
+        Machine machine1 = new Machine(alphaa, 5, 3, NAVAL);
         machine1.insertRotors(new String[]{"B", "Beta", "III", "II", "I"});
         machine1.setPlugboard(identity);
         machine1.setRotors("AAAZ");
         String check = machine1.convert("AAAAA AAAAA AAAAA AAAAA AAAAA AAA");
         System.out.println(check);
         assertTrue(check.equals("NFTZM GISXI PJWGD NJJCO QTYRI GDM"));
+    }
+    @Test
+    public void MachineTest4() {
+        NAVAL = makeNaval();
+        Machine machine1 = new Machine(alphaa, 5, 3, NAVAL);
+        machine1.insertRotors(new String[]{"B", "Beta", "III", "I", "II"});
+        machine1.setPlugboard(identity);
+        machine1.setRotors("AAAZ");
+        String check = machine1.convert("AAAAA AAAAA AAAAA AAAAA AAAAA AAA");
+        System.out.println(check);
+        assertTrue(check.equals("JCNBE GNHEJ ZLEKN SCFKB KNWHS PBK"));
+    }
+
+    @Test
+    public void MachineTest5() {
+        NAVAL = makeNaval();
+        Machine machine1 = new Machine(alphaa, 5, 3, NAVAL);
+        machine1.insertRotors(new String[]{"B", "Beta", "III", "I", "II"});
+        machine1.setPlugboard(identity);
+        machine1.setRotors("AAAZ");
+        String check = machine1.convert("EJ");
+        System.out.println(check);
+        assertTrue(check.equals("CD"));
     }
 
 }

@@ -86,8 +86,8 @@ class Machine {
      *  index in the range 0..alphabet size - 1), after first advancing
      *  the machine. */
     int convert(int c) {
+        c = _permutation.permute(c);
         if (_pawls > 0) {
-            c = _permutation.permute(c);
             int current = _rotors.size() - 1;
             Rotor p = _rotors.get(current);
             p.advance();
@@ -122,7 +122,8 @@ class Machine {
                 returnme += " ";
             } else {
                 int x = _alphabet.aString().indexOf(c);
-                c = _alphabet.aString().charAt(convert(x));
+                x = convert(x);
+                c = _alphabet.aString().charAt(x);
                 returnme += c;
             }
         }
