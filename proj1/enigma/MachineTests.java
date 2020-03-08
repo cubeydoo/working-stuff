@@ -75,5 +75,16 @@ public class MachineTests {
         String check = machine1.convert("HELLO WORLD");
         assertTrue(check.equals("ILBDA AMTAZ"));
     }
+    @Test
+    public void MachineTest3() {
+        NAVAL = makeNaval();
+        Machine machine1 = new Machine(alphaa, 5, 4, NAVAL);
+        machine1.insertRotors(new String[]{"B", "Beta", "III", "II", "I"});
+        machine1.setPlugboard(identity);
+        machine1.setRotors("AAAZ");
+        String check = machine1.convert("AAAAA AAAAA AAAAA AAAAA AAAAA AAA");
+        System.out.println(check);
+        assertTrue(check.equals("NFTZM GISXI PJWGD NJJCO QTYRI GDM"));
+    }
 
 }
