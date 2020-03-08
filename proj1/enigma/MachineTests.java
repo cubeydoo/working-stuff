@@ -29,20 +29,20 @@ public class MachineTests {
 
     public ArrayList<Rotor> NAVAL = new ArrayList<Rotor>();
     public ArrayList<Rotor> makeNaval() {
-        NAVAL.add(new Rotor("I", new Permutation("(AELTPHQXRU) (BKNW) (CMOY) (DFG) (IV) (JZ) (S)", UPPER)));
-        NAVAL.add(new Rotor("II", new Permutation("(FIXVYOMW) (CDKLHUP) (ESZ) (BJ) (GR) (NT) (A) (Q)", UPPER)));
-        NAVAL.add(new Rotor("III",new Permutation( "(ABDHPEJT) (CFLVMZOYQIRWUKXSG) (N)", UPPER)));
-        NAVAL.add(new Rotor("IV", new Permutation("(AEPLIYWCOXMRFZBSTGJQNH) (DV) (KU)", UPPER)));
-        NAVAL.add(new Rotor("V", new Permutation("(AVOLDRWFIUQ)(BZKSMNHYC) (EGTJPX)", UPPER)));
-        NAVAL.add(new Rotor("VI", new Permutation("(AJQDVLEOZWIYTS) (CGMNHFUX) (BPRK) ", UPPER)));
-        NAVAL.add(new Rotor("VII", new Permutation("(ANOUPFRIMBZTLWKSVEGCJYDHXQ) ", UPPER)));
-        NAVAL.add(new Rotor("VIII",new Permutation( "(AFLSETWUNDHOZVICQ) (BKJ) (GXY) (MPR)", UPPER)));
-        NAVAL.add(new Rotor("Beta", new Permutation( "(ALBEVFCYODJWUGNMQTZSKPR) (HIX)", UPPER)));
-        NAVAL.add(new Rotor("Gamma", new Permutation( "(AFNIRLBSQWVXGUZDKMTPCOYJHE)", UPPER)));
-        NAVAL.add(new Rotor("B", new Permutation(
+        NAVAL.add(new MovingRotor("I", new Permutation("(AELTPHQXRU) (BKNW) (CMOY) (DFG) (IV) (JZ) (S)", UPPER), "Q"));
+        NAVAL.add(new MovingRotor("II", new Permutation("(FIXVYOMW) (CDKLHUP) (ESZ) (BJ) (GR) (NT) (A) (Q)", UPPER), "E"));
+        NAVAL.add(new MovingRotor("III",new Permutation( "(ABDHPEJT) (CFLVMZOYQIRWUKXSG) (N)", UPPER), "V"));
+        NAVAL.add(new MovingRotor("IV", new Permutation("(AEPLIYWCOXMRFZBSTGJQNH) (DV) (KU)", UPPER), "J"));
+        NAVAL.add(new MovingRotor("V", new Permutation("(AVOLDRWFIUQ)(BZKSMNHYC) (EGTJPX)", UPPER), "Z"));
+        NAVAL.add(new MovingRotor("VI", new Permutation("(AJQDVLEOZWIYTS) (CGMNHFUX) (BPRK) ", UPPER), "ZM"));
+        NAVAL.add(new MovingRotor("VII", new Permutation("(ANOUPFRIMBZTLWKSVEGCJYDHXQ) ", UPPER), "ZM"));
+        NAVAL.add(new MovingRotor("VIII",new Permutation( "(AFLSETWUNDHOZVICQ) (BKJ) (GXY) (MPR)", UPPER), "ZM"));
+        NAVAL.add(new FixedRotor("Beta", new Permutation( "(ALBEVFCYODJWUGNMQTZSKPR) (HIX)", UPPER)));
+        NAVAL.add(new FixedRotor("Gamma", new Permutation( "(AFNIRLBSQWVXGUZDKMTPCOYJHE)", UPPER)));
+        NAVAL.add(new Reflector("B", new Permutation(
                 "(AE) (BN) (CK) (DQ) (FU) (GY) (HW) (IJ) (LO) "
                         + "(MP) (RX) (SZ) (TV)", UPPER)));
-        NAVAL.add(new Rotor("C", new Permutation(
+        NAVAL.add(new Reflector("C", new Permutation(
                 "(AR) (BD) (CO) (EJ) (FN) (GT) (HK) (IV) (LM) "
                         + "(PW) (QZ) (SX) (UY)", UPPER)));
 
