@@ -61,7 +61,7 @@ public class MachineTests {
         machine1.setPlugboard(Plugboard);
         machine1.setRotors("AXLE");
         int x = machine1.convert(24);
-        AssertEquals(x, 25);
+        assertEquals(x, 25);
     }
 
 
