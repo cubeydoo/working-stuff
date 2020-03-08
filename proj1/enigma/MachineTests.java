@@ -109,5 +109,28 @@ public class MachineTests {
         System.out.println(check);
         assertTrue(check.equals("CD"));
     }
+    @Test
+    public void MachineTest6() {
+        NAVAL = makeNaval();
+        Machine machine1 = new Machine(alphaa, 5, 3, NAVAL);
+        machine1.insertRotors(new String[]{"B", "Beta", "III", "II", "I"});
+        machine1.setPlugboard(identity);
+        machine1.setRotors("AAAZ");
+        String check = machine1.convert("NFTZM GISXI PJWGD NJJCO QTYRI GDM");
+        System.out.println(check);
+        assertTrue(check.equals("AAAAA AAAAA AAAAA AAAAA AAAAA AAA"));
+    }
+
+    @Test
+    public void MachineTest7() {
+        NAVAL = makeNaval();
+        Machine machine1 = new Machine(alphaa, 5, 3, NAVAL);
+        machine1.insertRotors(new String[]{"B", "Beta", "III", "II", "I"});
+        machine1.setPlugboard(identity);
+        machine1.setRotors("AAAP");
+        String check = machine1.convert("J");
+        System.out.println(check);
+        assertTrue(check.equals("A"));
+    }
 
 }
