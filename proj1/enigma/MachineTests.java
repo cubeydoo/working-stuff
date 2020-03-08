@@ -63,6 +63,14 @@ public class MachineTests {
         int x = machine1.convert(24);
         assertEquals(x, 25);
     }
-
+    @Test
+    public void MachineTest2() {
+        NAVAL = makeNaval();
+        Machine machine1 = new Machine(alphaa, 4, 3, NAVAL);
+        machine1.insertRotors(new String[]{"B", "III", "II", "I"});
+        machine1.setPlugboard(Plugboard);
+        int x = machine1.convert(24);
+        assertEquals(x, 4);
+    }
 
 }
