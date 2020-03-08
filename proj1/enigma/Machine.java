@@ -45,6 +45,7 @@ class Machine {
                 Rotor current = _allRotors.get(x);
                 if (name.equals(current.name())) {
                     _rotors.add(current);
+                    break;
                 }
             }
         }

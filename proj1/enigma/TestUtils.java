@@ -1,5 +1,6 @@
 package enigma;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /** Utility definitions for use in unit tests.
@@ -38,6 +39,7 @@ class TestUtils {
                   "(AR) (BD) (CO) (EJ) (FN) (GT) (HK) (IV) (LM) "
                   + "(PW) (QZ) (SX) (UY)");
     }
+
 
     /** The mapping of the upper-case alphabet by NAVALA. */
     static final HashMap<String, String> NAVALA_MAP = new HashMap<>();
