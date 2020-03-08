@@ -16,10 +16,13 @@ class Machine {
      *  available rotors. */
     Machine(Alphabet alpha, int numRotors, int pawls,
             Collection<Rotor> allRotors) {
+        if (numRotors <= 1 || 0 > pawls || pawls > numRotors) {
+            throw new EnigmaException("Bad arguments for a machine");
+        }
         _alphabet = alpha;
         _numRotors = numRotors;
         _pawls = pawls;
-        _allRotors = allRotors;
+        _allRotors = (ArrayList<Rotor>) allRotors;
     }
 
     /** Return the number of rotor slots I have. */
@@ -36,7 +39,9 @@ class Machine {
      *  available rotors (ROTORS[0] names the reflector).
      *  Initially, all rotors are set at their 0 setting. */
     void insertRotors(String[] rotors) {
-        // FIXME
+        for (int i = 0; i < rotors.length; i++) {
+            _rotors.add(_allRotors.get(Integer.parseInt(rotors[i])));
+        }
     }
 
     /** Set my rotors according to SETTING, which must be a string of
@@ -46,8 +51,12 @@ class Machine {
         if (setting.length() != numRotors() - 1) {
             throw new EnigmaException("Setting must include each rotor.");
         } else {
+            int x = 0;
             for (int i = 0; i < numRotors(); i++) {
-                _rotors.get(i).set(setting.charAt(i));
+                if (!_rotors.get(i).reflecting()) {
+                    _rotors.get(i).set(setting.charAt(x));
+                    x++;
+                }
             }
         }
     }
@@ -57,7 +66,7 @@ class Machine {
         for (int i = 0; i < plugboard.size(); i++) {
             if (plugboard.permute(plugboard.permute(i)) != i) {
                 throw new EnigmaException
-                        ("Plugboard must map each character to one other and vice versa.");
+                        ("Plug board must map each character to one other and vice versa.");
             }
         }
         _permutation = plugboard;
@@ -67,13 +76,41 @@ class Machine {
      *  index in the range 0..alphabet size - 1), after first advancing
      *  the machine. */
     int convert(int c) {
-        return 0; // FIXME
+        c = _permutation.permute(c);
+        int current = _rotors.size() - 1;
+        int counter = _rotors.size() - 1;
+        Rotor p = _rotors.get(current);
+        p.advance();
+        while (p.atNotch() && current >= 0) {
+            current -= 1;
+            p = _rotors.get(current);
+            p.advance();
+        }
+        while (counter >= 0) {
+            Rotor pointer = _rotors.get(counter);
+            c = pointer.convertForward(c);
+            counter -= 1;
+        }
+        while (counter <= _rotors.size() - 1) {
+            Rotor pointer = _rotors.get(counter);
+            c = pointer.convertBackward(c);
+            counter += 1;
+        }
+        return _permutation.permute(c);
     }
 
     /** Returns the encoding/decoding of MSG, updating the state of
      *  the rotors accordingly. */
     String convert(String msg) {
-        return ""; // FIXME
+        String returnme = "";
+        int index = msg.length() - 1;
+        for (int i = 0; i <= index; i++) {
+            char c = msg.charAt(i);
+            int x = _alphabet.aString().indexOf(c);
+            c = _alphabet.aString().charAt(convert(c));
+            returnme += c;
+        }
+        return returnme;
     }
 
     /** Common alphabet of my rotors. */
@@ -81,6 +118,6 @@ class Machine {
     private int _numRotors;
     private int _pawls;
     private Permutation _permutation;
-    private Collection<Rotor> _allRotors;
+    private ArrayList<Rotor> _allRotors;
     private ArrayList<Rotor> _rotors;
 }
