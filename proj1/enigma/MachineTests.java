@@ -44,7 +44,7 @@ public class MachineTests {
                         + "(MP) (RX) (SZ) (TV)", UPPER)));
         NAVAL.add(new Rotor("C", new Permutation(
                 "(AR) (BD) (CO) (EJ) (FN) (GT) (HK) (IV) (LM) "
-                        + "(PW) (QZ) (SX) (UY)"UPPER)));
+                        + "(PW) (QZ) (SX) (UY)", UPPER)));
 
         return NAVAL;
     }
@@ -56,6 +56,7 @@ public class MachineTests {
     public void MachineTest1() {
         NAVAL = makeNaval();
         Machine machine1 = new Machine(alphaa, 5, 3, NAVAL);
+        System.out.println("?????");
 
     }
 
