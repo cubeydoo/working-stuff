@@ -183,7 +183,9 @@ public final class Main {
                 printMe += msg.charAt(index);
                 index += 1;
             }
-            printMe += " ";
+            if (i != groupsOfFive - 1) {
+                printMe += " ";
+            }
         }
         for (int p = index; p < msg.length(); p++) {
             printMe += msg.charAt(p);
