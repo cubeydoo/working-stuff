@@ -1,7 +1,6 @@
 package enigma;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Collection;
 
 import static enigma.EnigmaException.*;
@@ -80,8 +79,8 @@ class Machine {
     void setPlugboard(Permutation plugboard) {
         for (int i = 0; i < plugboard.size(); i++) {
             if (plugboard.permute(plugboard.permute(i)) != i) {
-                throw new EnigmaException
-                        ("Plug board must map each character to one other and vice versa.");
+                throw new EnigmaException(
+                        "Plug board be a derangement.");
             }
         }
         _permutation = plugboard;
@@ -139,9 +138,14 @@ class Machine {
 
     /** Common alphabet of my rotors. */
     private final Alphabet _alphabet;
+    /** Number of my rotors. */
     private int _numRotors;
+    /**Moving rotor number. */
     private int _pawls;
+    /** Plug board for this machine. */
     private Permutation _permutation = new Permutation("", new Alphabet());
+    /** All rotors available. */
     private ArrayList<Rotor> _allRotors;
+    /** Rotors in my machine. */
     private ArrayList<Rotor> _rotors = new ArrayList<>();
 }

@@ -1,8 +1,6 @@
 package enigma;
 
-import org.junit.Test;
 
-import javax.print.attribute.standard.MediaSize;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -125,15 +123,20 @@ public final class Main {
                 }
             }
             String cycles = "";
-            while (_config.hasNext(Pattern.compile("(\\([A-Z]*[0-9]*\\) *\\n* *)+"))) {
-                cycles += _config.next(Pattern.compile("(\\([A-Z]*[0-9]*\\) *\\n* *)+"));
+            while (_config.hasNext
+                    (Pattern.compile("(\\([A-Z]*[0-9]*\\) *\\n* *)+"))) {
+                cycles += _config.next
+                        (Pattern.compile("(\\([A-Z]*[0-9]*\\) *\\n* *)+"));
             }
             if (settings.charAt(0) == 'M') {
-                _rotors.add(new MovingRotor(name, new Permutation(cycles, _alphabet), notches));
+                _rotors.add(new MovingRotor(
+                        name, new Permutation(cycles, _alphabet), notches));
             } else if (settings.charAt(0) == 'N') {
-                _rotors.add(new FixedRotor(name, new Permutation(cycles, _alphabet)));
+                _rotors.add(new FixedRotor(
+                        name, new Permutation(cycles, _alphabet)));
             } else if (settings.charAt(0) == 'R') {
-                _rotors.add(new Reflector(name, new Permutation(cycles, _alphabet)));
+                _rotors.add(new Reflector(
+                        name, new Permutation(cycles, _alphabet)));
             }
         } catch (NoSuchElementException excp) {
             throw error("bad rotor description");
@@ -154,8 +157,10 @@ public final class Main {
         M.setRotors(setup.next());
         if (setup.hasNext("(\\\\([A-Z]+\\\\) *\\\\n* *)+")) {
             String cycles = "";
-            while (_config.hasNext(Pattern.compile("(\\([A-Z]+\\) *\\n* *)+"))) {
-                cycles += _config.next(Pattern.compile("(\\([A-Z]+\\) *\\n* *)+"));
+            while (_config.hasNext(
+                    Pattern.compile("(\\([A-Z]+\\) *\\n* *)+"))) {
+                cycles += _config.next(
+                        Pattern.compile("(\\([A-Z]+\\) *\\n* *)+"));
             }
             M.setPlugboard(new Permutation(cycles, M.alphabetGet()));
         }
@@ -165,7 +170,7 @@ public final class Main {
      *  have fewer letters). */
     private void printMessageLine(String msg) {
         msg = msg.replace(" ", "");
-        int groupsOfFive = msg.length()/5;
+        int groupsOfFive = msg.length() / 5;
         int index = 0;
         String printMe = "";
         for (int i = 0; i < groupsOfFive; i++) {
