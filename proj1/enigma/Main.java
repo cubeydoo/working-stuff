@@ -125,8 +125,8 @@ public final class Main {
                 }
             }
             String cycles = "";
-            while (_config.hasNext(Pattern.compile("(\\([A-Z]+\\) *\\n* *)+"))) {
-                cycles += _config.next(Pattern.compile("(\\([A-Z]+\\) *\\n* *)+"));
+            while (_config.hasNext(Pattern.compile("(\\([A-Z]*[0-9]*\\) *\\n* *)+"))) {
+                cycles += _config.next(Pattern.compile("(\\([A-Z]*[0-9]*\\) *\\n* *)+"));
             }
             if (settings.charAt(0) == 'M') {
                 _rotors.add(new MovingRotor(name, new Permutation(cycles, _alphabet), notches));
