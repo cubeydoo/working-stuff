@@ -80,6 +80,9 @@ public final class Main {
      *  results to _output. */
     private void process() {
         Machine machine1 = readConfig();
+        if (!_input.hasNext(Pattern.compile("\\*"))) {
+            throw new EnigmaException("Must have a setting.");
+        }
         while (_input.hasNext()) {
             if (_input.hasNext(Pattern.compile("\\*"))) {
                 String next = _input.nextLine();

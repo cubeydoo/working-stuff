@@ -47,9 +47,11 @@ class Machine {
             String name = rotors.get(i);
             for (int x = 0; x < _allRotors.size(); x++) {
                 Rotor current = _allRotors.get(x);
-                if (name.equals(current.name())) {
+                if (name.equals(current.name()) && !_rotors.contains(current)) {
                     _rotors.add(current);
                     break;
+                } else if (x == _allRotors.size() - 1) {
+                    throw new EnigmaException("Rotor name not in library.");
                 }
             }
         }
