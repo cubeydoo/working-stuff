@@ -90,7 +90,7 @@ public final class Main {
             int numPawls = _config.nextInt();
             _config.nextLine();
             while (_config.hasNext()) {
-                _rotors.add(readRotor());
+                readRotor();
             }
             return new Machine(_alphabet, numRotors, numPawls, _rotors);
         } catch (NoSuchElementException excp) {
