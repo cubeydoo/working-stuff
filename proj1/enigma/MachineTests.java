@@ -7,6 +7,7 @@ import org.junit.rules.Timeout;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import static enigma.TestUtils.*;
@@ -59,7 +60,7 @@ public class MachineTests {
     public void MachineTest1() {
         NAVAL = makeNaval();
         Machine machine1 = new Machine(alphaa, 5, 3, NAVAL);
-        machine1.insertRotors(new String[]{"B", "Beta", "III", "IV", "I"});
+        machine1.insertRotors(new ArrayList<String>(Arrays.asList(new String[]{"B", "Beta", "III", "IV", "I"})));
         machine1.setPlugboard(Plugboard1);
         machine1.setRotors("AXLE");
         int x = machine1.convert(24);
@@ -69,7 +70,7 @@ public class MachineTests {
     public void MachineTest2() {
         NAVAL = makeNaval();
         Machine machine1 = new Machine(alphaa, 5, 4, NAVAL);
-        machine1.insertRotors(new String[]{"B", "Beta", "I", "II", "III"});
+        machine1.insertRotors(new ArrayList<String>(Arrays.asList(new String[]{"B", "Beta", "I", "II", "III"})));
         machine1.setPlugboard(identity);
         machine1.setRotors("AAAA");
         String check = machine1.convert("HELLO WORLD");
@@ -79,7 +80,7 @@ public class MachineTests {
     public void MachineTest3() {
         NAVAL = makeNaval();
         Machine machine1 = new Machine(alphaa, 5, 3, NAVAL);
-        machine1.insertRotors(new String[]{"B", "Beta", "III", "II", "I"});
+        machine1.insertRotors(new ArrayList<String>(Arrays.asList(new String[]{"B", "Beta", "III", "II", "I"})));
         machine1.setPlugboard(identity);
         machine1.setRotors("AAAZ");
         String check = machine1.convert("AAAAA AAAAA AAAAA AAAAA AAAAA AAA");
@@ -90,7 +91,7 @@ public class MachineTests {
     public void MachineTest4() {
         NAVAL = makeNaval();
         Machine machine1 = new Machine(alphaa, 5, 3, NAVAL);
-        machine1.insertRotors(new String[]{"B", "Beta", "III", "I", "II"});
+        machine1.insertRotors(new ArrayList<String>(Arrays.asList(new String[]{"B", "Beta", "III", "I", "II"})));
         machine1.setPlugboard(identity);
         machine1.setRotors("AAAZ");
         String check = machine1.convert("AAAAA AAAAA AAAAA AAAAA AAAAA AAA");
@@ -102,7 +103,7 @@ public class MachineTests {
     public void MachineTest5() {
         NAVAL = makeNaval();
         Machine machine1 = new Machine(alphaa, 5, 3, NAVAL);
-        machine1.insertRotors(new String[]{"B", "Beta", "III", "I", "II"});
+        machine1.insertRotors(new ArrayList<String>(Arrays.asList(new String[]{"B", "Beta", "III", "I", "II"})));
         machine1.setPlugboard(identity);
         machine1.setRotors("AAAZ");
         String check = machine1.convert("EJ");
@@ -113,7 +114,7 @@ public class MachineTests {
     public void MachineTest6() {
         NAVAL = makeNaval();
         Machine machine1 = new Machine(alphaa, 5, 3, NAVAL);
-        machine1.insertRotors(new String[]{"B", "Beta", "III", "II", "I"});
+        machine1.insertRotors(new ArrayList<String>(Arrays.asList(new String[]{"B", "Beta", "III", "II", "I"})));
         machine1.setPlugboard(identity);
         machine1.setRotors("AAAZ");
         String check = machine1.convert("NFTZM GISXI PJWGD NJJCO QTYRI GDM");
@@ -125,7 +126,7 @@ public class MachineTests {
     public void MachineTest7() {
         NAVAL = makeNaval();
         Machine machine1 = new Machine(alphaa, 5, 3, NAVAL);
-        machine1.insertRotors(new String[]{"B", "Beta", "III", "II", "I"});
+        machine1.insertRotors(new ArrayList<String>(Arrays.asList(new String[]{"B", "Beta", "III", "II", "I"})));
         machine1.setPlugboard(identity);
         machine1.setRotors("AAAP");
         String check = machine1.convert("J");

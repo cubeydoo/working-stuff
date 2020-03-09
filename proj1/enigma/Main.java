@@ -2,6 +2,7 @@ package enigma;
 
 import org.junit.Test;
 
+import javax.print.attribute.standard.MediaSize;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -126,7 +127,22 @@ public final class Main {
     /** Set M according to the specification given on SETTINGS,
      *  which must have the format specified in the assignment. */
     private void setUp(Machine M, String settings) {
-        // FIXME
+        Scanner setup = new Scanner(settings);
+        ArrayList<String> rotors = new ArrayList<>();
+        if (!setup.hasNext(Pattern.compile("\\*"))) {
+            throw new EnigmaException("Settings string doesn't start with *");
+        }
+        setup.next();
+        for (int i = 0; i < M.numRotors(); i++) {
+            rotors.add(setup.next());
+        }
+        M.insertRotors(rotors);
+        M.setRotors(setup.next());
+        if (!setup.hasNext("(\\\\([A-Z]+\\\\) *\\\\n* *)+")) {
+            throw new EnigmaException("Plug board not present.");
+        }
+        String cycles = setup.next(Pattern.compile("(\\([A-Z]+\\) *\\n* *)+"));
+        M.setPlugboard(new Permutation(cycles, M.alphabetGet()));
     }
 
     /** Print MSG in groups of five (except that the last group may
@@ -145,7 +161,7 @@ public final class Main {
         for (int p = index; p < msg.length() - 1; p++) {
             printMe += msg.charAt(p);
         }
-        System.out.println(printMe);
+        _output.println(printMe);
     }
 
     /** Alphabet used in this machine. */

@@ -29,6 +29,10 @@ class Machine {
     int numRotors() {
         return _numRotors;
     }
+    /** Return my alphabet. */
+    Alphabet alphabetGet() {
+        return _alphabet;
+    }
 
     /** Return the number pawls (and thus rotating rotors) I have. */
     int numPawls() {
@@ -38,9 +42,9 @@ class Machine {
     /** Set my rotor slots to the rotors named ROTORS from my set of
      *  available rotors (ROTORS[0] names the reflector).
      *  Initially, all rotors are set at their 0 setting. */
-    void insertRotors(String[] rotors) {
-        for (int i = 0; i < rotors.length; i++) {
-            String name = rotors[i];
+    void insertRotors(ArrayList<String> rotors) {
+        for (int i = 0; i < rotors.size(); i++) {
+            String name = rotors.get(i);
             for (int x = 0; x < _allRotors.size(); x++) {
                 Rotor current = _allRotors.get(x);
                 if (name.equals(current.name())) {
