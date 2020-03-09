@@ -84,7 +84,12 @@ public final class Main {
         Machine machine1 = readConfig();
         while (_input.hasNext()) {
             if (_input.hasNext(Pattern.compile("\\*"))) {
-                setUp(machine1, _input.nextLine());
+                String next = _input.nextLine();
+                if (next.equals("")) {
+                    printMessageLine("");
+                } else {
+                    setUp(machine1, next);
+                }
             } else {
                 String message = machine1.convert(_input.nextLine());
                 printMessageLine(message);
@@ -141,9 +146,6 @@ public final class Main {
         Scanner setup = new Scanner(settings);
         ArrayList<String> rotors = new ArrayList<>();
         rotors.clear();
-        if (!setup.hasNext(Pattern.compile("\\*"))) {
-            throw new EnigmaException("Settings string doesn't start with *");
-        }
         setup.next();
         for (int i = 0; i < M.numRotors(); i++) {
             rotors.add(setup.next());
@@ -162,17 +164,18 @@ public final class Main {
     /** Print MSG in groups of five (except that the last group may
      *  have fewer letters). */
     private void printMessageLine(String msg) {
+        msg = msg.replace(" ", "");
         int groupsOfFive = msg.length()/5;
         int index = 0;
         String printMe = "";
         for (int i = 0; i < groupsOfFive; i++) {
-            for (int x = index; x < index + 6; x++) {
-                printMe += msg.charAt(x);
+            for (int x = 0; x < 5; x++) {
+                printMe += msg.charAt(index);
+                index += 1;
             }
-            index += 5;
             printMe += " ";
         }
-        for (int p = index; p < msg.length() - 1; p++) {
+        for (int p = index; p < msg.length(); p++) {
             printMe += msg.charAt(p);
         }
         _output.println(printMe);
