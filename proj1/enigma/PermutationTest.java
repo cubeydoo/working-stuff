@@ -89,7 +89,8 @@ public  class PermutationTest {
     }
     @Test
     public void testInvertChar() {
-        Permutation p = getNewPermutation("(BACD)(ab)(cd)", getNewAlphabet("ABCDabcd"));
+        Permutation p = getNewPermutation(
+                "(BACD)(ab)(cd)", getNewAlphabet("ABCDabcd"));
         assertEquals('B', p.invert('A'));
         assertEquals('D', p.invert('B'));
         assertTrue(p.derangement());
