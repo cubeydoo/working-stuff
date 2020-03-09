@@ -22,6 +22,7 @@ class Machine {
         _numRotors = numRotors;
         _pawls = pawls;
         _allRotors = (ArrayList<Rotor>) allRotors;
+        _permutation = new Permutation("", _alphabet);
     }
 
     /** Return the number of rotor slots I have. */
@@ -159,7 +160,7 @@ class Machine {
     /**Moving rotor number. */
     private int _pawls;
     /** Plug board for this machine. */
-    private Permutation _permutation = new Permutation("", new Alphabet());
+    private Permutation _permutation;
     /** All rotors available. */
     private ArrayList<Rotor> _allRotors;
     /** Rotors in my machine. */
