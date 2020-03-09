@@ -105,7 +105,6 @@ public class MachineTests {
         machine1.setRotors("AAAZ");
         String check = machine1.convert(
                 "AAAAA AAAAA AAAAA AAAAA AAAAA AAA");
-        System.out.println(check);
         assertTrue(check.equals(
                 "NFTZM GISXI PJWGD NJJCO QTYRI GDM"));
     }
@@ -119,7 +118,6 @@ public class MachineTests {
         machine1.setRotors("AAAZ");
         String check = machine1.convert(
                 "AAAAA AAAAA AAAAA AAAAA AAAAA AAA");
-        System.out.println(check);
         assertTrue(check.equals(
                 "JCNBE GNHEJ ZLEKN SCFKB KNQHS PBK"));
     }
@@ -133,7 +131,6 @@ public class MachineTests {
         machine1.setPlugboard(identity);
         machine1.setRotors("AAAZ");
         String check = machine1.convert("EJ");
-        System.out.println(check);
         assertTrue(check.equals("CD"));
     }
     @Test
@@ -146,7 +143,6 @@ public class MachineTests {
         machine1.setRotors("AAAZ");
         String check = machine1.convert(
                 "NFTZM GISXI PJWGD NJJCO QTYRI GDM");
-        System.out.println(check);
         assertTrue(check.equals(
                 "AAAAA AAAAA AAAAA AAAAA AAAAA AAA"));
     }
@@ -160,7 +156,6 @@ public class MachineTests {
         machine1.setPlugboard(identity);
         machine1.setRotors("AAAP");
         String check = machine1.convert("J");
-        System.out.println(check);
         assertTrue(check.equals("A"));
     }
 
