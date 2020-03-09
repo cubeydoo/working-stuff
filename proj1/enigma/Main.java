@@ -1,5 +1,7 @@
 package enigma;
 
+import org.junit.Test;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -7,6 +9,7 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 import static enigma.EnigmaException.*;
 
@@ -77,7 +80,7 @@ public final class Main {
      *  file _config and apply it to the messages in _input, sending the
      *  results to _output. */
     private void process() {
-        //FIXME
+        Machine machine1 = readConfig();
     }
 
     /** Return an Enigma machine configured from the contents of configuration
@@ -85,10 +88,8 @@ public final class Main {
     private Machine readConfig() {
         try {
             _alphabet =  new Alphabet(_config.next());
-            _config.nextLine();
             int numRotors = _config.nextInt();
             int numPawls = _config.nextInt();
-            _config.nextLine();
             while (_config.hasNext()) {
                 readRotor();
             }
@@ -109,10 +110,7 @@ public final class Main {
                     notches += settings.charAt(i);
                 }
             }
-            String cycles = "";
-            while (_config.hasNext()) {
-                cycles += _config.next();
-            }
+            String cycles = _config.next(Pattern.compile("(\\([A-Z]+\\) *\\n* *)+"));
             if (settings.charAt(0) == 'M') {
                 _rotors.add(new MovingRotor(name, new Permutation(cycles, _alphabet), notches));
             } else if (settings.charAt(0) == 'N') {
@@ -134,7 +132,20 @@ public final class Main {
     /** Print MSG in groups of five (except that the last group may
      *  have fewer letters). */
     private void printMessageLine(String msg) {
-        // FIXME
+        int groupsOfFive = msg.length()/5;
+        int index = 0;
+        String printMe = "";
+        for (int i = 0; i < groupsOfFive; i++) {
+            for (int x = index; x < index + 5; x++) {
+                printMe += msg.charAt(i);
+            }
+            index += 5;
+            printMe += " ";
+        }
+        for (int p = index; p < msg.length() - 1; p++) {
+            printMe += msg.charAt(p);
+        }
+        System.out.println(printMe);
     }
 
     /** Alphabet used in this machine. */
@@ -148,6 +159,6 @@ public final class Main {
 
     /** File for encoded/decoded messages. */
     private PrintStream _output;
-    /** rotors to use for instantiating a machine. */
+    /** Rotors to use for instantiating a machine. */
     private ArrayList<Rotor> _rotors = new ArrayList<>();
 }

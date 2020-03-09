@@ -133,4 +133,5 @@ public class MachineTests {
         assertTrue(check.equals("A"));
     }
 
+
 }
