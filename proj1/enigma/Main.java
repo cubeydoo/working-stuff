@@ -127,9 +127,11 @@ public final class Main {
             }
             String cycles = "";
             while (_config.hasNext
-                    (Pattern.compile("(\\([A-Z0-9a-z\\.\\_]*\\) *\\n* *)+"))) {
+                    (Pattern.compile(
+                            "(\\([A-Z0-9a-z\\.\\_]*\\) *\\n* *)+"))) {
                 cycles += _config.next
-                        (Pattern.compile("(\\([A-Z0-9a-z\\.\\_]*\\) *\\n* *)+"));
+                        (Pattern.compile(
+                                "(\\([A-Z0-9a-z\\.\\_]*\\) *\\n* *)+"));
             }
             if (settings.charAt(0) == 'M') {
                 _rotors.add(new MovingRotor(
