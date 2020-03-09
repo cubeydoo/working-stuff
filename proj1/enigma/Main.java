@@ -11,7 +11,7 @@ import java.util.Scanner;
 import static enigma.EnigmaException.*;
 
 /** Enigma simulator.
- *  @author
+ *  @author Tyler Rathkamp
  */
 public final class Main {
 
@@ -84,29 +84,42 @@ public final class Main {
      *  file _config. */
     private Machine readConfig() {
         try {
-            ArrayList<Rotor> _rotors = new ArrayList<>();
             _alphabet =  new Alphabet(_config.next());
             _config.nextLine();
             int numRotors = _config.nextInt();
             int numPawls = _config.nextInt();
-            while (_config.hasNextLine()) {
-                _config.nextLine();
-                String name = _config.next();
-                String settings = _config.next();
-                if (settings.length() == 3) {
-
-                }
+            _config.nextLine();
+            while (_config.hasNext()) {
+                _rotors.add(readRotor());
             }
-            return new Machine(_alphabet, numRotors, numPawls, null);
+            return new Machine(_alphabet, numRotors, numPawls, _rotors);
         } catch (NoSuchElementException excp) {
             throw error("configuration file truncated");
         }
     }
 
     /** Return a rotor, reading its description from _config. */
-    private Rotor readRotor() {
+    private void readRotor() {
         try {
-            return null; // FIXME
+            String name = _config.next();
+            String settings = _config.next();
+            String notches = "";
+            if (settings.length() >= 2) {
+                for (int i = 1; i < settings.length() - 1; i++) {
+                    notches += settings.charAt(i);
+                }
+            }
+            String cycles = "";
+            while (_config.hasNext()) {
+                cycles += _config.next();
+            }
+            if (settings.charAt(0) == 'M') {
+                _rotors.add(new MovingRotor(name, new Permutation(cycles, _alphabet), notches));
+            } else if (settings.charAt(0) == 'N') {
+                _rotors.add(new FixedRotor(name, new Permutation(cycles, _alphabet)));
+            } else if (settings.charAt(0) == 'R') {
+                _rotors.add(new Reflector(name, new Permutation(cycles, _alphabet)));
+            }
         } catch (NoSuchElementException excp) {
             throw error("bad rotor description");
         }
@@ -135,4 +148,6 @@ public final class Main {
 
     /** File for encoded/decoded messages. */
     private PrintStream _output;
+    /** rotors to use for instantiating a machine. */
+    private ArrayList<Rotor> _rotors = new ArrayList<>();
 }

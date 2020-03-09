@@ -15,8 +15,6 @@ class Reflector extends FixedRotor {
         }
     }
 
-    // FIXME?
-
     @Override
     boolean reflecting() {
         return true;
