@@ -69,7 +69,7 @@ public class MachineTests {
     @Test
     public void MachineTest2() {
         NAVAL = makeNaval();
-        Machine machine1 = new Machine(alphaa, 5, 4, NAVAL);
+        Machine machine1 = new Machine(alphaa, 5, 3, NAVAL);
         machine1.insertRotors(new ArrayList<String>(Arrays.asList(new String[]{"B", "Beta", "I", "II", "III"})));
         machine1.setPlugboard(identity);
         machine1.setRotors("AAAA");

@@ -86,7 +86,8 @@ public final class Main {
             if (_input.hasNext(Pattern.compile("\\*"))) {
                 setUp(machine1, _input.nextLine());
             } else {
-                printMessageLine(machine1.convert(_input.nextLine()));
+                String message = machine1.convert(_input.nextLine());
+                printMessageLine(message);
             }
         }
     }
@@ -139,6 +140,7 @@ public final class Main {
     private void setUp(Machine M, String settings) {
         Scanner setup = new Scanner(settings);
         ArrayList<String> rotors = new ArrayList<>();
+        rotors.clear();
         if (!setup.hasNext(Pattern.compile("\\*"))) {
             throw new EnigmaException("Settings string doesn't start with *");
         }
@@ -164,7 +166,7 @@ public final class Main {
         int index = 0;
         String printMe = "";
         for (int i = 0; i < groupsOfFive; i++) {
-            for (int x = index; x < index + 5; x++) {
+            for (int x = index; x < index + 6; x++) {
                 printMe += msg.charAt(x);
             }
             index += 5;
