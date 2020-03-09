@@ -107,11 +107,14 @@ public final class Main {
             String settings = _config.next();
             String notches = "";
             if (settings.length() >= 2) {
-                for (int i = 1; i < settings.length() - 1; i++) {
+                for (int i = 1; i < settings.length(); i++) {
                     notches += settings.charAt(i);
                 }
             }
-            String cycles = _config.next(Pattern.compile("(\\([A-Z]+\\) *\\n* *)+"));
+            String cycles = "";
+            while (_config.hasNext(Pattern.compile("(\\([A-Z]+\\) *\\n* *)+"))) {
+                cycles += _config.next(Pattern.compile("(\\([A-Z]+\\) *\\n* *)+"));
+            }
             if (settings.charAt(0) == 'M') {
                 _rotors.add(new MovingRotor(name, new Permutation(cycles, _alphabet), notches));
             } else if (settings.charAt(0) == 'N') {
@@ -140,9 +143,13 @@ public final class Main {
         M.setRotors(setup.next());
         if (!setup.hasNext("(\\\\([A-Z]+\\\\) *\\\\n* *)+")) {
             throw new EnigmaException("Plug board not present.");
+        } else {
+            String cycles = "";
+            while (_config.hasNext(Pattern.compile("(\\([A-Z]+\\) *\\n* *)+"))) {
+                cycles += _config.next(Pattern.compile("(\\([A-Z]+\\) *\\n* *)+"));
+            }
+            M.setPlugboard(new Permutation(cycles, M.alphabetGet()));
         }
-        String cycles = setup.next(Pattern.compile("(\\([A-Z]+\\) *\\n* *)+"));
-        M.setPlugboard(new Permutation(cycles, M.alphabetGet()));
     }
 
     /** Print MSG in groups of five (except that the last group may
