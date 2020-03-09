@@ -82,6 +82,13 @@ public final class Main {
      *  results to _output. */
     private void process() {
         Machine machine1 = readConfig();
+        while (_input.hasNext()) {
+            if (_input.hasNext(Pattern.compile("\\*"))) {
+                setUp(machine1, _input.nextLine());
+            } else {
+                printMessageLine(machine1.convert(_input.nextLine()));
+            }
+        }
     }
 
     /** Return an Enigma machine configured from the contents of configuration
@@ -141,9 +148,7 @@ public final class Main {
         }
         M.insertRotors(rotors);
         M.setRotors(setup.next());
-        if (!setup.hasNext("(\\\\([A-Z]+\\\\) *\\\\n* *)+")) {
-            throw new EnigmaException("Plug board not present.");
-        } else {
+        if (setup.hasNext("(\\\\([A-Z]+\\\\) *\\\\n* *)+")) {
             String cycles = "";
             while (_config.hasNext(Pattern.compile("(\\([A-Z]+\\) *\\n* *)+"))) {
                 cycles += _config.next(Pattern.compile("(\\([A-Z]+\\) *\\n* *)+"));
@@ -160,7 +165,7 @@ public final class Main {
         String printMe = "";
         for (int i = 0; i < groupsOfFive; i++) {
             for (int x = index; x < index + 5; x++) {
-                printMe += msg.charAt(i);
+                printMe += msg.charAt(x);
             }
             index += 5;
             printMe += " ";
