@@ -90,12 +90,14 @@ class Machine {
         if (_pawls > 0) {
             int current = _rotors.size() - 1;
             Rotor p = _rotors.get(current);
-            p.advance();
-            while (p.atNotch() && current >= 0) {
-                current -= 1;
-                p = _rotors.get(current);
-                p.advance();
+            if (p.atNotch()) {
+                while (p.atNotch() && current >= 0) {
+                    p.advance();
+                    current -= 1;
+                    p = _rotors.get(current);
+                }
             }
+            p.advance();
         }
         int counter = _rotors.size() - 1;
         while (counter >= 0) {
