@@ -83,7 +83,7 @@ public final class Main {
         if (!_input.hasNext(Pattern.compile("\\*"))) {
             throw new EnigmaException("Must have a setting.");
         }
-        while (_input.hasNext()) {
+        while (_input.hasNextLine()) {
             if (_input.hasNext(Pattern.compile("\\*"))) {
                 String next = _input.nextLine();
                 if (next.equals("")) {
@@ -127,9 +127,9 @@ public final class Main {
             }
             String cycles = "";
             while (_config.hasNext
-                    (Pattern.compile("(\\([A-Z]*[0-9]*\\) *\\n* *)+"))) {
+                    (Pattern.compile("(\\([A-Z0-9a-z\\.\\_]*\\) *\\n* *)+"))) {
                 cycles += _config.next
-                        (Pattern.compile("(\\([A-Z]*[0-9]*\\) *\\n* *)+"));
+                        (Pattern.compile("(\\([A-Z0-9a-z\\.\\_]*\\) *\\n* *)+"));
             }
             if (settings.charAt(0) == 'M') {
                 _rotors.add(new MovingRotor(
@@ -158,11 +158,11 @@ public final class Main {
         }
         M.insertRotors(rotors);
         M.setRotors(setup.next());
-        if (setup.hasNext("(\\\\([A-Z]+\\\\) *\\\\n* *)+")) {
+        if (setup.hasNext("(\\([A-Z]+\\) *\\n* *)+")) {
             String cycles = "";
-            while (_config.hasNext(
+            while (setup.hasNext(
                     Pattern.compile("(\\([A-Z]+\\) *\\n* *)+"))) {
-                cycles += _config.next(
+                cycles += setup.next(
                         Pattern.compile("(\\([A-Z]+\\) *\\n* *)+"));
             }
             M.setPlugboard(new Permutation(cycles, M.alphabetGet()));

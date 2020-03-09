@@ -154,7 +154,7 @@ public class MachineTests {
         machine1.insertRotors(new ArrayList<String>(
                 Arrays.asList(new String[]{"B", "Beta", "III", "II", "I"})));
         machine1.setPlugboard(identity);
-        machine1.setRotors("AAAP");
+        machine1.setRotors("AAEA");
         String check = machine1.convert("J");
         assertTrue(check.equals("A"));
     }
