@@ -95,7 +95,7 @@ public class MachineTests {
         machine1.setRotors("AAAZ");
         String check = machine1.convert("AAAAA AAAAA AAAAA AAAAA AAAAA AAA");
         System.out.println(check);
-        assertTrue(check.equals("JCNBE GNHEJ ZLEKN SCFKB KNWHS PBK"));
+        assertTrue(check.equals("JCNBE GNHEJ ZLEKN SCFKB KNQHS PBK"));
     }
 
     @Test
