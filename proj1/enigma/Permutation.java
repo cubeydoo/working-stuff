@@ -27,7 +27,8 @@ class Permutation {
                 current = new String(String.valueOf(cycles.charAt(i)));
                 int ogindex = alphabet.aString().indexOf(current);
                 String next = new String(String.valueOf(cycles.charAt(i + 1)));
-                String previous = new String(String.valueOf(cycles.charAt(i - 1)));
+                String previous = new String(
+                        String.valueOf(cycles.charAt(i - 1)));
                 while (!current.equals(")")) {
                     next = new String(String.valueOf(cycles.charAt(i + 1)));
                     int index = alphabet.aString().indexOf(current);
@@ -146,7 +147,9 @@ class Permutation {
         }
         return true;
     }
-    public String[] get_permKey() {
+    /** Get the permKey of this permutation.
+     * @return the permKey of this permutation.*/
+    public String[] getPermKey() {
         return _permKey;
     }
     /** Alphabet of this permutation. */
