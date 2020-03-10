@@ -175,6 +175,7 @@ public final class Main {
      *  have fewer letters). */
     private void printMessageLine(String msg) {
         msg = msg.replace(" ", "");
+        int leftover = msg.length() % 5;
         int groupsOfFive = msg.length() / 5;
         int index = 0;
         String printMe = "";
@@ -183,7 +184,7 @@ public final class Main {
                 printMe += msg.charAt(index);
                 index += 1;
             }
-            if (i != groupsOfFive - 1) {
+            if (i != groupsOfFive - 1|| i == groupsOfFive - 1 && leftover > 0) {
                 printMe += " ";
             }
         }
