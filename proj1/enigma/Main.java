@@ -184,7 +184,8 @@ public final class Main {
                 printMe += msg.charAt(index);
                 index += 1;
             }
-            if (i != groupsOfFive - 1|| i == groupsOfFive - 1 && leftover > 0) {
+            if (i != groupsOfFive - 1
+                    || i == groupsOfFive - 1 && leftover > 0) {
                 printMe += " ";
             }
         }

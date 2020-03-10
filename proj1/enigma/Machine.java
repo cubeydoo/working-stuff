@@ -58,6 +58,16 @@ class Machine {
         }
         if (!_rotors.get(0).reflecting()) {
             throw new EnigmaException("Leftmost Rotor must be a reflector.");
+        } else {
+            int pawlCount = 0;
+            for (int i = 0; i < _rotors.size(); i++) {
+                if (_rotors.get(i).rotates()) {
+                    pawlCount += 1;
+                }
+            }
+            if (pawlCount != _pawls) {
+                throw new EnigmaException("Bad arguments");
+            }
         }
     }
 
@@ -108,7 +118,8 @@ class Machine {
             while (current > 0) {
                 current -= 1;
                 p = _rotors.get(current);
-                if (p.atNotch() && current != 0) {
+                if (p.atNotch() && current != 0
+                    && _rotors.get(current - 1).rotates()) {
                     if (current == 0) {
                         p.advance();
                     } else {
