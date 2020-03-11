@@ -88,6 +88,23 @@ class Machine {
         }
     }
 
+    /** Set my rotors according to SETTING, which must be a string of
+     *  numRotors()-1 characters in my alphabet. The first letter refers
+     *  to the leftmost rotor setting (not counting the reflector).  */
+    void setRings(String setting) {
+        if (setting.length() != numRotors() - 1) {
+            throw new EnigmaException("Setting must include each rotor.");
+        } else {
+            int x = 0;
+            for (int i = 0; i < numRotors(); i++) {
+                if (!_rotors.get(i).reflecting()) {
+                    _rotors.get(i).setRing(setting.charAt(x));
+                    x++;
+                }
+            }
+        }
+    }
+
     /** Set the plugboard to PLUGBOARD. */
     void setPlugboard(Permutation plugboard) {
         for (int i = 0; i < plugboard.size(); i++) {

@@ -160,6 +160,11 @@ public final class Main {
         }
         M.insertRotors(rotors);
         M.setRotors(setup.next());
+        String ringSettings = "";
+        if (setup.hasNext("[A-Z]*")) {
+            ringSettings += setup.next();
+            M.setRings(ringSettings);
+        }
         if (setup.hasNext("(\\([A-Z]+\\) *\\n* *)+")) {
             String cycles = "";
             while (setup.hasNext(
