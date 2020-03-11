@@ -1,18 +1,17 @@
 package enigma;
 
-import net.sf.saxon.lib.SaxonOutputKeys;
 import org.junit.Test;
 import org.junit.Rule;
 import org.junit.rules.Timeout;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 
 import static enigma.TestUtils.*;
 
-/** The suite of all JUnit tests for the Permutation class.
- *  @author
+/** The suite of all JUnit tests for the Machine class.
+ *  @author Tyler Rathkamp
  */
 public class MachineTests {
 
@@ -25,52 +24,140 @@ public class MachineTests {
     private Rotor rotor;
     private String alpha = UPPER_STRING;
     private String testPlugBoard = "(YF)(ZH)";
-    private Alphabet alphaa = new Alphabet(UPPER_STRING);
-    private Permutation Plugboard = new Permutation(testPlugBoard, alphaa);
+    private Alphabet basic = new Alphabet(UPPER_STRING);
+    private Permutation plug1 = new Permutation(testPlugBoard, basic);
+    private Permutation identity = new Permutation("", basic);
 
-    public ArrayList<Rotor> NAVAL = new ArrayList<Rotor>();
+
+    public ArrayList<Rotor> _NAVAL = new ArrayList<Rotor>();
     public ArrayList<Rotor> makeNaval() {
-        NAVAL.add(new MovingRotor("I", new Permutation("(AELTPHQXRU) (BKNW) (CMOY) (DFG) (IV) (JZ) (S)", UPPER), "Q"));
-        NAVAL.add(new MovingRotor("II", new Permutation("(FIXVYOMW) (CDKLHUP) (ESZ) (BJ) (GR) (NT) (A) (Q)", UPPER), "E"));
-        NAVAL.add(new MovingRotor("III",new Permutation( "(ABDHPEJT) (CFLVMZOYQIRWUKXSG) (N)", UPPER), "V"));
-        NAVAL.add(new MovingRotor("IV", new Permutation("(AEPLIYWCOXMRFZBSTGJQNH) (DV) (KU)", UPPER), "J"));
-        NAVAL.add(new MovingRotor("V", new Permutation("(AVOLDRWFIUQ)(BZKSMNHYC) (EGTJPX)", UPPER), "Z"));
-        NAVAL.add(new MovingRotor("VI", new Permutation("(AJQDVLEOZWIYTS) (CGMNHFUX) (BPRK) ", UPPER), "ZM"));
-        NAVAL.add(new MovingRotor("VII", new Permutation("(ANOUPFRIMBZTLWKSVEGCJYDHXQ) ", UPPER), "ZM"));
-        NAVAL.add(new MovingRotor("VIII",new Permutation( "(AFLSETWUNDHOZVICQ) (BKJ) (GXY) (MPR)", UPPER), "ZM"));
-        NAVAL.add(new FixedRotor("Beta", new Permutation( "(ALBEVFCYODJWUGNMQTZSKPR) (HIX)", UPPER)));
-        NAVAL.add(new FixedRotor("Gamma", new Permutation( "(AFNIRLBSQWVXGUZDKMTPCOYJHE)", UPPER)));
-        NAVAL.add(new Reflector("B", new Permutation(
+        _NAVAL.add(new MovingRotor("I",
+                new Permutation("(AELTPHQXRU) (BKNW) "
+                        + "(CMOY) (DFG) (IV) (JZ) (S)", UPPER), "Q"));
+        _NAVAL.add(new MovingRotor("II",
+                new Permutation("(FIXVYOMW) (CDKLHUP) "
+                        + "(ESZ) (BJ) (GR) (NT) (A) (Q)", UPPER), "E"));
+        _NAVAL.add(new MovingRotor("III",
+                new Permutation("(ABDHPEJT) (CFLVMZOYQIRWUKXSG) "
+                        + "(N)", UPPER), "V"));
+        _NAVAL.add(new MovingRotor("IV",
+                new Permutation("(AEPLIYWCOXMRFZBSTGJQNH) "
+                        + "(DV) (KU)", UPPER), "J"));
+        _NAVAL.add(new MovingRotor("V",
+                new Permutation("(AVOLDRWFIUQ)(BZKSMNHYC) "
+                        + "(EGTJPX)", UPPER), "Z"));
+        _NAVAL.add(new MovingRotor("VI",
+                new Permutation("(AJQDVLEOZWIYTS) "
+                        + "(CGMNHFUX) (BPRK) ", UPPER), "ZM"));
+        _NAVAL.add(new MovingRotor("VII",
+                new Permutation("(ANOUPFRIMBZTLWKSVEGCJYDHXQ) ",
+                        UPPER), "ZM"));
+        _NAVAL.add(new MovingRotor("VIII",
+                new Permutation("(AFLSETWUNDHOZVICQ) (BKJ) "
+                        + "(GXY) (MPR)", UPPER), "ZM"));
+        _NAVAL.add(new FixedRotor("Beta",
+                new Permutation("(ALBEVFCYODJWUGNMQTZSKPR) "
+                        + "(HIX)", UPPER)));
+        _NAVAL.add(new FixedRotor("Gamma",
+                new Permutation("(AFNIRLBSQWVXGUZDKMTPCOYJHE)", UPPER)));
+        _NAVAL.add(new Reflector("B", new Permutation(
                 "(AE) (BN) (CK) (DQ) (FU) (GY) (HW) (IJ) (LO) "
                         + "(MP) (RX) (SZ) (TV)", UPPER)));
-        NAVAL.add(new Reflector("C", new Permutation(
+        _NAVAL.add(new Reflector("C", new Permutation(
                 "(AR) (BD) (CO) (EJ) (FN) (GT) (HK) (IV) (LM) "
                         + "(PW) (QZ) (SX) (UY)", UPPER)));
 
-        return NAVAL;
+        return _NAVAL;
     }
 
 
     /* ***** TESTS ***** */
 
     @Test
-    public void MachineTest1() {
-        NAVAL = makeNaval();
-        Machine machine1 = new Machine(alphaa, 5, 3, NAVAL);
-        machine1.insertRotors(new String[]{"B", "Beta", "III", "IV", "I"});
-        machine1.setPlugboard(Plugboard);
+    public void machineTest1() {
+        _NAVAL = makeNaval();
+        Machine machine1 = new Machine(basic, 5, 3, _NAVAL);
+        machine1.insertRotors(new ArrayList<String>(
+                Arrays.asList(new String[]{"B", "Beta", "III", "IV", "I"})));
+        machine1.setPlugboard(plug1);
         machine1.setRotors("AXLE");
         int x = machine1.convert(24);
         assertEquals(x, 25);
     }
     @Test
-    public void MachineTest2() {
-        NAVAL = makeNaval();
-        Machine machine1 = new Machine(alphaa, 4, 3, NAVAL);
-        machine1.insertRotors(new String[]{"B", "III", "II", "I"});
-        machine1.setPlugboard(Plugboard);
-        int x = machine1.convert(24);
-        assertEquals(x, 4);
+    public void machineTest2() {
+        _NAVAL = makeNaval();
+        Machine machine1 = new Machine(basic, 5, 3, _NAVAL);
+        machine1.insertRotors(new ArrayList<String>(
+                Arrays.asList(new String[]{"B", "Beta", "I", "II", "III"})));
+        machine1.setPlugboard(identity);
+        machine1.setRotors("AAAA");
+        String check = machine1.convert("HELLO WORLD");
+        assertTrue(check.equals("ILBDA AMTAZ"));
     }
+    @Test
+    public void machineTest3() {
+        _NAVAL = makeNaval();
+        Machine machine1 = new Machine(basic, 5, 3, _NAVAL);
+        machine1.insertRotors(new ArrayList<String>(
+                Arrays.asList(new String[]{"B", "Beta", "III", "II", "I"})));
+        machine1.setPlugboard(identity);
+        machine1.setRotors("AAAZ");
+        String check = machine1.convert(
+                "AAAAA AAAAA AAAAA AAAAA AAAAA AAA");
+        assertTrue(check.equals(
+                "NFTZM GISXI PJWGD NJJCO QTYRI GDM"));
+    }
+    @Test
+    public void machineTest4() {
+        _NAVAL = makeNaval();
+        Machine machine1 = new Machine(basic, 5, 3, _NAVAL);
+        machine1.insertRotors(new ArrayList<String>(
+                Arrays.asList(new String[]{"B", "Beta", "III", "I", "II"})));
+        machine1.setPlugboard(identity);
+        machine1.setRotors("AAAZ");
+        String check = machine1.convert(
+                "AAAAA AAAAA AAAAA AAAAA AAAAA AAA");
+        assertTrue(check.equals(
+                "JCNBE GNHEJ ZLEKN SCFKB KNQHS PBK"));
+    }
+
+    @Test
+    public void machineTest5() {
+        _NAVAL = makeNaval();
+        Machine machine1 = new Machine(basic, 5, 3, _NAVAL);
+        machine1.insertRotors(new ArrayList<String>(
+                Arrays.asList(new String[]{"B", "Beta", "III", "I", "II"})));
+        machine1.setPlugboard(identity);
+        machine1.setRotors("AAAZ");
+        String check = machine1.convert("EJ");
+        assertTrue(check.equals("CD"));
+    }
+    @Test
+    public void machineTest6() {
+        _NAVAL = makeNaval();
+        Machine machine1 = new Machine(basic, 5, 3, _NAVAL);
+        machine1.insertRotors(new ArrayList<String>(
+                Arrays.asList(new String[]{"B", "Beta", "III", "II", "I"})));
+        machine1.setPlugboard(identity);
+        machine1.setRotors("AAAZ");
+        String check = machine1.convert(
+                "NFTZM GISXI PJWGD NJJCO QTYRI GDM");
+        assertTrue(check.equals(
+                "AAAAA AAAAA AAAAA AAAAA AAAAA AAA"));
+    }
+
+    @Test
+    public void machineTest7() {
+        _NAVAL = makeNaval();
+        Machine machine1 = new Machine(basic, 5, 3, _NAVAL);
+        machine1.insertRotors(new ArrayList<String>(
+                Arrays.asList(new String[]{"B", "Beta", "III", "II", "I"})));
+        machine1.setPlugboard(identity);
+        machine1.setRotors("AAEA");
+        String check = machine1.convert("J");
+        assertTrue(check.equals("A"));
+    }
+
 
 }
