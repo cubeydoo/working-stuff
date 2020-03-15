@@ -25,11 +25,7 @@ class MovingRotor extends Rotor {
     boolean atNotch() {
         char p = permutation().alphabet().aString().charAt(_shift);
         String position = Character.toString(p);
-        if (_notches.indexOf(p) != -1) {
-            return true;
-        } else {
-            return false;
-        }
+        return _notches.indexOf(p) != -1;
     }
 
     @Override
@@ -39,6 +35,6 @@ class MovingRotor extends Rotor {
             _shift = 0;
         }
     }
-
+    /** Notches on a rotor. */
     private String _notches;
 }

@@ -1,6 +1,5 @@
 package enigma;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /** Utility definitions for use in unit tests.

@@ -1,7 +1,6 @@
 package enigma;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Collection;
 
 import static enigma.EnigmaException.*;
@@ -23,11 +22,16 @@ class Machine {
         _numRotors = numRotors;
         _pawls = pawls;
         _allRotors = (ArrayList<Rotor>) allRotors;
+        _permutation = new Permutation("", _alphabet);
     }
 
     /** Return the number of rotor slots I have. */
     int numRotors() {
         return _numRotors;
+    }
+    /** Return my alphabet. */
+    Alphabet alphabetGet() {
+        return _alphabet;
     }
 
     /** Return the number pawls (and thus rotating rotors) I have. */
@@ -38,19 +42,32 @@ class Machine {
     /** Set my rotor slots to the rotors named ROTORS from my set of
      *  available rotors (ROTORS[0] names the reflector).
      *  Initially, all rotors are set at their 0 setting. */
-    void insertRotors(String[] rotors) {
-        for (int i = 0; i < rotors.length; i++) {
-            String name = rotors[i];
+    void insertRotors(ArrayList<String> rotors) {
+        _rotors.clear();
+        for (int i = 0; i < rotors.size(); i++) {
+            String name = rotors.get(i);
             for (int x = 0; x < _allRotors.size(); x++) {
                 Rotor current = _allRotors.get(x);
-                if (name.equals(current.name())) {
+                if (name.equals(current.name()) && !_rotors.contains(current)) {
                     _rotors.add(current);
                     break;
+                } else if (x == _allRotors.size() - 1) {
+                    throw new EnigmaException("Rotor name not in library.");
                 }
             }
         }
         if (!_rotors.get(0).reflecting()) {
             throw new EnigmaException("Leftmost Rotor must be a reflector.");
+        } else {
+            int pawlCount = 0;
+            for (int i = 0; i < _rotors.size(); i++) {
+                if (_rotors.get(i).rotates()) {
+                    pawlCount += 1;
+                }
+            }
+            if (pawlCount != _pawls) {
+                throw new EnigmaException("Bad arguments");
+            }
         }
     }
 
@@ -71,12 +88,29 @@ class Machine {
         }
     }
 
+    /** Set my rotors according to SETTING, which must be a string of
+     *  numRotors()-1 characters in my alphabet. The first letter refers
+     *  to the leftmost rotor setting (not counting the reflector).  */
+    void setRings(String setting) {
+        if (setting.length() != numRotors() - 1) {
+            throw new EnigmaException("Setting must include each rotor.");
+        } else {
+            int x = 0;
+            for (int i = 0; i < numRotors(); i++) {
+                if (!_rotors.get(i).reflecting()) {
+                    _rotors.get(i).setRing(setting.charAt(x));
+                    x++;
+                }
+            }
+        }
+    }
+
     /** Set the plugboard to PLUGBOARD. */
     void setPlugboard(Permutation plugboard) {
         for (int i = 0; i < plugboard.size(); i++) {
             if (plugboard.permute(plugboard.permute(i)) != i) {
-                throw new EnigmaException
-                        ("Plug board must map each character to one other and vice versa.");
+                throw new EnigmaException(
+                        "Plug board be a derangement.");
             }
         }
         _permutation = plugboard;
@@ -86,15 +120,32 @@ class Machine {
      *  index in the range 0..alphabet size - 1), after first advancing
      *  the machine. */
     int convert(int c) {
+        c = _permutation.permute(c);
         if (_pawls > 0) {
-            c = _permutation.permute(c);
             int current = _rotors.size() - 1;
             Rotor p = _rotors.get(current);
+            if (p.atNotch()) {
+                while (p.atNotch() && current >= 0) {
+                    p.advance();
+                    current -= 1;
+                    p = _rotors.get(current);
+                }
+            }
             p.advance();
-            while (p.atNotch() && current >= 0) {
+            while (current > 0) {
                 current -= 1;
                 p = _rotors.get(current);
-                p.advance();
+                if (p.atNotch() && current != 0
+                    && _rotors.get(current - 1).rotates()) {
+                    if (current == 0) {
+                        p.advance();
+                    } else {
+                        p.advance();
+                        current -= 1;
+                        p = _rotors.get(current);
+                        p.advance();
+                    }
+                }
             }
         }
         int counter = _rotors.size() - 1;
@@ -116,21 +167,30 @@ class Machine {
      *  the rotors accordingly. */
     String convert(String msg) {
         String returnme = "";
-        int index = msg.length() - 1;
-        for (int i = 0; i <= index; i++) {
+        for (int i = 0; i <=  msg.length() - 1; i++) {
             char c = msg.charAt(i);
-            int x = _alphabet.aString().indexOf(c);
-            c = _alphabet.aString().charAt(convert(c));
-            returnme += c;
+            if (Character.isWhitespace(c)) {
+                returnme += " ";
+            } else {
+                int x = _alphabet.aString().indexOf(c);
+                x = convert(x);
+                c = _alphabet.aString().charAt(x);
+                returnme += c;
+            }
         }
         return returnme;
     }
 
     /** Common alphabet of my rotors. */
     private final Alphabet _alphabet;
+    /** Number of my rotors. */
     private int _numRotors;
+    /**Moving rotor number. */
     private int _pawls;
-    private Permutation _permutation = new Permutation("", new Alphabet());
+    /** Plug board for this machine. */
+    private Permutation _permutation;
+    /** All rotors available. */
     private ArrayList<Rotor> _allRotors;
+    /** Rotors in my machine. */
     private ArrayList<Rotor> _rotors = new ArrayList<>();
 }

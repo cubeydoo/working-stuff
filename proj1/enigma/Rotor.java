@@ -59,22 +59,35 @@ class Rotor {
         _shift = _permutation.alphabet().aString().indexOf(cposn);
     }
 
+    /** Set Ring settings to character CPOSN. */
+    void setRing(char cposn) {
+        _ringSetting = _permutation.alphabet().aString().indexOf(cposn);
+    }
+
     /** Return the conversion of P (an integer in the range 0..size()-1)
      *  according to my permutation. */
     int convertForward(int p) {
-        p = _permutation.permute((p + setting()));
+        p = _permutation.permute((p + (wrap(setting() - _ringSetting))));
         if (p >= setting()) {
-            return p - setting();
+            return p - wrap(setting() - _ringSetting);
         } else {
-            return (p + size()) - setting();
+            return (p + size()) - wrap(setting() - _ringSetting);
         }
     }
 
+    /** Return the value of P modulo the size of this permutation. */
+    final int wrap(int p) {
+        int r = p % size();
+        if (r < 0) {
+            r += size();
+        }
+        return r;
+    }
     /** Return the conversion of E (an integer in the range 0..size()-1)
      *  according to the inverse of my permutation. */
     int convertBackward(int e) {
-        e = _permutation.invert((e + setting()));
-        int rv = e - setting();
+        e = _permutation.invert((e + wrap(setting() - _ringSetting)));
+        int rv = e - wrap(setting() - _ringSetting);
         if (rv < 0) {
             return rv + size();
         } else {
@@ -105,4 +118,6 @@ class Rotor {
 
     /** The current shift in position. */
     protected int _shift;
+    /** Setting of the ring for this rotor. */
+    private int _ringSetting = 0;
 }
