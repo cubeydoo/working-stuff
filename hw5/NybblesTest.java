@@ -13,7 +13,8 @@ public class NybblesTest {
             arr.set(i, i % 8);
         }
         for (int i = 0; i < arr.size(); i += 1) {
-            assertEquals(i % 8, arr.get(i));
+            int p = arr.get(i);
+            assertEquals(i % 8, p);
         }
     }
 

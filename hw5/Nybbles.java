@@ -25,7 +25,12 @@ public class Nybbles {
         if (k < 0 || k >= _n) {
             throw new IndexOutOfBoundsException();
         } else {
-            return 0; // REPLACE WITH SOLUTION
+            int bigindex = k / 8;
+            int nybindex = k % 8;
+            nybindex = nybindex * 4;
+            int num = _data[bigindex];
+            num = (num >>> nybindex);
+            return BitExercise.lastBit(num);
         }
     }
 
@@ -37,7 +42,16 @@ public class Nybbles {
         } else if (val < (-MAX_VALUE - 1) || val > MAX_VALUE) {
             throw new IllegalArgumentException();
         } else {
-            _data[0] = 0; // REPLACE WITH SOLUTION
+            int big = k / 8;
+            int nybindex = (k % 8) * 4;
+            int filter = 15;
+            filter = filter << nybindex;
+            val = val << nybindex;
+            filter = (~ filter);
+            _data[big] = (_data[big] & filter);
+            _data[big] = (_data[big] | val);
+            String current = Integer.toBinaryString(_data[big]);
+            int x = 1;
         }
     }
 
