@@ -32,7 +32,9 @@ public class Nybbles {
             num = (num >>> nybindex);
             String current = Integer.toBinaryString(num);
             int filter = 15;
-            return (num & filter);
+            num = (num << 28) >> 28;
+            current = Integer.toBinaryString(num);
+            return num;
         }
     }
 
