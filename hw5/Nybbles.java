@@ -30,7 +30,9 @@ public class Nybbles {
             nybindex = nybindex * 4;
             int num = _data[bigindex];
             num = (num >>> nybindex);
-            return BitExercise.lastBit(num);
+            String current = Integer.toBinaryString(num);
+            int filter = 15;
+            return (num & filter);
         }
     }
 
@@ -46,10 +48,11 @@ public class Nybbles {
             int nybindex = (k % 8) * 4;
             int filter = 15;
             filter = filter << nybindex;
-            val = val << nybindex;
+            int valNew = val << nybindex;
+            String valNu = Integer.toBinaryString(valNew);
             filter = (~ filter);
             _data[big] = (_data[big] & filter);
-            _data[big] = (_data[big] | val);
+            _data[big] = (_data[big] | valNew);
             String current = Integer.toBinaryString(_data[big]);
             int x = 1;
         }
