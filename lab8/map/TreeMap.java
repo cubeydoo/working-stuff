@@ -25,8 +25,23 @@ public class TreeMap<K extends Comparable<K>, V> implements SimpleMap<K, V> {
      * right descendant based on the rules of BSTs.
      */
     private TreeMapNode putHelper(TreeMapNode node, K key, V value) {
-        // FIXME
-        return null;
+        if (node == null) {
+            return new TreeMapNode(key, value, null, null);
+        } else if (node._key.compareTo(key) < 0) {
+            if (node._left == null) {
+                node._left = new TreeMapNode(key, value, null, null);
+            } else {
+                putHelper(node._left, key, value);
+            }
+        } else if (node._key.compareTo(key) > 0) {
+            if (node._right == null) {
+                node._right = new TreeMapNode(key, value, null, null);
+            }
+        } else if (node._key.compareTo(key) == 0) {
+            node._key = key;
+            node._value = value;
+        }
+        return _root;
     }
 
     /**
