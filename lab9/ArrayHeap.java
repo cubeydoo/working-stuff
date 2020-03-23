@@ -117,29 +117,37 @@ public class ArrayHeap<T> {
 
     /** Returns the index of the left child of the node at i. */
     private int getLeftOf(int i) {
-        // TODO
-        return 0;
+        return (i * 2);
     }
 
     /** Returns the index of the right child of the node at i. */
     private int getRightOf(int i) {
-        // TODO
-        return 0;
+        return (i * 2) + 1;
     }
 
     /** Returns the index of the node that is the parent of the
      *  node at i. */
     private int getParentOf(int i) {
-        // TODO
-        return 0;
+        return i/2;
     }
 
     /** Returns the index of the node with smaller priority. If one
      * node is null, then returns the index of the non-null node.
      * Precondition: at least one of the nodes is not null. */
     private int min(int index1, int index2) {
-        // TODO
-        return 0;
+        Node node1 = getNode(index1);
+        Node node2 = getNode(index2);
+        if (node1 != null && node2 != null) {
+            if (node1._priority < node2._priority) {
+                return index1;
+            } else {
+                return index2;
+            }
+        } else if (node1 != null) {
+            return index1;
+        } else {
+            return index2;
+        }
     }
 
     /** Returns the item with the smallest priority value, but does
@@ -154,13 +162,44 @@ public class ArrayHeap<T> {
     /** Bubbles up the node currently at the given index until no longer
      *  needed. */
     private void bubbleUp(int index) {
-        // TODO
+        while (true) {
+            Node node = getNode(index);
+            int parentIndex = getParentOf(index);
+            Node parent = getNode(parentIndex);
+            if (node._priority > parent._priority) {
+                setNode(parentIndex, node);
+                setNode(index, parent);
+                index = parentIndex;
+            } else {
+                break;
+            }
+        }
     }
 
     /** Bubbles down the node currently at the given index until no longer
      *  needed. */
     private void bubbleDown(int index) {
-        // TODO
+        while (true) {
+            Node node = getNode(index);
+            Node leftChild = getNode(getLeftOf(index));
+            Node rightChild = getNode(getRightOf(index));
+            if (node._priority < leftChild._priority && node._priority < rightChild._priority) {
+                int minIndex = min(getLeftOf(index), getRightOf(index));
+                setNode(minIndex, node);
+                setNode(index, getNode(minIndex));
+                index = minIndex;
+            } else if (node._priority < leftChild._priority) {
+                setNode(getLeftOf(index), node);
+                setNode(index, leftChild);
+                index = getLeftOf(index);
+            } else if (node._priority < rightChild._priority){
+                setNode(getRightOf(index), node);
+                setNode(index, rightChild);
+                index = getRightOf(index);
+            } else {
+                break;
+            }
+        }
     }
 
     /** Inserts an item with the given priority value. Assume that item is
