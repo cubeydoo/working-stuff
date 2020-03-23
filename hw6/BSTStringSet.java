@@ -129,9 +129,10 @@ public class BSTStringSet implements StringSet, Iterable<String> {
         return new BSTIterator(_root);
     }
 
-    @Override
+    // FIXME: UNCOMMENT THE NEXT LINE FOR PART B
+    // @Override
     public Iterator<String> iterator(String low, String high) {
-        return null;
+        return null;  // FIXME: PART B
     }
 
 
