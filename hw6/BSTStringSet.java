@@ -146,6 +146,10 @@ public class BSTStringSet implements StringSet, Iterable<String>, SortedStringSe
 
         @Override
         public boolean hasNext() {
+            if (!_toDo.empty() && _toDo.firstElement().s.compareTo(_low) < 0) {
+                next();
+                return hasNext();
+            }
             return !_toDo.empty();
         }
 
@@ -171,12 +175,10 @@ public class BSTStringSet implements StringSet, Iterable<String>, SortedStringSe
 
         /** Add the relevant subtrees of the tree rooted at NODE. */
         private void addTree(Node node) {
-            if (node != null && node.s.compareTo(_low) > 0) {
-                while (node != null && node.s.compareTo(_high) < 0) {
-                    _toDo.push(node);
-                    node = node.right;
+            while (node != null && node.s.compareTo(_high) <= 0) {
+                _toDo.push(node);
+                node = node.right;
             }
-        }
     }
     }
     /** Root node of the tree. */
