@@ -150,7 +150,7 @@ public class BSTStringSet implements StringSet, Iterable<String>, SortedStringSe
             ArrayList<String> current = new ArrayList<String>();
             while (_iter.hasNext()) {
                 String curr = _iter.next();
-                if (curr.compareTo(_high) < 0 && curr.compareTo(_low) > 0) {
+                if (curr.compareTo(_high) <= 0 && curr.compareTo(_low) >= 0) {
                     current.add(curr);
                 }
             }
