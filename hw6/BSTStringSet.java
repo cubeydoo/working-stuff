@@ -135,13 +135,13 @@ public class BSTStringSet implements StringSet, Iterable<String>, SortedStringSe
     private static class SortedIterator implements Iterator<String> {
         /** Sorted. */
         private Stack<Node> _toDo = new Stack<>();
-        private String _low, _high;
+        public String _low, _high;
 
         /** A new iterator over the labels in NODE. */
         SortedIterator(Node node, String low, String high) {
-            addTree(node);
             _low = low;
             _high = high;
+            addTree(node);
         }
 
         @Override
@@ -156,8 +156,12 @@ public class BSTStringSet implements StringSet, Iterable<String>, SortedStringSe
             }
 
             Node node = _toDo.pop();
-            addTree(node.right);
-            return node.s;
+            if (node != null && node.s.compareTo(_high) < 0) {
+                addTree(node.right);
+                return node.s;
+            } else {
+                return next();
+            }
         }
 
         @Override
@@ -167,7 +171,7 @@ public class BSTStringSet implements StringSet, Iterable<String>, SortedStringSe
 
         /** Add the relevant subtrees of the tree rooted at NODE. */
         private void addTree(Node node) {
-            if (node.s.compareTo(_high) < 0) {
+            if (node != null && node.s.compareTo(_high) < 0) {
                 while (node != null && node.s.compareTo(_low) > 0) {
                     _toDo.push(node);
                     node = node.left;
