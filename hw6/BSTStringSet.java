@@ -129,57 +129,45 @@ public class BSTStringSet implements StringSet, Iterable<String>, SortedStringSe
 
     @Override
     public Iterator<String> iterator(String low, String high)  {
-        return new SortedIterator(_root, low, high);
+        return new SortedIterator(new BSTIterator(_root), low, high);
     }
 
     private static class SortedIterator implements Iterator<String> {
         /** Sorted. */
         private Stack<Node> _toDo = new Stack<>();
         public String _low, _high;
-
+        private BSTIterator _iter;
+        private ArrayList<String> _list;
         /** A new iterator over the labels in NODE. */
-        SortedIterator(Node node, String low, String high) {
+        SortedIterator(BSTIterator node, String low, String high) {
             _low = low;
             _high = high;
-            addTree(node);
+            _iter = node;
+            _list = (ArrayList<String>) asList();
+        }
+
+        public List<String> asList() {
+            ArrayList<String> current = new ArrayList<String>();
+            while (_iter.hasNext()) {
+                String curr = _iter.next();
+                if (curr.compareTo(_high) < 0 && curr.compareTo(_low) > 0) {
+                    current.add(curr);
+                }
+            }
+            return current;
         }
 
         @Override
         public boolean hasNext() {
-            if (!_toDo.empty() && _toDo.firstElement().s.compareTo(_low) < 0) {
-                next();
-                return hasNext();
-            }
-            return !_toDo.empty();
+            return _list.size() > 0;
         }
 
         @Override
         public String next() {
-            if (!hasNext()) {
-                throw new NoSuchElementException();
-            }
-
-            Node node = _toDo.pop();
-            if (node != null && node.s.compareTo(_low) > 0) {
-                addTree(node.left);
-                return node.s;
-            } else {
-                return next();
-            }
+            String current = _list.get(0);
+            _list.remove(0);
+            return current;
         }
-
-        @Override
-        public void remove() {
-            throw new UnsupportedOperationException();
-        }
-
-        /** Add the relevant subtrees of the tree rooted at NODE. */
-        private void addTree(Node node) {
-            while (node != null && node.s.compareTo(_high) <= 0) {
-                _toDo.push(node);
-                node = node.right;
-            }
-    }
     }
     /** Root node of the tree. */
     private Node _root;
