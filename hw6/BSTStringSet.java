@@ -129,7 +129,7 @@ public class BSTStringSet implements StringSet, Iterable<String>, SortedStringSe
 
     @Override
     public Iterator<String> iterator(String low, String high)  {
-        return null;
+        return new SortedIterator(_root, low, high);
     }
 
     private static class SortedIterator implements Iterator<String> {
