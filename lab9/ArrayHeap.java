@@ -138,7 +138,7 @@ public class ArrayHeap<T> {
         Node node1 = getNode(index1);
         Node node2 = getNode(index2);
         if (node1 != null && node2 != null) {
-            if (node1._priority < node2._priority) {
+            if (node1.priority() < node2.priority()) {
                 return index1;
             } else {
                 return index2;
@@ -155,8 +155,10 @@ public class ArrayHeap<T> {
      * priority value, returns any of them. Returns null if heap is
      * empty. */
     public T peek() {
-        // TODO
-        return null;
+        if (size() == 0) {
+            return null;
+        }
+        return getNode(1).item();
     }
 
     /** Bubbles up the node currently at the given index until no longer
@@ -166,7 +168,7 @@ public class ArrayHeap<T> {
             Node node = getNode(index);
             int parentIndex = getParentOf(index);
             Node parent = getNode(parentIndex);
-            if (node._priority > parent._priority) {
+            if (parent != null && node.priority() < parent.priority()) {
                 setNode(parentIndex, node);
                 setNode(index, parent);
                 index = parentIndex;
@@ -183,18 +185,15 @@ public class ArrayHeap<T> {
             Node node = getNode(index);
             Node leftChild = getNode(getLeftOf(index));
             Node rightChild = getNode(getRightOf(index));
-            if (node._priority < leftChild._priority && node._priority < rightChild._priority) {
+            if (leftChild != null && rightChild != null && node.priority() > leftChild.priority() && node.priority() > rightChild.priority()) {
                 int minIndex = min(getLeftOf(index), getRightOf(index));
-                setNode(minIndex, node);
-                setNode(index, getNode(minIndex));
+                swap(index, minIndex);
                 index = minIndex;
-            } else if (node._priority < leftChild._priority) {
-                setNode(getLeftOf(index), node);
-                setNode(index, leftChild);
+            } else if (leftChild != null && node.priority() > leftChild.priority()) {
+                swap(index, getLeftOf(index));
                 index = getLeftOf(index);
-            } else if (node._priority < rightChild._priority){
-                setNode(getRightOf(index), node);
-                setNode(index, rightChild);
+            } else if (rightChild != null && node.priority() > rightChild.priority()){
+                swap(index, getRightOf(index));
                 index = getRightOf(index);
             } else {
                 break;
@@ -205,7 +204,10 @@ public class ArrayHeap<T> {
     /** Inserts an item with the given priority value. Assume that item is
      * not already in the heap. Same as enqueue, or offer. */
     public void insert(T item, double priority) {
-        // TODO
+        Node newNode = new Node(item, priority);
+        int index = size() + 1;
+        setNode(index, newNode);
+        bubbleUp(index);
     }
 
     /** Returns the element with the smallest priority value, and removes
@@ -213,8 +215,14 @@ public class ArrayHeap<T> {
      * removes any of them. Returns null if the heap is empty. Same as
      * dequeue, or poll. */
     public T removeMin() {
-        // TODO
-        return null;
+        if (size() == 0) {
+            return null;
+        }
+        swap(1, size());
+        Node answer = getNode(size());
+        removeNode(size());
+        bubbleDown(1);
+        return answer.item();
     }
 
     /** Changes the node in this heap with the given item to have the given
