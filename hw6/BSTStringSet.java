@@ -1,12 +1,11 @@
 import java.util.Iterator;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Stack;
 
 /**
  * Implementation of a BST based String Set.
- * @author
+ * @author Tyler Rathkamp
  */
 public class BSTStringSet implements StringSet, Iterable<String> {
     /** Creates a new empty set. */
@@ -16,7 +15,28 @@ public class BSTStringSet implements StringSet, Iterable<String> {
 
     @Override
     public void put(String s) {
-        // FIXME: PART A
+        _root = putHelper(_root, s);
+    }
+
+    public Node putHelper(Node node, String key) {
+        if (node == null) {
+            return new Node(key);
+        } else if (node.s.compareTo(key) < 0) {
+            if (node.left == null) {
+                node.left = new Node(key);
+            } else {
+                putHelper(node.left, key);
+            }
+        } else if (node.s.compareTo(key) > 0) {
+            if (node.right == null) {
+                node.right = new Node(key);
+            } else {
+                putHelper(node.right, key);
+            }
+        } else if (node.s.compareTo(key) == 0) {
+            node.s = key;
+        }
+        return _root;
     }
 
     @Override
