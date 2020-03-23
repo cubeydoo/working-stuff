@@ -132,7 +132,49 @@ public class BSTStringSet implements StringSet, Iterable<String>, SortedStringSe
         return null;
     }
 
+    private static class SortedIterator implements Iterator<String> {
+        /** Sorted. */
+        private Stack<Node> _toDo = new Stack<>();
+        private String _low, _high;
 
+        /** A new iterator over the labels in NODE. */
+        SortedIterator(Node node, String low, String high) {
+            addTree(node);
+            _low = low;
+            _high = high;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return !_toDo.empty();
+        }
+
+        @Override
+        public String next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+
+            Node node = _toDo.pop();
+            addTree(node.right);
+            return node.s;
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+
+        /** Add the relevant subtrees of the tree rooted at NODE. */
+        private void addTree(Node node) {
+            if (node.s.compareTo(_high) < 0) {
+                while (node != null && node.s.compareTo(_low) > 0) {
+                    _toDo.push(node);
+                    node = node.left;
+            }
+        }
+    }
+    }
     /** Root node of the tree. */
     private Node _root;
 }
