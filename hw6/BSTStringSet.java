@@ -4,7 +4,7 @@ import java.util.*;
  * Implementation of a BST based String Set.
  * @author Tyler Rathkamp
  */
-public class BSTStringSet implements StringSet, Iterable<String> {
+public class BSTStringSet implements StringSet, Iterable<String>, SortedStringSet {
     /** Creates a new empty set. */
     public BSTStringSet() {
         _root = null;
@@ -22,16 +22,14 @@ public class BSTStringSet implements StringSet, Iterable<String> {
             if (node.left == null) {
                 node.left = new Node(key);
             } else {
-                putHelper(node.left, key);
+                return putHelper(node.left, key);
             }
         } else if (node.s.compareTo(key) > 0) {
             if (node.right == null) {
                 node.right = new Node(key);
             } else {
-                putHelper(node.right, key);
+                return putHelper(node.right, key);
             }
-        } else {
-            return _root;
         }
     return _root;
     }
@@ -129,10 +127,9 @@ public class BSTStringSet implements StringSet, Iterable<String> {
         return new BSTIterator(_root);
     }
 
-    // FIXME: UNCOMMENT THE NEXT LINE FOR PART B
-    // @Override
-    public Iterator<String> iterator(String low, String high) {
-        return null;  // FIXME: PART B
+    @Override
+    public Iterator<String> iterator(String low, String high)  {
+
     }
 
 
