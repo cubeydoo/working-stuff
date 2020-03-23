@@ -104,7 +104,7 @@ public class BSTStringSet implements StringSet, Iterable<String>, SortedStringSe
             }
 
             Node node = _toDo.pop();
-            addTree(node.right);
+            addTree(node.left);
             return node.s;
         }
 
@@ -117,7 +117,7 @@ public class BSTStringSet implements StringSet, Iterable<String>, SortedStringSe
         private void addTree(Node node) {
             while (node != null) {
                 _toDo.push(node);
-                node = node.left;
+                node = node.right;
             }
         }
     }
@@ -156,8 +156,8 @@ public class BSTStringSet implements StringSet, Iterable<String>, SortedStringSe
             }
 
             Node node = _toDo.pop();
-            if (node != null && node.s.compareTo(_high) < 0) {
-                addTree(node.right);
+            if (node != null && node.s.compareTo(_low) > 0) {
+                addTree(node.left);
                 return node.s;
             } else {
                 return next();
@@ -171,10 +171,10 @@ public class BSTStringSet implements StringSet, Iterable<String>, SortedStringSe
 
         /** Add the relevant subtrees of the tree rooted at NODE. */
         private void addTree(Node node) {
-            if (node != null && node.s.compareTo(_high) < 0) {
-                while (node != null && node.s.compareTo(_low) > 0) {
+            if (node != null && node.s.compareTo(_low) > 0) {
+                while (node != null && node.s.compareTo(_high) < 0) {
                     _toDo.push(node);
-                    node = node.left;
+                    node = node.right;
             }
         }
     }
