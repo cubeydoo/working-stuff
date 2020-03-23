@@ -230,6 +230,14 @@ public class ArrayHeap<T> {
      * same item. Does nothing if the item is not in the heap. Check for
      * item equality with .equals(), not == */
     public void changePriority(T item, double priority) {
-        // TODO
+        for (int i = 1; i <= size(); i++) {
+            Node curr = getNode(i);
+            if (curr.item().equals(item)) {
+                curr._priority = priority;
+                bubbleUp(i);
+                bubbleDown(i);
+                break;
+            }
+        }
     }
 }
