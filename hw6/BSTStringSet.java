@@ -1,7 +1,4 @@
-import java.util.Iterator;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Implementation of a BST based String Set.
@@ -33,20 +30,35 @@ public class BSTStringSet implements StringSet, Iterable<String> {
             } else {
                 putHelper(node.right, key);
             }
-        } else if (node.s.compareTo(key) == 0) {
-            node.s = key;
+        } else {
+            return _root;
         }
-        return _root;
     }
 
     @Override
     public boolean contains(String s) {
-        return false; // FIXME: PART A
+        return containsHelper(_root, s);
     }
-
+    public boolean containsHelper(Node node, String key) {
+        if (node == null) {
+            return false;
+        } else if (node.s.compareTo(key) < 0) {
+            return containsHelper(node.left, key);
+        } else if (node.s.compareTo(key) > 0) {
+            return containsHelper(node.right, key);
+        } else if (node.s.equals(key)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     @Override
     public List<String> asList() {
-        return null; // FIXME: PART A
+        ArrayList<String> current = new ArrayList<String>();
+        BSTIterator iterator = new BSTIterator(_root);
+        while (iterator.hasNext()) {
+            current.add(iterator.next());
+        }
     }
 
 
