@@ -16,6 +16,9 @@ class ECHashStringSet implements StringSet {
     public void resize() {
         ArrayList<String>[] oldBuckets = _buckets;
         ArrayList<String>[] newBuckets = new ArrayList[_buckets.length * 2];
+        for (int i = 0; i < newBuckets.length; i++) {
+            newBuckets[i] = new ArrayList<String>();
+        }
         _buckets = newBuckets;
         for (int i = 0; i < oldBuckets.length; i++) {
             for (int x = 0; x < oldBuckets[i].size(); x++) {
@@ -29,6 +32,8 @@ class ECHashStringSet implements StringSet {
         int index = s.hashCode();
         if (index < 0) {
             index = (index & 0x7fffffff) % _buckets.length;
+        } else {
+            index = index % _buckets.length;
         }
         _buckets[index].add(s);
         numElem += 1;
@@ -42,6 +47,8 @@ class ECHashStringSet implements StringSet {
         int index = s.hashCode();
         if (index < 0) {
             index = (index & 0x7fffffff) % _buckets.length;
+        } else {
+            index = index % _buckets.length;
         }
         return _buckets[index].contains(s);
     }
