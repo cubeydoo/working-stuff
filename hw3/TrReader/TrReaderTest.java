@@ -43,8 +43,7 @@ public class TrReaderTest {
      *  on Windows). */
     private Reader makeStringReader(Reader r, int maxSize) throws IOException {
         char[] buf = new char[maxSize];
-        r.read(buf);
-        String result = new String(buf);
+        String result = new String(r.read(buf));
         return new StringReader(result.replace("\r\n", "\n"));
     }
 
