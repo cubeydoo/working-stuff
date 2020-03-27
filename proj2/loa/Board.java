@@ -127,7 +127,47 @@ class Board {
     /** Return true iff FROM - TO is a legal move for the player currently on
      *  move. */
     boolean isLegal(Square from, Square to) {
-        return true;   // FIXME
+        Piece fromP = _board[from.index()];
+        Piece toP = _board[to.index()];
+        boolean nullTest = from != null && to != null && fromP != null;
+        boolean rightTurn = fromP.name().equals(_turn.name());
+        boolean validMove = from.isValidMove(to);
+        int distance = from.distance(to);
+        int dir = from.direction(to);
+        int oppDir = (dir + 4) % 8;
+        int totalObj = 1;
+        int i = 1;
+        int x = 1;
+        while (true) {
+
+            Square current = from.moveDest(dir, i);
+            if (current == null) {
+                break;
+            } else {
+                Piece curr = _board[current.index()];
+                if (curr.equals(BP) || curr.equals(WP)) {
+                    totalObj += 1;
+                }
+            }
+            i += 1;
+        }
+        while (true) {
+            Square current = from.moveDest(oppDir, x);
+            if (current == null) {
+                break;
+            } else {
+                Piece curr = _board[current.index()];
+                if (curr.equals(BP) || curr.equals(WP)) {
+                    totalObj += 1;
+                }
+            }
+            x += 1;
+        }
+        boolean distCorrect = distance == totalObj;
+        boolean dist = (from.moveDest(from.direction(to), distance) == to);
+        boolean blocked = blocked(from, to);
+        return dist && validMove && nullTest && rightTurn
+                && !blocked && distCorrect;
     }
 
     /** Return true iff MOVE is legal for the player currently on move.
@@ -198,7 +238,21 @@ class Board {
     /** Return true if a move from FROM to TO is blocked by an opposing
      *  piece or by a friendly piece on the target square. */
     private boolean blocked(Square from, Square to) {
-        return false; // FIXME
+        Piece fromP = _board[from.index()];
+        Piece toP = _board[to.index()];
+        int distance = from.distance(to);
+        int dir = from.direction(to);
+        for (int i = 1; i < distance; i++) {
+            Square curr = from.moveDest(dir, i);
+            Piece piece = get(curr);
+            if (piece == (_turn.opposite())) {
+                return true;
+            }
+        }
+        if (toP.equals(_turn)) {
+            return true;
+        }
+        return false;
     }
 
     /** Return the size of the as-yet unvisited cluster of squares
