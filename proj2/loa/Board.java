@@ -135,11 +135,9 @@ class Board {
         int distance = from.distance(to);
         int dir = from.direction(to);
         int oppDir = (dir + 4) % 8;
-        int totalObj = 1;
-        int i = 1;
-        int x = 1;
+        int totalObj, i, x;
+        totalObj = i = x = 1;
         while (true) {
-
             Square current = from.moveDest(dir, i);
             if (current == null) {
                 break;

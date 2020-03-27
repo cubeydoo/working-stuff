@@ -80,7 +80,6 @@ public class BoardTest {
         assertTrue("f3-h5", b.isLegal(mv("f3-h5")));
         assertTrue("f3-h1", b.isLegal(mv("f3-h1")));
         assertTrue("f3-b3", b.isLegal(mv("f3-b3")));
-        boolean test = b.isLegal(mv("f3-h3"));
         assertFalse("f3-d1", b.isLegal(mv("f3-d1")));
         assertFalse("f3-h3", b.isLegal(mv("f3-h3")));
         assertFalse("f3-e4", b.isLegal(mv("f3-e4")));
