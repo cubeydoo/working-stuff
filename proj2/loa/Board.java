@@ -77,7 +77,10 @@ class Board {
     /** Set the square at SQ to V and set the side that is to move next
      *  to NEXT, if NEXT is not null. */
     void set(Square sq, Piece v, Piece next) {
-        // FIXME
+        if (next != null) {
+            _turn = next;
+        }
+        _board[sq.index()] = v;
     }
 
     /** Set the square at SQ to V, without modifying the side that
