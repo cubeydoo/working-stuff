@@ -51,7 +51,11 @@ class Board {
 
     /** Set my state to CONTENTS with SIDE to move. */
     void initialize(Piece[][] contents, Piece side) {
-        // FIXME
+        for (int x = 0; x < contents.length; x++) {
+            for (int y = 0; y < contents[0].length; y++) {
+                set(sq(y, x), contents[x][y], side);
+            }
+        }
         _turn = side;
         _moveLimit = DEFAULT_MOVE_LIMIT;
     }
@@ -66,7 +70,8 @@ class Board {
         if (board == this) {
             return;
         }
-        // FIXME
+        _turn = board.turn();
+        _moveLimit = board._moveLimit;
     }
 
     /** Return the contents of the square at SQ. */
