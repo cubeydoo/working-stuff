@@ -258,7 +258,16 @@ class Board {
      *  have already been processed or are in different clusters.  Update
      *  VISITED to reflect squares counted. */
     private int numContig(Square sq, boolean[][] visited, Piece p) {
-        return 0;  // FIXME
+        if (p == EMP || _board[sq.index()] != p || visited[sq.row()][sq.col()]) {
+            return 0;
+        } else {
+            visited[sq.row()][sq.col()] = true;
+            int counter = 1;
+            for (int i = 0; i < sq.adjacent().length; i++) {
+                counter += numContig(sq.adjacent()[i], visited, _board[sq.adjacent()[i].index()]);
+            }
+            return counter;
+        }
     }
 
     /** Set the values of _whiteRegionSizes and _blackRegionSizes. */
