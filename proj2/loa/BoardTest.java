@@ -90,11 +90,8 @@ public class BoardTest {
     /** Test contiguity. */
     @Test
     public void testContiguous1() {
-        Board b1 = new Board(BOARD1, BP);
-        assertFalse("Board 1 black contiguous?", b1.piecesContiguous(BP));
-        assertFalse("Board 1 white contiguous?", b1.piecesContiguous(WP));
-        assertFalse("Board 1 game over?", b1.gameOver());
         Board b2 = new Board(BOARD2, BP);
+        boolean test = b2.piecesContiguous(WP);
         assertTrue("Board 2 black contiguous?", b2.piecesContiguous(BP));
         assertFalse("Board 2 white contiguous?", b2.piecesContiguous(WP));
         assertTrue("Board 2 game over", b2.gameOver());
@@ -102,6 +99,10 @@ public class BoardTest {
         assertTrue("Board 3 white contiguous?", b3.piecesContiguous(WP));
         assertTrue("Board 3 black contiguous?", b3.piecesContiguous(WP));
         assertTrue("Board 3 game over", b2.gameOver());
+        Board b1 = new Board(BOARD1, BP);
+        assertFalse("Board 1 black contiguous?", b1.piecesContiguous(BP));
+        assertFalse("Board 1 white contiguous?", b1.piecesContiguous(WP));
+        assertFalse("Board 1 game over?", b1.gameOver());
     }
 
     @Test

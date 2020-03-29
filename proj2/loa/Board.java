@@ -187,15 +187,21 @@ class Board {
 
     /** Return true iff SIDE's pieces are continguous. */
     boolean piecesContiguous(Piece side) {
-        return getRegionSizes(side).size() == 1;
+        List<Integer> thisOne = getRegionSizes(side);
+        return thisOne.size() == 1;
     }
 
     /** Return the winning side, if any.  If the game is not over, result is
      *  null.  If the game has ended in a tie, returns EMP. */
     Piece winner() {
         if (!_winnerKnown) {
-            // FIXME
-            _winnerKnown = true;
+            if (piecesContiguous(BP)) {
+                _winnerKnown = true;
+                _winner = BP;
+            } else if (piecesContiguous(WP)) {
+                _winnerKnown = true;
+                _winner = WP;
+            }
         }
         return _winner;
     }
@@ -258,13 +264,16 @@ class Board {
      *  have already been processed or are in different clusters.  Update
      *  VISITED to reflect squares counted. */
     private int numContig(Square sq, boolean[][] visited, Piece p) {
-        if (p == EMP || _board[sq.index()] != p || visited[sq.row()][sq.col()]) {
+        if (p == EMP || _board[sq.index()] != p || visited[sq.col()][sq.row()]) {
             return 0;
         } else {
-            visited[sq.row()][sq.col()] = true;
+            visited[sq.col()][sq.row()] = true;
             int counter = 1;
             for (int i = 0; i < sq.adjacent().length; i++) {
-                counter += numContig(sq.adjacent()[i], visited, _board[sq.adjacent()[i].index()]);
+                Piece z = _board[sq.adjacent()[i].index()];
+                if (z == p) {
+                    counter += numContig(sq.adjacent()[i], visited, z);
+                }
             }
             return counter;
         }
@@ -277,13 +286,22 @@ class Board {
         }
         _whiteRegionSizes.clear();
         _blackRegionSizes.clear();
-        boolean[][] visited = new boolean[_board.length][_board.length];
-        for (int i = 0; i < _board.length; i++) {
-            Piece current = _board[i];
-            if (current == WP) {
-                _whiteRegionSizes.add(numContig())
-            } else if (current == BP) {
-
+        boolean[][] visited = new boolean[BOARD_SIZE][BOARD_SIZE];
+        for (int x = 0; x < BOARD_SIZE; x++) {
+            for (int y = 0; y < BOARD_SIZE; y++) {
+                Square curr = sq(y, x);
+                Piece current = get(curr);
+                if (current == WP) {
+                    int num = numContig(curr, visited, current);
+                    if (num != 0) {
+                        _whiteRegionSizes.add(num);
+                    }
+                } else if (current == BP) {
+                    int num = numContig(curr, visited, current);
+                    if (num != 0) {
+                        _blackRegionSizes.add(num);
+                    }
+                }
             }
         }
         Collections.sort(_whiteRegionSizes, Collections.reverseOrder());
