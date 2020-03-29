@@ -14,7 +14,7 @@ import static loa.Piece.*;
 import static loa.Square.*;
 
 /** Represents the state of a game of Lines of Action.
- *  @author
+ *  @author Tyler Rathkamp
  */
 class Board {
 
@@ -109,14 +109,32 @@ class Board {
      *  the capturing move. */
     void makeMove(Move move) {
         assert isLegal(move);
-        // FIXME
+        Piece to = get(move.getTo());
+        Piece from = get(move.getFrom());
+        if (to != EMP) {
+            _moves.add(move.captureMove());
+        } else {
+            _moves.add(move);
+        }
+        _board[move.getTo().index()] = from;
+        _board[move.getFrom().index()] = EMP;
+        _subsetsInitialized = false;
     }
 
     /** Retract (unmake) one move, returning to the state immediately before
      *  that move.  Requires that movesMade () > 0. */
     void retract() {
         assert movesMade() > 0;
-        // FIXME
+        int index = _moves.size() - 1;
+        Move move = _moves.get(index);
+        _moves.remove(index);
+        if (move.isCapture()) {
+            _board[move.getTo().index()] = _turn.opposite();
+        } else {
+            _board[move.getTo().index()] = EMP;
+        }
+        _board[move.getFrom().index()] = _turn;
+        _subsetsInitialized = false;
     }
 
     /** Return the Piece representing who is next to move. */
