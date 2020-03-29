@@ -277,7 +277,15 @@ class Board {
         }
         _whiteRegionSizes.clear();
         _blackRegionSizes.clear();
-        // FIXME
+        boolean[][] visited = new boolean[_board.length][_board.length];
+        for (int i = 0; i < _board.length; i++) {
+            Piece current = _board[i];
+            if (current == WP) {
+                _whiteRegionSizes.add(numContig())
+            } else if (current == BP) {
+
+            }
+        }
         Collections.sort(_whiteRegionSizes, Collections.reverseOrder());
         Collections.sort(_blackRegionSizes, Collections.reverseOrder());
         _subsetsInitialized = true;
