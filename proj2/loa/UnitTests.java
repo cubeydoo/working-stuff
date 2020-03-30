@@ -4,10 +4,12 @@ package loa;
 
 import ucb.junit.textui;
 import org.junit.Test;
+
+import static loa.Piece.*;
 import static org.junit.Assert.*;
 
 /** The suite of all JUnit tests for the loa package.
- *  @author
+ *  @author Tyler Rathkamp
  */
 public class UnitTests {
 
@@ -17,9 +19,24 @@ public class UnitTests {
         textui.runClasses(BoardTest.class);
     }
 
+    static final Piece[][] BOARD1 = {
+            { EMP, BP,  EMP,  BP,  BP, EMP, EMP, EMP },
+            { WP,  EMP, EMP, EMP, EMP, EMP, EMP, WP  },
+            { WP,  EMP, EMP, EMP,  BP,  BP, EMP, WP  },
+            { WP,  EMP,  BP, EMP, EMP,  WP, EMP, EMP  },
+            { WP,  EMP,  WP,  WP, EMP,  WP, EMP, EMP  },
+            { WP,  EMP, EMP, EMP,  BP, EMP, EMP, WP  },
+            { EMP, EMP, EMP, EMP, EMP, EMP, EMP, EMP  },
+            { EMP, BP,  BP,  BP,  EMP,  BP,  BP, EMP }
+    };
+
     /** A dummy test to avoid complaint. */
     @Test
-    public void placeholderTest() {
+    public void Test() {
+        Board b1 = new Board(BOARD1, BP);
+        assertFalse(b1.piecesContiguous(BP));
+        assertFalse(b1.piecesContiguous(WP));
+        assertTrue(b1.lineNum(Square.sq(0,0), 0) == 6);
     }
 
 }
