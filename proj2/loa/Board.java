@@ -146,7 +146,7 @@ class Board {
     }
 
     /** Return true iff FROM - TO is a legal move for the player currently on
-     *  move. */
+     *  move. LINETOTAL is the total pieces in the line, 0 if unknown. */
     boolean isLegal(Square from, Square to, int lineTotal) {
         Piece fromP = _board[from.index()];
         Piece toP = _board[to.index()];
@@ -165,7 +165,7 @@ class Board {
                 && !blocked && distCorrect;
     }
 
-    /** Return the number of pieces in a Line of Action. */
+    /** Return the number of pieces in a Line of Action FROM in the DIR from 0-7. */
     public int lineNum(Square from, int dir) {
         int oppDir = (dir + 4) % 8;
         int totalObj, i, x;
@@ -317,7 +317,8 @@ class Board {
      *  have already been processed or are in different clusters.  Update
      *  VISITED to reflect squares counted. */
     private int numContig(Square sq, boolean[][] visited, Piece p) {
-        if (p == EMP || _board[sq.index()] != p || visited[sq.col()][sq.row()]) {
+        if (p == EMP || _board[sq.index()] != p
+                || visited[sq.col()][sq.row()]) {
             return 0;
         } else {
             visited[sq.col()][sq.row()] = true;
