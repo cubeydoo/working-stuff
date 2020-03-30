@@ -131,11 +131,11 @@ class Board {
         Move move = _moves.get(index);
         _moves.remove(index);
         if (move.isCapture()) {
-            _board[move.getTo().index()] = _turn.opposite();
+            _board[move.getTo().index()] = _turn;
         } else {
             _board[move.getTo().index()] = EMP;
         }
-        _board[move.getFrom().index()] = _turn;
+        _board[move.getFrom().index()] = _turn.opposite();
         _subsetsInitialized = false;
         _turn = _turn.opposite();
     }
@@ -147,7 +147,7 @@ class Board {
 
     /** Return true iff FROM - TO is a legal move for the player currently on
      *  move. */
-    boolean isLegal(Square from, Square to) {
+    boolean isLegal(Square from, Square to, int lineTotal) {
         Piece fromP = _board[from.index()];
         Piece toP = _board[to.index()];
         boolean nullTest = from != null && to != null && fromP != null;
@@ -155,6 +155,18 @@ class Board {
         boolean validMove = from.isValidMove(to);
         int distance = from.distance(to);
         int dir = from.direction(to);
+        if (lineTotal == 0) {
+            lineTotal = lineNum(from, dir);
+        }
+        boolean distCorrect = distance == lineTotal;
+        boolean dist = (from.moveDest(from.direction(to), distance) == to);
+        boolean blocked = blocked(from, to);
+        return dist && validMove && nullTest && rightTurn
+                && !blocked && distCorrect;
+    }
+
+    /** Return the number of pieces in a Line of Action. */
+    public int lineNum(Square from, int dir) {
         int oppDir = (dir + 4) % 8;
         int totalObj, i, x;
         totalObj = i = x = 1;
@@ -182,22 +194,34 @@ class Board {
             }
             x += 1;
         }
-        boolean distCorrect = distance == totalObj;
-        boolean dist = (from.moveDest(from.direction(to), distance) == to);
-        boolean blocked = blocked(from, to);
-        return dist && validMove && nullTest && rightTurn
-                && !blocked && distCorrect;
+        return totalObj;
     }
 
     /** Return true iff MOVE is legal for the player currently on move.
      *  The isCapture() property is ignored. */
     boolean isLegal(Move move) {
-        return isLegal(move.getFrom(), move.getTo());
+        return isLegal(move.getFrom(), move.getTo(), 0);
     }
 
     /** Return a sequence of all legal moves from this position. */
     List<Move> legalMoves() {
-
+        ArrayList<Move> _legalMoves = new ArrayList<Move>();
+        for (int x = 0; x < BOARD_SIZE; x++) {
+            for (int y = 0; y < BOARD_SIZE; y++) {
+                Square curr = sq(y, x);
+                Piece current = get(curr);
+                if (current == _turn) {
+                    for (int i = 0; i < 8; i++) {
+                        int distance = lineNum(curr, i);
+                        Square to = curr.moveDest(i, distance);
+                        if (isLegal(curr, to, distance)) {
+                            _legalMoves.add(Move.mv(curr, to));
+                        }
+                    }
+                }
+            }
+        }
+        return _legalMoves;
     }
 
     /** Return true iff the game is over (either player has all his
