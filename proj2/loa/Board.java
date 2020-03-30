@@ -240,14 +240,20 @@ class Board {
      *  null.  If the game has ended in a tie, returns EMP. */
     Piece winner() {
         if (!_winnerKnown) {
-            if (piecesContiguous(BP)) {
+            if (piecesContiguous(BP) && piecesContiguous(WP)) {
+                _winner = _turn.opposite();
                 _winnerKnown = true;
+            }
+            else if (piecesContiguous(BP)) {
                 _winner = BP;
+                _winnerKnown = true;
             } else if (piecesContiguous(WP)) {
                 _winnerKnown = true;
                 _winner = WP;
             } else if (_moves.size() >= _moveLimit) {
-                return EMP;
+                _winner = EMP;
+            } else {
+                _winner = null;
             }
         }
         return _winner;
