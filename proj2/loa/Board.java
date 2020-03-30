@@ -92,6 +92,7 @@ class Board {
      *  moves next. */
     void set(Square sq, Piece v) {
         set(sq, v, null);
+        _subsetsInitialized = false;
     }
 
     /** Set limit on number of moves by each side that results in a tie to
@@ -119,6 +120,7 @@ class Board {
         _board[move.getTo().index()] = from;
         _board[move.getFrom().index()] = EMP;
         _subsetsInitialized = false;
+        _turn = _turn.opposite();
     }
 
     /** Retract (unmake) one move, returning to the state immediately before
@@ -135,6 +137,7 @@ class Board {
         }
         _board[move.getFrom().index()] = _turn;
         _subsetsInitialized = false;
+        _turn = _turn.opposite();
     }
 
     /** Return the Piece representing who is next to move. */
@@ -194,7 +197,7 @@ class Board {
 
     /** Return a sequence of all legal moves from this position. */
     List<Move> legalMoves() {
-        return null;  // FIXME
+
     }
 
     /** Return true iff the game is over (either player has all his
@@ -219,6 +222,8 @@ class Board {
             } else if (piecesContiguous(WP)) {
                 _winnerKnown = true;
                 _winner = WP;
+            } else if (_moves.size() >= _moveLimit) {
+                return EMP;
             }
         }
         return _winner;
