@@ -7,10 +7,18 @@ import java.util.List;
  * @author
  */
 public class ECHashStringSetTest  {
-    // FIXME: Add your own tests for your ECHashStringSetTest
 
     @Test
-    public void testNothing() {
-        // FIXME: Delete this function and add your own tests
+    public void testOne() {
+        ECHashStringSet me = new ECHashStringSet();
+        me.put("woo");
+        me.put("ok");
+        String[] answers = new String[2];
+        answers[0] = "ok";
+        answers[1] = "woo";
+        List<String> answers2 = me.asList();
+        for (int i = 0; i < answers.length - 1; i++) {
+            assertTrue(answers[0].equals(answers2.get(i)));
+        }
     }
 }

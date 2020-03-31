@@ -1,14 +1,10 @@
-import java.util.Iterator;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Implementation of a BST based String Set.
- * @author
+ * @author Tyler Rathkamp
  */
-public class BSTStringSet implements StringSet, Iterable<String> {
+public class BSTStringSet implements StringSet, Iterable<String>, SortedStringSet {
     /** Creates a new empty set. */
     public BSTStringSet() {
         _root = null;
@@ -16,17 +12,53 @@ public class BSTStringSet implements StringSet, Iterable<String> {
 
     @Override
     public void put(String s) {
-        // FIXME: PART A
+        _root = putHelper(_root, s);
+    }
+
+    public Node putHelper(Node node, String key) {
+        if (node == null) {
+            return new Node(key);
+        } else if (node.s.compareTo(key) < 0) {
+            if (node.left == null) {
+                node.left = new Node(key);
+            } else {
+                return putHelper(node.left, key);
+            }
+        } else if (node.s.compareTo(key) > 0) {
+            if (node.right == null) {
+                node.right = new Node(key);
+            } else {
+                return putHelper(node.right, key);
+            }
+        }
+        return _root;
     }
 
     @Override
     public boolean contains(String s) {
-        return false; // FIXME: PART A
+        return containsHelper(_root, s);
     }
-
+    public boolean containsHelper(Node node, String key) {
+        if (node == null) {
+            return false;
+        } else if (node.s.compareTo(key) < 0) {
+            return containsHelper(node.left, key);
+        } else if (node.s.compareTo(key) > 0) {
+            return containsHelper(node.right, key);
+        } else if (node.s.equals(key)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     @Override
     public List<String> asList() {
-        return null; // FIXME: PART A
+        ArrayList<String> current = new ArrayList<String>();
+        BSTIterator iterator = new BSTIterator(_root);
+        while (iterator.hasNext()) {
+            current.add(iterator.next());
+        }
+        return current;
     }
 
 
@@ -72,7 +104,7 @@ public class BSTStringSet implements StringSet, Iterable<String> {
             }
 
             Node node = _toDo.pop();
-            addTree(node.right);
+            addTree(node.left);
             return node.s;
         }
 
@@ -85,7 +117,7 @@ public class BSTStringSet implements StringSet, Iterable<String> {
         private void addTree(Node node) {
             while (node != null) {
                 _toDo.push(node);
-                node = node.left;
+                node = node.right;
             }
         }
     }
@@ -95,13 +127,48 @@ public class BSTStringSet implements StringSet, Iterable<String> {
         return new BSTIterator(_root);
     }
 
-    // FIXME: UNCOMMENT THE NEXT LINE FOR PART B
-    // @Override
-    public Iterator<String> iterator(String low, String high) {
-        return null;  // FIXME: PART B
+    @Override
+    public Iterator<String> iterator(String low, String high)  {
+        return new SortedIterator(new BSTIterator(_root), low, high);
     }
 
+    private static class SortedIterator implements Iterator<String> {
+        /** Sorted. */
+        private Stack<Node> _toDo = new Stack<>();
+        public String _low, _high;
+        private BSTIterator _iter;
+        private ArrayList<String> _list;
+        /** A new iterator over the labels in NODE. */
+        SortedIterator(BSTIterator node, String low, String high) {
+            _low = low;
+            _high = high;
+            _iter = node;
+            _list = (ArrayList<String>) asList();
+        }
 
+        public List<String> asList() {
+            ArrayList<String> current = new ArrayList<String>();
+            while (_iter.hasNext()) {
+                String curr = _iter.next();
+                if (curr.compareTo(_high) <= 0 && curr.compareTo(_low) >= 0) {
+                    current.add(curr);
+                }
+            }
+            return current;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return _list.size() > 0;
+        }
+
+        @Override
+        public String next() {
+            String current = _list.get(0);
+            _list.remove(0);
+            return current;
+        }
+    }
     /** Root node of the tree. */
     private Node _root;
 }
