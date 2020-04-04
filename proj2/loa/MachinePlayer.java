@@ -2,7 +2,11 @@
  * University of California.  All rights reserved. */
 package loa;
 
+import java.util.ArrayList;
+
 import static loa.Piece.*;
+import static loa.Square.BOARD_SIZE;
+import static loa.Square.sq;
 
 /** An automated Player.
  *  @author
@@ -83,7 +87,40 @@ class MachinePlayer extends Player {
         return 1;  // FIXME
     }
 
-    // FIXME: Other methods, variables here.
+    private int moveScore(Board board) {
+        if (board.piecesContiguous(board.turn())) {
+            return INFTY;
+        }
+        int rowTotal, colTotal, totalPieces, total;
+        rowTotal = colTotal = totalPieces = total = 0;
+        ArrayList<Square> squares = new ArrayList<Square>();
+        for (int x = 0; x < BOARD_SIZE; x++) {
+            for (int y = 0; y < BOARD_SIZE; y++) {
+                Square curr = sq(y, x);
+                Piece current = board.get(curr);
+                if (current == board.turn()) {
+                    rowTotal += curr.row();
+                    colTotal += curr.col();
+                    totalPieces += 1;
+                    squares.add(curr);
+                }
+            }
+        }
+        Square center = sq(colTotal/totalPieces, rowTotal/totalPieces);
+        for (Square square : squares) {
+            total += center.distance(square);
+        }
+        int minSum;
+        if (squares.size() <= 9) {
+            minSum = squares.size() - 1;
+        } else {
+            minSum = 8 + ((squares.size() - 9) * 2);
+        }
+        total -= minSum;
+        double surplus = total;
+        surplus = 1/surplus;
+        return (int) (surplus * 10);
+    }
 
     /** Used to convey moves discovered by findMove. */
     private Move _foundMove;
