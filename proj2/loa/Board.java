@@ -70,14 +70,17 @@ class Board {
         if (board == this) {
             return;
         }
+        _moveLimit = board._moveLimit;
+        _winnerKnown = board._winnerKnown;
+        _winner = board._winner;
         _moves.clear();
         _turn = board.turn();
         _moveLimit = board._moveLimit;
         _subsetsInitialized = false;
-        for (int i = 0; i < board._board.length; i ++) {
+        for (int i = 0; i < board._board.length; i++) {
             _board[i] = board._board[i];
         }
-        for (int i = 0; i < board._moves.size()) {
+        for (int i = 0; i < board._moves.size(); i++) {
             _moves.add(board._moves.get(i));
         }
     }

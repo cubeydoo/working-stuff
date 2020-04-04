@@ -109,7 +109,6 @@ public class BoardTest {
     public void testEquals1() {
         Board b1 = new Board(BOARD1, BP);
         Board b2 = new Board(BOARD1, BP);
-
         assertEquals("Board 1 equals Board 1", b1, b2);
     }
 

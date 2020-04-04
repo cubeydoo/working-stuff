@@ -39,6 +39,13 @@ public class UnitTests {
         assertTrue(b1.lineNum(Square.sq(0,0), 0) == 6);
     }
 
+    @Test
+    public void testCopy() {
+        Board b1 = new Board(BOARD1, BP);
+        Board b2 = new Board(b1);
+        assertEquals(b1, b2);
+    }
+
 }
 
 
