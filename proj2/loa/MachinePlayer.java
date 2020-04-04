@@ -75,7 +75,7 @@ class MachinePlayer extends Player {
      *  on BOARD, does not set _foundMove. */
     private int findMove(Board board, int depth, boolean saveMove,
                          int sense, int alpha, int beta) {
-        // FIXME
+        
         if (saveMove) {
             _foundMove = null; // FIXME
         }

@@ -70,8 +70,16 @@ class Board {
         if (board == this) {
             return;
         }
+        _moves.clear();
         _turn = board.turn();
         _moveLimit = board._moveLimit;
+        _subsetsInitialized = false;
+        for (int i = 0; i < board._board.length; i ++) {
+            _board[i] = board._board[i];
+        }
+        for (int i = 0; i < board._moves.size()) {
+            _moves.add(board._moves.get(i));
+        }
     }
 
     /** Return the contents of the square at SQ. */
