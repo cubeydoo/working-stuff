@@ -26,17 +26,17 @@ public class UnitTests {
             { WP,  EMP,  BP, EMP, EMP,  WP, EMP, EMP  },
             { WP,  EMP,  WP,  WP, EMP,  WP, EMP, EMP  },
             { WP,  EMP, EMP, EMP,  BP, EMP, EMP, WP  },
-            { EMP, EMP, EMP, EMP, EMP, EMP, EMP, EMP  },
+            { EMP, EMP, EMP, EMP, EMP, EMP, EMP, EMP },
             { EMP, BP,  BP,  BP,  EMP,  BP,  BP, EMP }
     };
 
     /** A dummy test to avoid complaint. */
     @Test
-    public void Test() {
+    public void test() {
         Board b1 = new Board(BOARD1, BP);
         assertFalse(b1.piecesContiguous(BP));
         assertFalse(b1.piecesContiguous(WP));
-        assertTrue(b1.lineNum(Square.sq(0,0), 0) == 6);
+        assertTrue(b1.lineNum(Square.sq(0, 0), 0) == 6);
     }
 
     @Test

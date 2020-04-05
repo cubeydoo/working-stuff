@@ -10,7 +10,7 @@ import static loa.Square.BOARD_SIZE;
 import static loa.Square.sq;
 
 /** An automated Player.
- *  @author
+ *  @author Tyler Rathkamp
  */
 class MachinePlayer extends Player {
 
@@ -79,13 +79,14 @@ class MachinePlayer extends Player {
         if (depth == 0) {
             return moveScore(board);
         }
-        int _bestScore = 0;
+        int bestScore = 0;
         for (Move move : board.legalMoves()) {
             board.makeMove(move);
-            int score = findMove(board, depth - 1, false, sense * -1, alpha, beta);
+            int score = findMove(board, depth - 1,
+                    false, sense * -1, alpha, beta);
             board.retract();
-            if (_bestScore <= score) {
-                _bestScore = score;
+            if (bestScore <= score) {
+                bestScore = score;
                 if (saveMove) {
                     _foundMove = move;
                 }
@@ -99,15 +100,14 @@ class MachinePlayer extends Player {
                 break;
             }
         }
-        return _bestScore;
+        return bestScore;
     }
 
     /** Return a search depth for the current position. */
     private int chooseDepth() {
         return 2;
     }
-
-
+    /** Returns the score of a BOARD for the current player. */
     private int moveScore(Board board) {
         Random r = new Random();
         if (board.piecesContiguous(board.turn())) {
@@ -128,7 +128,8 @@ class MachinePlayer extends Player {
                 }
             }
         }
-        Square center = sq(colTotal/totalPieces, rowTotal/totalPieces);
+        Square center =
+                sq(colTotal / totalPieces, rowTotal / totalPieces);
         for (Square square : squares) {
             total += center.distance(square);
         }
@@ -140,9 +141,10 @@ class MachinePlayer extends Player {
         }
         total -= minSum;
         double surplus = total;
-        surplus = 1/surplus;
+        surplus = 1 / surplus;
         surplus = surplus * 1000;
-        int random = r.nextInt(20);
+        int randomBound = 16;
+        int random = r.nextInt(randomBound);
         surplus += random;
         return (int) surplus;
     }

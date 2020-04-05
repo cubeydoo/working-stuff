@@ -180,7 +180,7 @@ class Board {
                 && !blocked && distCorrect;
     }
 
-    /** Return the number of pieces in a Line of Action FROM in the DIR from 0-7. */
+    /** Return number of pieces in a Line of Action FROM in the DIR from 0-7. */
     public int lineNum(Square from, int dir) {
         int oppDir = (dir + 4) % 8;
         int totalObj, i, x;
@@ -220,7 +220,7 @@ class Board {
 
     /** Return a sequence of all legal moves from this position. */
     List<Move> legalMoves() {
-        ArrayList<Move> _legalMoves = new ArrayList<Move>();
+        ArrayList<Move> legalMoves = new ArrayList<Move>();
         for (int x = 0; x < BOARD_SIZE; x++) {
             for (int y = 0; y < BOARD_SIZE; y++) {
                 Square curr = sq(y, x);
@@ -230,13 +230,13 @@ class Board {
                         int distance = lineNum(curr, i);
                         Square to = curr.moveDest(i, distance);
                         if (isLegal(curr, to, distance)) {
-                            _legalMoves.add(Move.mv(curr, to));
+                            legalMoves.add(Move.mv(curr, to));
                         }
                     }
                 }
             }
         }
-        return _legalMoves;
+        return legalMoves;
     }
 
     /** Return true iff the game is over (either player has all his
@@ -258,8 +258,7 @@ class Board {
             if (piecesContiguous(BP) && piecesContiguous(WP)) {
                 _winner = _turn.opposite();
                 _winnerKnown = true;
-            }
-            else if (piecesContiguous(BP)) {
+            } else if (piecesContiguous(BP)) {
                 _winner = BP;
                 _winnerKnown = true;
             } else if (piecesContiguous(WP)) {
