@@ -3,6 +3,7 @@
 package loa;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import static loa.Piece.*;
 import static loa.Square.BOARD_SIZE;
@@ -75,19 +76,40 @@ class MachinePlayer extends Player {
      *  on BOARD, does not set _foundMove. */
     private int findMove(Board board, int depth, boolean saveMove,
                          int sense, int alpha, int beta) {
-        
-        if (saveMove) {
-            _foundMove = null; // FIXME
+        if (depth == 0) {
+            return moveScore(board);
         }
-        return 0; // FIXME
+        int _bestScore = 0;
+        for (Move move : board.legalMoves()) {
+            board.makeMove(move);
+            int score = findMove(board, depth - 1, false, sense * -1, alpha, beta);
+            board.retract();
+            if (_bestScore <= score) {
+                _bestScore = score;
+                if (saveMove) {
+                    _foundMove = move;
+                }
+            }
+            if (sense == 1) {
+                alpha = Math.max(score, alpha);
+            } else {
+                beta = Math.min(score, beta);
+            }
+            if (alpha > beta) {
+                break;
+            }
+        }
+        return _bestScore;
     }
 
     /** Return a search depth for the current position. */
     private int chooseDepth() {
-        return 1;  // FIXME
+        return 2;
     }
 
+
     private int moveScore(Board board) {
+        Random r = new Random();
         if (board.piecesContiguous(board.turn())) {
             return INFTY;
         }
@@ -119,7 +141,10 @@ class MachinePlayer extends Player {
         total -= minSum;
         double surplus = total;
         surplus = 1/surplus;
-        return (int) (surplus * 10);
+        surplus = surplus * 1000;
+        int random = r.nextInt(20);
+        surplus += random;
+        return (int) surplus;
     }
 
     /** Used to convey moves discovered by findMove. */

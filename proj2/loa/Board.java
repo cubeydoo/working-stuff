@@ -149,6 +149,7 @@ class Board {
         _board[move.getFrom().index()] = _turn.opposite();
         _subsetsInitialized = false;
         _turn = _turn.opposite();
+        _winnerKnown = false;
     }
 
     /** Return the Piece representing who is next to move. */
@@ -159,6 +160,9 @@ class Board {
     /** Return true iff FROM - TO is a legal move for the player currently on
      *  move. LINETOTAL is the total pieces in the line, 0 if unknown. */
     boolean isLegal(Square from, Square to, int lineTotal) {
+        if (to == null || from == null || to.index() > _board.length) {
+            return false;
+        }
         Piece fromP = _board[from.index()];
         Piece toP = _board[to.index()];
         boolean nullTest = from != null && to != null && fromP != null;
