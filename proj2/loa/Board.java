@@ -57,7 +57,7 @@ class Board {
             }
         }
         _turn = side;
-        _moveLimit = DEFAULT_MOVE_LIMIT * 2;
+        _moveLimit = DEFAULT_MOVE_LIMIT;
     }
 
     /** Set me to the initial configuration. */
