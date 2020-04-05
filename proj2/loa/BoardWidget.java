@@ -121,13 +121,26 @@ class BoardWidget extends Pad {
 
     /** Handle a mouse-button push on S. */
     private void mousePressed(Square s) {
-        // FIXME
+        if (_acceptingMoves) {
+            _from = s;
+        }
         repaint();
     }
 
     /** Handle a mouse-button release on S. */
     private void mouseReleased(Square s) {
-        // FIXME
+        if (_acceptingMoves && _from != null) {
+            Move move = null;
+            if (_board.get(s) != EMP) {
+                move = Move.mv(_from, s, true);
+            } else {
+                move = Move.mv(_from, s, false);
+            }
+            if (move != null) {
+                _commands.offer(move.toString());
+            }
+            _from = null;
+        }
         repaint();
     }
 
@@ -155,7 +168,6 @@ class BoardWidget extends Pad {
     /** Revise the displayed board according to BOARD. */
     synchronized void update(Board board) {
         _board.copyFrom(board);
-        // FIXME?
         repaint();
     }
 
@@ -164,7 +176,7 @@ class BoardWidget extends Pad {
      *  the board. */
     void setMoveCollection(boolean collecting) {
         _acceptingMoves = collecting;
-        // FIXME?
+        _from = null;
         repaint();
     }
 
@@ -199,5 +211,8 @@ class BoardWidget extends Pad {
 
     /** True iff accepting moves from user. */
     private boolean _acceptingMoves;
+
+    /** First part of a possible move. */
+    private Square _from;
 
 }
