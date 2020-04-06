@@ -1,7 +1,6 @@
 # Check that the gameplay turns out ok.
 #* java -ea loa.Main
 manual white
-dump
 b8-b6
 a7-c7
 d8-d6
@@ -18,3 +17,4 @@ g1-g3
 h2-f2
 g6-g4
 h7-e7
+dump

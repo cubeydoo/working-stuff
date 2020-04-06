@@ -1,4 +1,4 @@
-# Check that the initial position is right.
+# Check that gameplay is okay.
 #* java -ea loa.Main
 manual White
 c8-c6
