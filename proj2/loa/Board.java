@@ -388,8 +388,6 @@ class Board {
         }
     }
 
-    // FIXME: Other methods, variables?
-
     /** The standard initial configuration for Lines of Action (bottom row
      *  first). */
     static final Piece[][] INITIAL_PIECES = {

@@ -40,7 +40,11 @@ class GUI extends TopLevel implements View, Reporter {
         super(title, true);
         addMenuButton("Game->New", this::newGame);
         addMenuButton("Game->Quit", this::quit);
-        // FIXME: Other controls?
+        addMenuButton("Game->Undo", this::undo);
+        addMenuButton("Swap->White", this::whiteManual);
+        addMenuButton("Swap->Black", this::blackManual);
+        addMenuButton("Game->Help", this::help);
+
 
         _widget = new BoardWidget(_pendingCommands);
         add(_widget,
@@ -51,7 +55,6 @@ class GUI extends TopLevel implements View, Reporter {
                  new LayoutSpec("x", 0, "y", 0,
                                 "height", 1,
                                 "width", 3));
-        // FIXME: Other components?
     }
 
     /** Response to "Quit" button click. */
@@ -59,9 +62,37 @@ class GUI extends TopLevel implements View, Reporter {
         _pendingCommands.offer("quit");
     }
 
+    /** Response to "Undo" button click. */
+    private void undo(String dummy) {
+        _pendingCommands.offer("undo");
+    }
+
     /** Response to "New Game" button click. */
     private void newGame(String dummy) {
         _pendingCommands.offer("new");
+    }
+
+    /** Set a player to be manual. */
+    private void blackManual(String dummy) {
+        if (_manualBlack) {
+            _pendingCommands.offer("auto black");
+        } else {
+            _pendingCommands.offer("manual black");
+        }
+    }
+
+    /** Set a player to be manual. */
+    private void whiteManual(String dummy) {
+        if (_manualWhite) {
+            _pendingCommands.offer("auto white");
+        } else {
+            _pendingCommands.offer("manual white");
+        }
+    }
+
+    /** Display a help page. */
+    private void help(String dummy) {
+        displayText("Help", "loa/Help.html");
     }
 
     /** Return the next command from our widget, waiting for it as necessary.
@@ -93,9 +124,8 @@ class GUI extends TopLevel implements View, Reporter {
                      String.format("To move: %s", board.turn().fullName()));
         }
 
-        boolean manualWhite = controller.manualWhite(),
-            manualBlack = controller.manualBlack();
-        // FIXME: More?
+        _manualWhite = controller.manualWhite();
+        _manualBlack = controller.manualBlack();
     }
 
     /** Display text in resource named TEXTRESOURCE in a new window titled
@@ -157,5 +187,7 @@ class GUI extends TopLevel implements View, Reporter {
      *  call readCommand, which therefore needs to wait for clicks to happen. */
     private ArrayBlockingQueue<String> _pendingCommands =
         new ArrayBlockingQueue<>(5);
+    /** Returns whether white or black are human or AI. */
+    private boolean _manualWhite, _manualBlack;
 
 }

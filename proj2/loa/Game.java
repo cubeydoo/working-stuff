@@ -99,10 +99,13 @@ class Game {
         Matcher command = COMMAND_PATN.matcher(line);
         if (command.matches()) {
             switch (command.group(1).toLowerCase()) {
+            case "undo":
+                _board.retract();
+                break;
             case "#":
                 break;
             case "new":
-                _board.clear();
+                _board = new Board();
                 _playing = true;
                 break;
             case "dump":
