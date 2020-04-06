@@ -100,7 +100,10 @@ class Game {
         if (command.matches()) {
             switch (command.group(1).toLowerCase()) {
             case "undo":
-                _board.retract();
+                if (_board.movesMade() >= 2) {
+                    _board.retract();
+                    _board.retract();
+                }
                 break;
             case "#":
                 break;
