@@ -44,7 +44,7 @@ public class MySortingAlgorithms {
         public void sort(int[] array, int k) {
             for (int i = 1; i < k; i++) {
                 int current = array[i];
-                while (i > 1 && current < array[i - 1]) {
+                while (i >= 1 && current < array[i - 1]) {
                     array[i] = array[i - 1];
                     array[i - 1] = current;
                     i -= 1;
@@ -71,8 +71,8 @@ public class MySortingAlgorithms {
             int curr = 0;
             for (int i = 0; i < k; i++) {
                 for (int x = curr; x < k; x++) {
-                    if (array[i] < array[lowIndex]) {
-                        lowIndex = i;
+                    if (array[x] < array[lowIndex]) {
+                        lowIndex = x;
                     }
                 }
                 int temp = array[lowIndex];
@@ -98,7 +98,13 @@ public class MySortingAlgorithms {
     public static class MergeSort implements SortingAlgorithm {
         @Override
         public void sort(int[] array, int k) {
-            int half = k / 2;
+            if (array.length < 2) {
+                return;
+            }
+            int half = k/2;
+            if (k % 2 != 0) {
+                half += 1;
+            }
             int[] first = new int[half];
             int[] second = new int[k-half];
 
@@ -106,19 +112,18 @@ public class MySortingAlgorithms {
                 first[i] = array[i];
             }
             for (int i = half; i < k; i++) {
-                first[i - half] = array[i];
+                second[i - half] = array[i];
             }
 
             sort(first, half);
             sort(second, k-half);
-            merge(first, second, half, k-half);
+            merge(first, second, array, half, k-half);
         }
 
-        public void merge(int[] first, int[] second, int f, int s) {
+        public void merge(int[] first, int[] second, int[] fin, int f, int s) {
             int i = 0;
             int x = 0;
             int finIndex = 0;
-            int[] fin = new int[f+s];
             while (i < f && x < s) {
                 if (first[i] <= second[x]) {
                     fin[finIndex] = first[i];
