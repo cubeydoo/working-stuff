@@ -217,7 +217,46 @@ public class MySortingAlgorithms {
     public static class LSDSort implements SortingAlgorithm {
         @Override
         public void sort(int[] a, int k) {
-            // FIXME
+            int max = 0;
+            int factor = 1;
+            for (int i = 0; i < k; i++) {
+                if (a[i] > max) {
+                    max = a[i];
+                }
+            }
+            int counter = 0;
+            while (max != 0) {
+                counter += 1;
+                max = max / 10;
+            }
+            while (counter > 0) {
+                countSort(a, factor, k);
+                factor *= 10;
+                counter -= 1;
+            }
+        }
+        public void countSort(int[] a, int factor, int k) {
+            int[] newList = new int[a.length];
+            int[] buckets = new int[10];
+            for (int i = 0; i < k; i++) {
+                int current = (a[i] / factor) % 10;
+                buckets[current] += 1;
+            }
+
+            for (int i = 1; i < k && i < buckets.length; i++) {
+                buckets[i] += buckets[i - 1];
+            }
+
+            for (int i = k - 1; 0 <= i; i--) {
+                int current = (a[i] / factor) % 10;
+                int counter = buckets[current];
+                newList[counter-1] = a[i];
+                buckets[current] -= 1;
+            }
+
+            for (int i = 0; i < k; i++) {
+                a[i] = newList[i];
+            }
         }
 
         @Override
