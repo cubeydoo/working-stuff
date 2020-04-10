@@ -1,3 +1,5 @@
+import org.junit.Test;
+
 import java.util.Arrays;
 
 /**
@@ -125,6 +127,7 @@ public class MySortingAlgorithms {
             int x = 0;
             int finIndex = 0;
             while (i < f && x < s) {
+                System.out.println(first[i] + " ," + second[x]);
                 if (first[i] <= second[x]) {
                     fin[finIndex] = first[i];
                     i++;
@@ -149,6 +152,11 @@ public class MySortingAlgorithms {
             }
         }
 
+        @Test
+        public void testMerge() {
+            int[] me = {5, 3, 2, 1, 7, 8, 4, 6};
+            sort(me, 8);
+        }
         // may want to add additional methods
 
         @Override
