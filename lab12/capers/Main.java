@@ -1,6 +1,9 @@
 package capers;
 
+import org.junit.Test;
+
 import java.io.File;
+import java.io.IOException;
 
 /** Canine Capers: A Gitlet Prelude.
  * @author Sean Dooher
@@ -10,8 +13,7 @@ public class Main {
     static final File CWD = new File(".");
 
     /** Main metadata folder. */
-    static final File CAPERS_FOLDER = null; // FIXME
-
+    static final File CAPERS_FOLDER = new File("metadata");
     /**
      * Runs one of three commands:
      * story [text] -- Appends "text" + a newline to a story file in the
@@ -67,7 +69,18 @@ public class Main {
      *
      */
     public static void setupPersistence() {
-        // FIXME
+        CAPERS_FOLDER.mkdir();
+
+        try {
+            String me = CAPERS_FOLDER.getPath() + "/story.txt";
+            File file = new File(me);
+            File two = new File(CAPERS_FOLDER.getPath() + "/dogs");
+            two.mkdir();
+            file.createNewFile();
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -77,7 +90,9 @@ public class Main {
      */
     public static void writeStory(String[] args) {
         validateNumArgs("story", args, 2);
-        // FIXME
+        File files = new File(CAPERS_FOLDER + "/story.txt");
+        String string = Utils.readContentsAsString(files) + args[1] + "\n";
+        Utils.writeContents(files, string);
     }
 
     /**
