@@ -51,7 +51,12 @@ public class Main {
         case "story":
             writeStory(args);
             break;
-        // FIXME
+        case "birthday":
+            celebrateBirthday(args);
+            break;
+        case "dog":
+            makeDog(args);
+            break;
         default:
             exitWithError(String.format("Unknown command: %s", args[0]));
         }
@@ -103,7 +108,9 @@ public class Main {
      */
     public static void makeDog(String[] args) {
         validateNumArgs("dog", args, 4);
-        // FIXME
+        Dog dog = new Dog(args[1], args[2], Integer.parseInt(args[3]));
+        dog.saveDog();
+        System.out.println(dog.toString());
     }
 
     /**
@@ -114,7 +121,9 @@ public class Main {
      */
     public static void celebrateBirthday(String[] args) {
         validateNumArgs("birthday", args, 2);
-        // FIXME
+        Dog dog = Dog.fromFile(args[1]);
+        dog.haveBirthday();
+        dog.saveDog();
     }
 
     /**

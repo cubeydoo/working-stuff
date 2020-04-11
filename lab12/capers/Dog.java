@@ -50,9 +50,6 @@ public class Dog extends Main implements Serializable {
     public void saveDog() {
         File file = Utils.join(DOG_FOLDER, _name);
         try {
-            if (file.exists()) {
-                return;
-            }
             file.createNewFile();
             Utils.writeContents(file, this);
         } catch (IOException excp) {
