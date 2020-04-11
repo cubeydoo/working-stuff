@@ -51,7 +51,7 @@ public class Dog extends Main implements Serializable {
         File file = Utils.join(DOG_FOLDER, _name);
         try {
             file.createNewFile();
-            Utils.writeContents(file, this);
+            Utils.writeObject(file, this);
         } catch (IOException excp) {
             System.out.println("File path wrong");
         }

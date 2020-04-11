@@ -13,7 +13,7 @@ public class Main {
     static final File CWD = new File(".");
 
     /** Main metadata folder. */
-    static final File CAPERS_FOLDER = new File("metadata");
+    static final File CAPERS_FOLDER = new File(".capers");
     /**
      * Runs one of three commands:
      * story [text] -- Appends "text" + a newline to a story file in the
@@ -98,6 +98,7 @@ public class Main {
         File files = new File(CAPERS_FOLDER + "/story.txt");
         String string = Utils.readContentsAsString(files) + args[1] + "\n";
         Utils.writeContents(files, string);
+        System.out.println(Utils.readContentsAsString(files));
     }
 
     /**
