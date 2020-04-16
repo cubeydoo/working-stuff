@@ -144,18 +144,12 @@ public class RedBlackTree<T extends Comparable<T>> {
         if (isRed(node.right) && !isRed(node.left)) {
             // YOUR CODE HERE
             node = rotateLeft(node);
-            boolean temp = node.isBlack;
-            node.isBlack = node.left.isBlack;
-            node.left.isBlack = temp;
         }
 
         // handle case B
         if (isRed(node.left) && isRed(node.left.left)) {
             // YOUR CODE HERE
             node = rotateRight(node);
-            boolean temp = node.isBlack;
-            node.isBlack = node.right.isBlack;
-            node.right.isBlack = temp;
 
         }
 
