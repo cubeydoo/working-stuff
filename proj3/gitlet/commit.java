@@ -9,8 +9,8 @@ import java.util.HashMap;
 /** Driver class for Gitlet, the tiny stupid version-control system.
  *  @author Tyler Rathkamp
  */
-public class Commit {
-    /** A mapping between file names and SHA value of file contents */
+public class Commit extends Objects {
+    /** A mapping between file names and SHA value of file contents. */
     private HashMap files = new HashMap();
 
     /** SHA-1 hash value referencing parent commit */
@@ -24,17 +24,38 @@ public class Commit {
     private String timestamp;
 
     /** A string that stores the commit message. */
-    private String message;
+    private String _message;
 
-    /** Helper variable for remove(file). */
-    private static ArrayList<String> toRemove = new ArrayList<String>();
+    public Commit(String message) {
+        _message = message;
+        if (this._message.equals("initial commit")) {
+            this.init();
+        } else {
 
-    public commit(String message) {
-
+        }
     }
 
-    public void init(File cwd) {
-        File gitlet = Utils.join("user.dir", ".gitlet");
-        gitlet.mkdir();
+    public void init() {
+        timestamp = "00:00:00 UTC, Thursday, 1 January 1970";
+        parent = null;
+        File gitlet = Utils.join(System.getProperty("user.dir"), ".gitlet");
+        if (!gitlet.exists()) { //CHANGE THIS BACK WHEN UR DONE
+            gitlet.mkdir();
+            head = Utils.join(gitlet, "HEAD.txt");
+            Utils.writeObject(head, "placeholder");
+            refs = Utils.join(gitlet, "refs");
+            objects = Utils.join(gitlet, "objects");
+            staging = Utils.join(gitlet, "staging");
+            refs.mkdir();
+            objects.mkdir();
+            staging.mkdir();
+            branch = Utils.join(refs, "branches");
+            commit = Utils.join(refs, "commit");
+            branch.mkdir();
+            commit.mkdir();
+            toRemove = Utils.join(gitlet, "toRemove.txt");
+
+        }
+
     }
 }
