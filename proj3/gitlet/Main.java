@@ -12,6 +12,7 @@ public class Main {
     public static void main(String... args) {
         if (args[0].equals("init")) {
             File cwd = new File(System.getProperty("user.dir"));
+            commit
         }
 
 
