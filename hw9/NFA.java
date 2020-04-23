@@ -69,7 +69,6 @@ public class NFA {
 
 
     /** The internal States in an NFA. */
-    // TODO: Read this inner class, then you may delete this comment
     private class State {
 
         /**
@@ -101,8 +100,22 @@ public class NFA {
          * If this State has no outgoing edges with label C, then
          * return an empty Set. */
         public Set<State> successors(char c) {
-            // TODO: Implement this method
-            return new HashSet<State>();
+            HashSet<State> current = new HashSet<State>();
+            if (c == EPSILON) {
+                if (_edges.get(c) != null) {
+                    current.addAll(_edges.get(c));
+                    for (State set : _edges.get(c)) {
+                        current.addAll(set.successors(c));
+                    }
+                }
+            } if (_edges.get(c) == null) {
+                return current;
+            } else {
+                if (_edges.get(c) != null) {
+                    current.addAll(_edges.get(c));
+                }
+            }
+            return current;
         }
 
         /**
@@ -359,8 +372,26 @@ public class NFA {
      * @param s the query String
      * @return whether or not the string S is accepted by this NFA. */
     public boolean matches(String s) {
-        // TODO: write the matching algorithm
-        return true;
+        HashSet<State> current = (HashSet<State>) _startState.successors(EPSILON);
+        current.add(_startState);
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            HashSet<State> snew = new HashSet<State>();
+            for (State state : current) {
+                snew.addAll(state.successors(c));
+            }
+            current = snew;
+            snew = new HashSet<State>();
+            for (State state : current) {
+                snew.addAll(state.successors(EPSILON));
+            }
+            current.addAll(snew);
+        }
+        if (current.contains(_acceptState)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /** Returns the pattern used to make this NFA. */
