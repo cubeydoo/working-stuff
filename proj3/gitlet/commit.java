@@ -38,23 +38,14 @@ public class Commit extends Objects {
     public void init() {
         timestamp = "00:00:00 UTC, Thursday, 1 January 1970";
         parent = null;
-        File gitlet = Utils.join(System.getProperty("user.dir"), ".gitlet");
         if (!gitlet.exists()) { //CHANGE THIS BACK WHEN UR DONE
             gitlet.mkdir();
-            head = Utils.join(gitlet, "HEAD.txt");
             Utils.writeObject(head, "placeholder");
-            refs = Utils.join(gitlet, "refs");
-            objects = Utils.join(gitlet, "objects");
-            staging = Utils.join(gitlet, "staging");
             refs.mkdir();
             objects.mkdir();
             staging.mkdir();
-            branch = Utils.join(refs, "branches");
-            commit = Utils.join(refs, "commit");
             branch.mkdir();
             commit.mkdir();
-            toRemove = Utils.join(gitlet, "toRemove.txt");
-
         }
 
     }
