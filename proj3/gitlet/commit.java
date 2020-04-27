@@ -1,5 +1,6 @@
 package gitlet;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.HashMap;
 import static gitlet.Objects.*;
@@ -28,7 +29,7 @@ public class Commit implements Serializable {
         parent = null;
         if (!gitlet.exists()) { //CHANGE THIS BACK WHEN UR DONE
             gitlet.mkdir();
-            Utils.writeObject(head, "placeholder");
+            Utils.writeContents(head, "placeholder");
             refs.mkdir();
             objects.mkdir();
             staging.mkdir();
