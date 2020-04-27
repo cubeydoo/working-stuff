@@ -31,8 +31,9 @@ public class Commit extends Objects {
         if (this._message.equals("initial commit")) {
             this.init();
         } else {
-
+            timestamp = "fixme";
         }
+
     }
 
     public void init() {
