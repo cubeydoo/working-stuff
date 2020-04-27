@@ -29,11 +29,13 @@ public class Commit implements Serializable {
         parent = null;
         if (!gitlet.exists()) { //CHANGE THIS BACK WHEN UR DONE
             gitlet.mkdir();
-            Utils.writeContents(head, "placeholder");
+            Utils.writeContents(head, "master.txt");
             refs.mkdir();
             objects.mkdir();
             staging.mkdir();
             branch.mkdir();
+            File master = Utils.join(branch, "master.txt");
+            Utils.writeContents(master, "hewo");
             commit.mkdir();
         }
 
