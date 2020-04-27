@@ -24,6 +24,8 @@ public class Objects {
     public static File commit = Utils.join(refs, "commit");
     /** toRemove. */
     public static File toRemove = Utils.join(gitlet, "toRemove.txt");
+    /** CWD. */
+    public static File cwd = new File(System.getProperty("user.dir"));
 
 
     public Commit getCommit(String branchHead) {
