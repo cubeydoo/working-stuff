@@ -1,15 +1,12 @@
 package gitlet;
 
-import org.junit.Test;
-
-import java.io.File;
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.HashMap;
 
 /** Driver class for Gitlet, the tiny stupid version-control system.
  *  @author Tyler Rathkamp
  */
-public class Commit extends Objects {
+public class Commit extends Objects implements Serializable {
     /** A mapping between file names and SHA value of file contents. */
     private HashMap files = new HashMap();
 
@@ -26,6 +23,9 @@ public class Commit extends Objects {
     /** A string that stores the commit message. */
     private String _message;
 
+    /** A string that stores the sha value. */
+    private String shaValue;
+
     public Commit(String message) {
         _message = message;
         if (this._message.equals("initial commit")) {
@@ -34,6 +34,10 @@ public class Commit extends Objects {
             timestamp = "fixme";
         }
 
+    }
+
+    public String getParent() {
+        return this.parent;
     }
 
     public void init() {
@@ -49,5 +53,22 @@ public class Commit extends Objects {
             commit.mkdir();
         }
 
+    }
+
+    public String toString() {
+        String returnme;
+        if (mergedBranch == null) {
+            returnme = "===\n"
+                    + "commit " + shaValue + "\n"
+                    + "Date: " + timestamp + "\n"
+                    + _message + "\n";
+        } else {
+            returnme = "===\n"
+                    + "commit " + shaValue + "\n"
+                    + "Merge: " + parent.substring(0, 7) + " " + mergedBranch.substring(0, 7) + "\n"
+                    + "Date: " + timestamp + "\n"
+                    + _message + "\n";
+        }
+        return returnme;
     }
 }
