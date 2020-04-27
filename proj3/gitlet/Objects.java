@@ -28,7 +28,7 @@ public class Objects {
     public static File cwd = new File(System.getProperty("user.dir"));
 
 
-    public Commit getCommit(String branchHead) {
+    public static Commit getCommit(String branchHead) {
         File correctBranch;
         if (branchHead.equals("HEAD")) {
             String latestCommit = Utils.readContentsAsString(head);
@@ -40,7 +40,7 @@ public class Objects {
         return getCommitfromSHA(shaVal);
     }
 
-    public Commit getCommitfromSHA(String shaVal) {
+    public static Commit getCommitfromSHA(String shaVal) {
         File correctBranch = Utils.join(commit, shaVal);
         Commit lastCommit = Utils.readObject(correctBranch, Commit.class);
         return lastCommit;

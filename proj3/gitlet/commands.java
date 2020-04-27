@@ -1,12 +1,13 @@
 package gitlet;
 
 import java.io.File;
+import static gitlet.Objects.*;
 import java.util.ArrayList;
 
 /** Driver class for Gitlet, the tiny stupid version-control system.
  *  @author Tyler Rathkamp
  */
-public class Commands extends Objects {
+public class Commands {
     /** The last commit made on the current branch. */
     private Commit lastCommit = getCommit("HEAD");
 

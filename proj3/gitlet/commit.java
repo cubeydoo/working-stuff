@@ -2,11 +2,12 @@ package gitlet;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import static gitlet.Objects.*;
 
 /** Driver class for Gitlet, the tiny stupid version-control system.
  *  @author Tyler Rathkamp
  */
-public class Commit extends Objects implements Serializable {
+public class Commit implements Serializable {
     /** A mapping between file names and SHA value of file contents. */
     private HashMap files = new HashMap();
 
