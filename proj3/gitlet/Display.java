@@ -18,21 +18,4 @@ public class Display extends Objects {
         System.out.println(returnMe);
     }
 
-    public Commit getCommit(String branchHead) {
-        File correctBranch;
-        if (branchHead.equals("HEAD")) {
-            String latestCommit = Utils.readContentsAsString(head);
-            correctBranch = new File(latestCommit);
-        } else {
-            correctBranch = Utils.join(branch, branchHead);
-        }
-        String shaVal = Utils.readContentsAsString(correctBranch);
-        getCommitfromSHA(shaVal);
-    }
-
-    public Commit getCommitfromSHA(String shaVal) {
-        File correctBranch = Utils.join(commit, shaVal);
-        Commit lastCommit = Utils.readObject(correctBranch, Commit.class);
-        return lastCommit;
-    }
 }

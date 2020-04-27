@@ -25,4 +25,22 @@ public class Objects {
     /** toRemove. */
     public static File toRemove = Utils.join(gitlet, "toRemove.txt");
 
+
+    public Commit getCommit(String branchHead) {
+        File correctBranch;
+        if (branchHead.equals("HEAD")) {
+            String latestCommit = Utils.readContentsAsString(head);
+            correctBranch = new File(latestCommit);
+        } else {
+            correctBranch = Utils.join(branch, branchHead);
+        }
+        String shaVal = Utils.readContentsAsString(correctBranch);
+        return getCommitfromSHA(shaVal);
+    }
+
+    public Commit getCommitfromSHA(String shaVal) {
+        File correctBranch = Utils.join(commit, shaVal);
+        Commit lastCommit = Utils.readObject(correctBranch, Commit.class);
+        return lastCommit;
+    }
 }
