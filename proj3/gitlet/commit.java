@@ -60,14 +60,13 @@ public class Commit implements Serializable {
     /** A mapping between file names and SHA value of file contents. */
     private HashMap files = new HashMap();
 
-    /** SHA-1 hash value referencing parent commit */
+    /** SHA1 hash value referencing parent commit. */
     private String parent;
 
-    /** — SHA-1 hash value referencing head of
-     * branch that was merged in. */
+    /** SHA1 hash value referencing mergeHead. */
     private String mergedBranch;
 
-    /** — Time at which commit was created. */
+    /** Time at which commit was created. */
     private String timestamp;
 
     /** A string that stores the commit message. */

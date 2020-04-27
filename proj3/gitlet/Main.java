@@ -9,8 +9,8 @@ public class Main {
             new Commit("initial commit");
         } else if (args[0].equals("add")) {
             Commands.addFile(args[1]);
+        } else {
+            System.out.println("I don't understand.");
         }
-
-        System.out.println("I don't understand.");
     }
 }
