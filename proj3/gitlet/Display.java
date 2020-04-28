@@ -15,7 +15,7 @@ public class Display  {
             returnMe = lastCommit.toString() + returnMe;
             lastCommit = Objects.getCommitfromSHA(lastCommit.getParent());
         }
-        returnMe = lastCommit.toString() + returnMe;
+        returnMe = returnMe + lastCommit.toString() ;
         System.out.println(returnMe);
     }
 

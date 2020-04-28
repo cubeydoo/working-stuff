@@ -2,9 +2,12 @@ package gitlet;
 
 import org.junit.Test;
 
+import javax.xml.crypto.dsig.SignatureMethod;
 import java.io.File;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import static gitlet.Objects.*;
 
@@ -58,9 +61,20 @@ public class Commit implements Serializable {
         Utils.writeObject(saveMe, this);
     }
 
+    /** Get the timestamp. */
     public String getTimestamp() {
-        java.util.Date date = new java.util.Date();
-        return date.toString();
+        String pattern = "EEE MMM d HH:mm:ss yyyy Z";
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+        String date = sdf.format(new Date());
+        return date;
+    }
+
+    /** Get the initial timestamp. */
+    public String getNewTimestamp() {
+        String pattern = "EEE MMM d HH:mm:ss yyyy Z";
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+        String date = sdf.format(new Date(0));
+        return date;
     }
 
     public String getParent() {
@@ -72,7 +86,7 @@ public class Commit implements Serializable {
     }
 
     public void init() {
-        timestamp = "Thu Jan 1 00:00:00 UTC 2020";
+        timestamp = getNewTimestamp();
         parent = null;
         if (!GITLET.exists()) { //CHANGE THIS BACK WHEN UR DONE
             GITLET.mkdir();
@@ -102,7 +116,7 @@ public class Commit implements Serializable {
                     + "commit " + shaValue + "\n"
                     + "Merge: " + parent.substring(0, 7) + " " + mergedBranch.substring(0, 7) + "\n"
                     + "Date: " + timestamp + "\n"
-                    + _message + "\n";
+                    + _message + "\n\n";
         }
         return returnme;
     }
