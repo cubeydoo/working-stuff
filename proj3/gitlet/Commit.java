@@ -94,7 +94,7 @@ public class Commit implements Serializable {
         return returnme;
     }
     /** A mapping between file names and SHA value of file contents. */
-    private HashMap files = new HashMap();
+    private HashMap<String, String> files = new HashMap();
 
     /** SHA1 hash value referencing parent commit. */
     private String parent;
