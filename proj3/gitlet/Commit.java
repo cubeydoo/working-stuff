@@ -110,13 +110,13 @@ public class Commit implements Serializable {
             returnme = "===\n"
                     + "commit " + shaValue + "\n"
                     + "Date: " + timestamp + "\n"
-                    + _message + "\n";
+                    + _message + "\n\n";
         } else {
             returnme = "===\n"
                     + "commit " + shaValue + "\n"
                     + "Merge: " + parent.substring(0, 7) + " " + mergedBranch.substring(0, 7) + "\n"
                     + "Date: " + timestamp + "\n"
-                    + _message + "\n";
+                    + _message + "\n\n";
         }
         return returnme;
     }
