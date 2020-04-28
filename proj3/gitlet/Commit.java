@@ -38,12 +38,15 @@ public class Commit implements Serializable {
         }
         for (String fileName : stageFileNames) {
             File current = Utils.join(STAGING, fileName);
-            String shaVal = Utils.sha1(current);
+            String contents = Utils.readContentsAsString(current);
+            String shaVal = Utils.sha1(contents);
             File destination = Utils.join(OBJECTS, shaVal);
+            Utils.writeContents(destination, contents);
             files.put(fileName, shaVal);
-            Utils.restrictedDelete(current);
+            current.delete();
         }
-        shaValue = Utils.sha1(this);
+        byte[] byteArray = Utils.serialize(this);
+        shaValue = Utils.sha1(byteArray);
         String branchName = Utils.readContentsAsString(HEAD);
         File correctBranch = Utils.join(BRANCH, branchName);
         Utils.writeContents(correctBranch, shaValue);
