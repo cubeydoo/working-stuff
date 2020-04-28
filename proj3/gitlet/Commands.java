@@ -12,7 +12,7 @@ public class Commands {
     private Commit lastCommit = getCommit("HEAD");
 
     public static void addFile(String fileName) {
-        String[] currentWD = Utils.plainFilenamesIn(cwd).toArray(new String[0]);
+        String[] currentWD = Utils.plainFilenamesIn(CWD).toArray(new String[0]);
         boolean flag = false;
         for (String string : currentWD) {
             if(string.equals(fileName)) {
@@ -22,7 +22,7 @@ public class Commands {
         if (flag) {
             File current = new File(fileName);
             String contents = Utils.readContentsAsString(current);
-            File output = Utils.join(staging, fileName);
+            File output = Utils.join(STAGING, fileName);
             Utils.writeContents(output, contents);
         } else {
             System.out.println("File does not exist.");

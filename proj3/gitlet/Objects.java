@@ -31,8 +31,8 @@ public class Objects {
     public static Commit getCommit(String branchHead) {
         File correctBranch;
         if (branchHead.equals("HEAD")) {
-            String latestCommit = Utils.readContentsAsString(HEAD);
-            correctBranch = new File(latestCommit);
+            String branchName = Utils.readContentsAsString(HEAD);
+            correctBranch = Utils.join(BRANCH, branchName);
         } else {
             correctBranch = Utils.join(BRANCH, branchHead);
         }

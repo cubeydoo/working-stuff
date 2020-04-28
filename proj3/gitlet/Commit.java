@@ -2,6 +2,7 @@ package gitlet;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import static gitlet.Objects.*;
 
@@ -12,10 +13,21 @@ public class Commit implements Serializable {
 
     public Commit(String message) {
         _message = message;
+        String[] stageFileNames = Utils.plainFilenamesIn(STAGING).toArray(new String[0]);
+        if (stageFileNames.length == 0) {
+            System.out.println("No changes added to the commit.");
+            return;
+        } else if (message.equals("")) {
+            System.out.println("Please enter a commit message.");
+            return;
+        }
+        timestamp = "fixme";
+
         if (this._message.equals("initial commit")) {
             this.init();
         } else {
-            timestamp = "fixme";
+            Commit lastCommit = getCommit("HEAD");
+            parent = lastCommit.shaValue;
         }
 
     }
@@ -27,7 +39,7 @@ public class Commit implements Serializable {
     public void init() {
         timestamp = "00:00:00 UTC, Thursday, 1 January 1970";
         parent = null;
-        if (!GITLET.exists()) { //CHANGE THIS BACK WHEN UR DONE
+        if (GITLET.exists()) { //CHANGE THIS BACK WHEN UR DONE
             GITLET.mkdir();
             Utils.writeContents(HEAD, "master.txt");
             REFS.mkdir();
@@ -37,6 +49,7 @@ public class Commit implements Serializable {
             File master = Utils.join(BRANCH, "master.txt");
             Utils.writeContents(master, "hewo");
             COMMIT.mkdir();
+            Utils.writeContents(TOREMOVE, "");
         }
 
     }
