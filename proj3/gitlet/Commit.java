@@ -116,7 +116,7 @@ public class Commit implements Serializable {
                     + "commit " + shaValue + "\n"
                     + "Merge: " + parent.substring(0, 7) + " " + mergedBranch.substring(0, 7) + "\n"
                     + "Date: " + timestamp + "\n"
-                    + _message + "\n\n";
+                    + _message + "\n";
         }
         return returnme;
     }
