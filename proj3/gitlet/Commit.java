@@ -61,7 +61,7 @@ public class Commit implements Serializable {
     public void init() {
         timestamp = "00:00:00 UTC, Thursday, 1 January 1970";
         parent = null;
-        if (GITLET.exists()) { //CHANGE THIS BACK WHEN UR DONE
+        if (!GITLET.exists()) { //CHANGE THIS BACK WHEN UR DONE
             GITLET.mkdir();
             Utils.writeContents(HEAD, "master.txt");
             REFS.mkdir();
