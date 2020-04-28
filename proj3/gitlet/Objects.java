@@ -69,7 +69,7 @@ public class Objects {
         }
         if (flag) {
             File file = Utils.join(OBJECTS, hash);
-            return Utils.readObject(file, String.class);
+            return Utils.readContentsAsString(file);
         } else {
             System.out.println("File does not exist in that commit.");
             return null;
