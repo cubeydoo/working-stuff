@@ -27,16 +27,16 @@ public class Commit implements Serializable {
     public void init() {
         timestamp = "00:00:00 UTC, Thursday, 1 January 1970";
         parent = null;
-        if (!gitlet.exists()) { //CHANGE THIS BACK WHEN UR DONE
-            gitlet.mkdir();
-            Utils.writeContents(head, "master.txt");
-            refs.mkdir();
-            objects.mkdir();
-            staging.mkdir();
-            branch.mkdir();
-            File master = Utils.join(branch, "master.txt");
+        if (!GITLET.exists()) { //CHANGE THIS BACK WHEN UR DONE
+            GITLET.mkdir();
+            Utils.writeContents(HEAD, "master.txt");
+            REFS.mkdir();
+            OBJECTS.mkdir();
+            STAGING.mkdir();
+            BRANCH.mkdir();
+            File master = Utils.join(BRANCH, "master.txt");
             Utils.writeContents(master, "hewo");
-            commit.mkdir();
+            COMMIT.mkdir();
         }
 
     }

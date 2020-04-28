@@ -9,39 +9,39 @@ import java.util.HashMap;
  */
 public class Objects {
     /** Gitlet file. */
-    public static File gitlet = Utils.join(System.getProperty("user.dir"), ".gitlet");
+    public static final File GITLET = Utils.join(System.getProperty("user.dir"), ".gitlet");
     /** A mapping between file names and SHA value of file contents. */
-    public static File head = Utils.join(gitlet, "HEAD.txt");;
+    public static final File HEAD = Utils.join(gitlet, "HEAD.txt");;
     /** A mapping between file names and SHA value of file contents. */
-    public static File objects = Utils.join(gitlet, "objects");
+    public static final File OBJECTS = Utils.join(gitlet, "objects");
     /** A mapping between file names and SHA value of file contents. */
-    public static File staging = Utils.join(gitlet, "staging");
+    public static final File STAGING = Utils.join(gitlet, "staging");
     /** Refs. */
-    public static File refs = Utils.join(gitlet, "refs");
+    public static final File REFS = Utils.join(gitlet, "refs");
     /** A mapping between file names and SHA value of file contents. */
-    public static File branch = Utils.join(refs, "branches");
+    public static final File BRANCH = Utils.join(refs, "branches");
     /** A mapping between file names and SHA value of file contents. */
-    public static File commit = Utils.join(refs, "commit");
+    public static final File COMMIT = Utils.join(refs, "commit");
     /** toRemove. */
-    public static File toRemove = Utils.join(gitlet, "toRemove.txt");
+    public static final File TOREMOVE = Utils.join(gitlet, "toRemove.txt");
     /** CWD. */
-    public static File cwd = new File(System.getProperty("user.dir"));
+    public static final File CWD = new File(System.getProperty("user.dir"));
 
 
     public static Commit getCommit(String branchHead) {
         File correctBranch;
         if (branchHead.equals("HEAD")) {
-            String latestCommit = Utils.readContentsAsString(head);
+            String latestCommit = Utils.readContentsAsString(HEAD);
             correctBranch = new File(latestCommit);
         } else {
-            correctBranch = Utils.join(branch, branchHead);
+            correctBranch = Utils.join(BRANCH, branchHead);
         }
         String shaVal = Utils.readContentsAsString(correctBranch);
         return getCommitfromSHA(shaVal);
     }
 
     public static Commit getCommitfromSHA(String shaVal) {
-        File correctBranch = Utils.join(commit, shaVal);
+        File correctBranch = Utils.join(COMMIT, shaVal);
         Commit lastCommit = Utils.readObject(correctBranch, Commit.class);
         return lastCommit;
     }
