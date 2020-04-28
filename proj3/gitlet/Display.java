@@ -12,10 +12,10 @@ public class Display  {
         Commit lastCommit = Objects.getCommit("HEAD");
         String returnMe = "";
         while (lastCommit.getParent() != null) {
-            returnMe = lastCommit.toString() + returnMe;
+            returnMe = returnMe + lastCommit.toString();
             lastCommit = Objects.getCommitfromSHA(lastCommit.getParent());
         }
-        returnMe = returnMe + lastCommit.toString() ;
+        returnMe = returnMe + lastCommit.toString();
         System.out.println(returnMe);
     }
 
