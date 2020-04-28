@@ -11,19 +11,19 @@ public class Objects {
     /** Gitlet file. */
     public static final File GITLET = Utils.join(System.getProperty("user.dir"), ".gitlet");
     /** A mapping between file names and SHA value of file contents. */
-    public static final File HEAD = Utils.join(gitlet, "HEAD.txt");;
+    public static final File HEAD = Utils.join(GITLET, "HEAD.txt");;
     /** A mapping between file names and SHA value of file contents. */
-    public static final File OBJECTS = Utils.join(gitlet, "objects");
+    public static final File OBJECTS = Utils.join(GITLET, "objects");
     /** A mapping between file names and SHA value of file contents. */
-    public static final File STAGING = Utils.join(gitlet, "staging");
+    public static final File STAGING = Utils.join(GITLET, "staging");
     /** Refs. */
-    public static final File REFS = Utils.join(gitlet, "refs");
+    public static final File REFS = Utils.join(GITLET, "refs");
     /** A mapping between file names and SHA value of file contents. */
-    public static final File BRANCH = Utils.join(refs, "branches");
+    public static final File BRANCH = Utils.join(REFS, "branches");
     /** A mapping between file names and SHA value of file contents. */
-    public static final File COMMIT = Utils.join(refs, "commit");
+    public static final File COMMIT = Utils.join(REFS, "commit");
     /** toRemove. */
-    public static final File TOREMOVE = Utils.join(gitlet, "toRemove.txt");
+    public static final File TOREMOVE = Utils.join(GITLET, "toRemove.txt");
     /** CWD. */
     public static final File CWD = new File(System.getProperty("user.dir"));
 
