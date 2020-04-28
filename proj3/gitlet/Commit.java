@@ -13,6 +13,11 @@ public class Commit implements Serializable {
 
     public Commit(String message) {
         _message = message;
+        boolean firstCommit = false;
+        if (this._message.equals("initial commit")) {
+            this.init();
+            firstCommit = true;
+        }
         String[] stageFileNames = Utils.plainFilenamesIn(STAGING).toArray(new String[0]);
         if (stageFileNames.length == 0) {
             System.out.println("No changes added to the commit.");
@@ -23,9 +28,7 @@ public class Commit implements Serializable {
         }
         timestamp = "fixme";
 
-        if (this._message.equals("initial commit")) {
-            this.init();
-        } else {
+        if (!firstCommit){
             Commit lastCommit = getCommit("HEAD");
             parent = lastCommit.shaValue;
             files = lastCommit.files;
@@ -35,15 +38,15 @@ public class Commit implements Serializable {
             }
             String[] remove = {};
             Utils.writeObject(TOREMOVE, remove);
-        }
-        for (String fileName : stageFileNames) {
-            File current = Utils.join(STAGING, fileName);
-            String contents = Utils.readContentsAsString(current);
-            String shaVal = Utils.sha1(contents);
-            File destination = Utils.join(OBJECTS, shaVal);
-            Utils.writeContents(destination, contents);
-            files.put(fileName, shaVal);
-            current.delete();
+            for (String fileName : stageFileNames) {
+                File current = Utils.join(STAGING, fileName);
+                String contents = Utils.readContentsAsString(current);
+                String shaVal = Utils.sha1(contents);
+                File destination = Utils.join(OBJECTS, shaVal);
+                Utils.writeContents(destination, contents);
+                files.put(fileName, shaVal);
+                current.delete();
+            }
         }
         byte[] byteArray = Utils.serialize(this);
         shaValue = Utils.sha1(byteArray);
