@@ -28,8 +28,27 @@ public class Commit implements Serializable {
         } else {
             Commit lastCommit = getCommit("HEAD");
             parent = lastCommit.shaValue;
+            files = lastCommit.files;
+            String[] toRemove = Utils.readObject(TOREMOVE, String[].class);
+            for (String fileName : toRemove) {
+                files.remove(fileName);
+            }
+            String[] remove = {};
+            Utils.writeObject(TOREMOVE, remove);
         }
-
+        for (String fileName : stageFileNames) {
+            File current = Utils.join(STAGING, fileName);
+            String shaVal = Utils.sha1(current);
+            File destination = Utils.join(OBJECTS, shaVal);
+            files.put(fileName, shaVal);
+            Utils.restrictedDelete(current);
+        }
+        shaValue = Utils.sha1(this);
+        String branchName = Utils.readContentsAsString(HEAD);
+        File correctBranch = Utils.join(BRANCH, branchName);
+        Utils.writeContents(correctBranch, shaValue);
+        File saveMe = Utils.join(COMMIT, shaValue);
+        Utils.writeObject(saveMe, this);
     }
 
     public String getParent() {
@@ -49,7 +68,8 @@ public class Commit implements Serializable {
             File master = Utils.join(BRANCH, "master.txt");
             Utils.writeContents(master, "hewo");
             COMMIT.mkdir();
-            Utils.writeContents(TOREMOVE, "");
+            String[] remove = {};
+            Utils.writeObject(TOREMOVE, remove);
         }
 
     }
