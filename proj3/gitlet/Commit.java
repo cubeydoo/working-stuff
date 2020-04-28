@@ -19,7 +19,7 @@ public class Commit implements Serializable {
             firstCommit = true;
         }
         String[] stageFileNames = Utils.plainFilenamesIn(STAGING).toArray(new String[0]);
-        if (stageFileNames.length == 0) {
+        if (stageFileNames.length == 0 && !firstCommit) {
             System.out.println("No changes added to the commit.");
             return;
         } else if (message.equals("")) {
