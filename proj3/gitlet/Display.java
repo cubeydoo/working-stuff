@@ -8,7 +8,7 @@ import java.util.HashMap;
  *  @author Tyler Rathkamp
  */
 public class Display  {
-    public void log() {
+    public static void log() {
         Commit lastCommit = Objects.getCommit("HEAD");
         String returnMe = "";
         while (lastCommit.getParent() != null) {

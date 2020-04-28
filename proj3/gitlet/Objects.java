@@ -41,8 +41,38 @@ public class Objects {
     }
 
     public static Commit getCommitfromSHA(String shaVal) {
-        File correctBranch = Utils.join(COMMIT, shaVal);
-        Commit lastCommit = Utils.readObject(correctBranch, Commit.class);
-        return lastCommit;
+        boolean flag = false;
+        String[] objectFiles = Utils.plainFilenamesIn(COMMIT).toArray(new String[0]);
+        for (String string : objectFiles) {
+            if(string.equals(shaVal)) {
+                flag = true;
+            }
+        }
+        if (flag) {
+            File correctBranch = Utils.join(COMMIT, shaVal);
+            Commit lastCommit = Utils.readObject(correctBranch, Commit.class);
+            return lastCommit;
+        } else {
+            System.out.println("No commit with that id exists.");
+            return null;
+        }
+    }
+
+    /** Returns the string contents of a HASH file in .gitlet/refs/objects. Returns NULL if File is not found. */
+    public static String getFileContents(String hash) {
+        String[] objectFiles = Utils.plainFilenamesIn(OBJECTS).toArray(new String[0]);
+        boolean flag = false;
+        for (String string : objectFiles) {
+            if(string.equals(hash)) {
+                flag = true;
+            }
+        }
+        if (flag) {
+            File file = Utils.join(OBJECTS, hash);
+            return Utils.readObject(file, String.class);
+        } else {
+            System.out.println("File does not exist in that commit.");
+            return null;
+        }
     }
 }

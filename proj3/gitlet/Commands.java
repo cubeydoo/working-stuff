@@ -28,4 +28,22 @@ public class Commands {
             System.out.println("File does not exist.");
         }
     }
+    public static void checkout(String commit, String fileName) {
+        Commit checkout;
+        if (commit == null) {
+            checkout = getCommit("HEAD");
+        } else {
+            checkout = getCommitfromSHA(commit);
+        }
+        if (checkout == null) {
+            return;
+        }
+        String fileHash = checkout.getFiles().get(fileName);
+        String contents = getFileContents(fileHash);
+        File current = Utils.join(CWD, fileName);
+        if (!(contents == null)) {
+            Utils.writeContents(current, contents);
+        }
+
+    }
 }

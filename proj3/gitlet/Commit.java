@@ -1,5 +1,7 @@
 package gitlet;
 
+import org.junit.Test;
+
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,9 +28,8 @@ public class Commit implements Serializable {
             System.out.println("Please enter a commit message.");
             return;
         }
-        timestamp = "fixme";
-
         if (!firstCommit){
+            timestamp = getTimestamp();
             Commit lastCommit = getCommit("HEAD");
             parent = lastCommit.shaValue;
             files = lastCommit.files;
@@ -57,12 +58,21 @@ public class Commit implements Serializable {
         Utils.writeObject(saveMe, this);
     }
 
+    public String getTimestamp() {
+        java.util.Date date = new java.util.Date();
+        return date.toString();
+    }
+
     public String getParent() {
         return this.parent;
     }
 
+    public HashMap<String, String> getFiles() {
+        return files;
+    }
+
     public void init() {
-        timestamp = "00:00:00 UTC, Thursday, 1 January 1970";
+        timestamp = "Thu Jan 1 00:00:00 UTC 2020";
         parent = null;
         if (!GITLET.exists()) { //CHANGE THIS BACK WHEN UR DONE
             GITLET.mkdir();

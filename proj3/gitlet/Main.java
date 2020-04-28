@@ -11,7 +11,15 @@ public class Main {
             Commands.addFile(args[1]);
         } else if (args[0].equals("commit")) {
             new Commit(args[1]);
-        }else {
+        } else if (args[0].equals("checkout")) {
+            if (args[1].equals("--")) {
+                Commands.checkout(null, args[2]);
+            } else if (args.length == 4) {
+                Commands.checkout(args[1], args[3]);
+            }
+        } else if (args[0].equals("log")) {
+            Display.log();
+        } else {
             System.out.println("I don't understand.");
         }
     }
