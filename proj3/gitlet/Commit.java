@@ -100,6 +100,9 @@ public class Commit implements Serializable {
             COMMIT.mkdir();
             String[] remove = {};
             Utils.writeObject(TOREMOVE, remove);
+        } else {
+            System.out.println("A Gitlet version-control " +
+                    "system already exists in the current directory.");
         }
 
     }
