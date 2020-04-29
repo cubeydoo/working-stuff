@@ -75,4 +75,14 @@ public class Objects {
             return null;
         }
     }
+
+    public static boolean doesFileExist(String[] files, String fileName) {
+        boolean flag = false;
+        for (String string : files) {
+            if(string.equals(fileName)) {
+                flag = true;
+            }
+        }
+        return flag;
+    }
 }
