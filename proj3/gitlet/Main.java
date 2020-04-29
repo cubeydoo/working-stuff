@@ -1,4 +1,5 @@
 package gitlet;
+import static gitlet.Objects.*;
 
 public class Main {
     public Main() {
@@ -7,6 +8,8 @@ public class Main {
     public static void main(String... args) {
         if (args[0].equals("init")) {
             new Commit("initial commit");
+        } else if (!GITLET.exists()) {
+            System.out.println("Not in an initialized Gitlet directory.");
         } else if (args[0].equals("add")) {
             Commands.addFile(args[1]);
         } else if (args[0].equals("commit")) {
