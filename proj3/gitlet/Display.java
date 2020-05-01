@@ -2,6 +2,7 @@ package gitlet;
 import static gitlet.Objects.*;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +32,7 @@ public class Display  {
         System.out.println(returnMe);
     }
 
+    @SuppressWarnings("unchecked")
     public static void status() {
         System.out.println("=== Branches ===\n");
         List<String> branchNames = Utils.plainFilenamesIn(BRANCH);
@@ -52,5 +54,11 @@ public class Display  {
         }
         System.out.println("\n" +
                 "=== Removed Files ===\n");
+        ArrayList<String> remFiles = Utils.readObject(TOREMOVE, ArrayList.class);
+        for (String file : remFiles) {
+            System.out.println(file + "\n");
+        }
+        System.out.println("\n=== Modifications Not Staged For Commit ===\n");
+        System.out.println("\n=== Untracked Files ===\n");
     }
 }
