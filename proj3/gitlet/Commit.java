@@ -98,7 +98,7 @@ public class Commit implements Serializable {
             File master = Utils.join(BRANCH, "master.txt");
             Utils.writeContents(master, "hewo");
             COMMIT.mkdir();
-            String[] remove = {};
+            ArrayList<String> remove = new ArrayList<>();
             Utils.writeObject(TOREMOVE, remove);
         } else {
             System.out.println("A Gitlet version-control " +
@@ -107,11 +107,28 @@ public class Commit implements Serializable {
 
     }
 
+    @SuppressWarnings("unchecked")
     public void rm(String filename) {
-        File wd = Utils.join(CWD, filename);
+        File wd = Utils.join(STAGING, filename);
+        Commit lastCommit = getCommitfromSHA(parent);
+        if (lastCommit != null) {
+            HashMap<String, String> files = lastCommit.getFiles();
+            if (files.containsKey(filename)) {
+                File file = Utils.join(CWD, filename);
+                file.delete();
+                ArrayList<String> remove = Utils.readObject(TOREMOVE, ArrayList.class);
+                remove.add(filename);
+                Utils.writeObject(TOREMOVE, remove);
+            } else if (!wd.exists()) {
+                System.out.println("No reason to remove the file.");
+            }
+        } else if (!wd.exists()) {
+            System.out.println("No reason to remove the file.");
+        }
         if (wd.exists()) {
             Utils.restrictedDelete(wd);
         }
+
     }
 
     public String toString() {
