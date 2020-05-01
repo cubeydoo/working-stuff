@@ -107,6 +107,13 @@ public class Commit implements Serializable {
 
     }
 
+    public void rm(String filename) {
+        File wd = Utils.join(CWD, filename);
+        if (wd.exists()) {
+            Utils.restrictedDelete(wd);
+        }
+    }
+
     public String toString() {
         String returnme;
         if (mergedBranch == null) {
