@@ -29,7 +29,8 @@ public class Main {
             case "log":
                 Display.log();
             case "rm":
-                Commit.rm(args[1]);
+                Commit current = getCommit("HEAD");
+                current.rm(args[1]);
             case "global-log":
                 Display.globalLog();
             default:

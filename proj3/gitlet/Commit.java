@@ -108,7 +108,7 @@ public class Commit implements Serializable {
     }
 
     @SuppressWarnings("unchecked")
-    public static void rm(String filename) {
+    public void rm(String filename) {
         File wd = Utils.join(STAGING, filename);
         Commit lastCommit = getCommitfromSHA(parent);
         if (lastCommit != null) {
