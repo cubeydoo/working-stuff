@@ -17,6 +17,8 @@ public class Main {
         } else if (args[0].equals("checkout")) {
             if (args[1].equals("--")) {
                 Commands.checkout(null, args[2]);
+            } else if (args[1].equals("++")) {
+                System.out.println("Incorrect operands.");
             } else if (args.length == 4) {
                 Commands.checkout(args[1], args[3]);
             } else if (args.length == 2) {

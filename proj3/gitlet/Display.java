@@ -18,5 +18,13 @@ public class Display  {
         returnMe = returnMe + lastCommit.toString();
         System.out.println(returnMe);
     }
-
+    public static void globalLog() {
+        String[] fileNames = Utils.plainFilenamesIn(BRANCH).toArray(new String[0]);
+        String returnMe = "";
+        for (String branchName : fileNames) {
+            Commit lastCommit = getCommit(branchName);
+            returnMe = returnMe + lastCommit.toString();
+        }
+        System.out.println(returnMe);
+    }
 }
