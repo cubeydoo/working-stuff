@@ -14,8 +14,10 @@ public class Main {
             switch (args[0]) {
                 case "add":
                     Commands.addFile(args[1]);
+                    break;
                 case "commit":
                     new Commit(args[1]);
+                    break;
                 case "checkout":
                     if (args[1].equals("--")) {
                         Commands.checkout(null, args[2]);
@@ -26,13 +28,20 @@ public class Main {
                     } else if (args.length == 2) {
                         Commands.checkout(args[1]);
                     }
+                    break;
                 case "log":
                     Display.log();
+                    break;
                 case "rm":
                     Commit current = getCommit("HEAD");
                     current.rm(args[1]);
+                    break;
                 case "global-log":
                     Display.globalLog();
+                    break;
+                case "status":
+                    Display.status();
+                    break;
                 default:
                     System.out.println("I don't understand.");
             }
