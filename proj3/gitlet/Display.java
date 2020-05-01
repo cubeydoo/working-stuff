@@ -1,16 +1,15 @@
 package gitlet;
 import static gitlet.Objects.*;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 /** Driver class for Gitlet, the tiny stupid version-control system.
  *  @author Tyler Rathkamp
  */
 public class Display  {
+    /** Logs of commits in this branch. */
     public static void log() {
         Commit lastCommit = Objects.getCommit("HEAD");
         String returnMe = "";
@@ -21,6 +20,7 @@ public class Display  {
         returnMe = returnMe + lastCommit.toString();
         System.out.println(returnMe);
     }
+    /** Logs of all commits. */
     public static void globalLog() {
         String[] fileNames = Utils.plainFilenamesIn
                 (BRANCH).toArray(new String[0]);
@@ -32,6 +32,7 @@ public class Display  {
         System.out.println(returnMe);
     }
 
+    /** Returns the status. */
     @SuppressWarnings("unchecked")
     public static void status() {
         System.out.println("=== Branches ===\n");
@@ -52,9 +53,10 @@ public class Display  {
         for (String fileName : stagedFiles) {
             System.out.println(fileName + "\n");
         }
-        System.out.println("\n" +
-                "=== Removed Files ===\n");
-        ArrayList<String> remFiles = Utils.readObject(TOREMOVE, ArrayList.class);
+        System.out.println("\n"
+                + "=== Removed Files ===\n");
+        ArrayList<String> remFiles =
+                Utils.readObject(TOREMOVE, ArrayList.class);
         for (String file : remFiles) {
             System.out.println(file + "\n");
         }

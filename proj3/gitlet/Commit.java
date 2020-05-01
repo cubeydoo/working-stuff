@@ -1,8 +1,4 @@
 package gitlet;
-
-import org.junit.Test;
-
-import javax.xml.crypto.dsig.SignatureMethod;
 import java.io.File;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -16,6 +12,7 @@ import static gitlet.Objects.*;
  */
 public class Commit implements Serializable {
 
+    /** Makes a new Commit object with MESSAGE. */
     public Commit(String message) {
         _message = message;
         boolean firstCommit = false;
@@ -23,7 +20,8 @@ public class Commit implements Serializable {
             this.init();
             firstCommit = true;
         }
-        String[] stageFileNames = Utils.plainFilenamesIn(STAGING).toArray(new String[0]);
+        String[] stageFileNames = Utils.
+                plainFilenamesIn(STAGING).toArray(new String[0]);
         if (stageFileNames.length == 0 && !firstCommit) {
             System.out.println("No changes added to the commit.");
             return;
@@ -31,7 +29,7 @@ public class Commit implements Serializable {
             System.out.println("Please enter a commit message.");
             return;
         }
-        if (!firstCommit){
+        if (!firstCommit) {
             timestamp = getTimestamp();
             Commit lastCommit = getCommit("HEAD");
             parent = lastCommit.shaValue;
@@ -61,7 +59,8 @@ public class Commit implements Serializable {
         Utils.writeObject(saveMe, this);
     }
 
-    /** Get the timestamp. */
+    /** Get the timestamp.
+     * @return Timestamp. */
     public String getTimestamp() {
         String pattern = "EEE MMM d HH:mm:ss yyyy Z";
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
@@ -69,7 +68,7 @@ public class Commit implements Serializable {
         return date;
     }
 
-    /** Get the initial timestamp. */
+    /** Get the initial @return timestamp. */
     public String getNewTimestamp() {
         String pattern = "EEE MMM d HH:mm:ss yyyy Z";
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
@@ -77,18 +76,21 @@ public class Commit implements Serializable {
         return date;
     }
 
+    /** Returns the parent. */
     public String getParent() {
         return this.parent;
     }
 
+    /** Getter method for @return files. */
     public HashMap<String, String> getFiles() {
         return files;
     }
 
+    /** Initializes .gitlet repo. */
     public void init() {
         timestamp = getNewTimestamp();
         parent = null;
-        if (!GITLET.exists()) { //CHANGE THIS BACK WHEN UR DONE
+        if (!GITLET.exists()) {
             GITLET.mkdir();
             Utils.writeContents(HEAD, "master.txt");
             REFS.mkdir();
@@ -101,22 +103,24 @@ public class Commit implements Serializable {
             ArrayList<String> remove = new ArrayList<>();
             Utils.writeObject(TOREMOVE, remove);
         } else {
-            System.out.println("A Gitlet version-control " +
-                    "system already exists in the current directory.");
+            System.out.println("A Gitlet version-control "
+                    + "system already exists in the current directory.");
         }
 
     }
 
+    /** Removes a FILENAME from the commit. */
     @SuppressWarnings("unchecked")
     public void rm(String filename) {
         File wd = Utils.join(STAGING, filename);
         Commit lastCommit = getCommitfromSHA(parent);
         if (lastCommit != null) {
-            HashMap<String, String> files = lastCommit.getFiles();
-            if (files.containsKey(filename)) {
+            HashMap<String, String> lastComfiles = lastCommit.getFiles();
+            if (lastComfiles.containsKey(filename)) {
                 File file = Utils.join(CWD, filename);
                 file.delete();
-                ArrayList<String> remove = Utils.readObject(TOREMOVE, ArrayList.class);
+                ArrayList<String> remove =
+                        Utils.readObject(TOREMOVE, ArrayList.class);
                 remove.add(filename);
                 Utils.writeObject(TOREMOVE, remove);
             } else if (!wd.exists()) {
@@ -131,6 +135,7 @@ public class Commit implements Serializable {
 
     }
 
+    /** Returns the string form of this commit object. */
     public String toString() {
         String returnme;
         if (mergedBranch == null) {
@@ -141,7 +146,8 @@ public class Commit implements Serializable {
         } else {
             returnme = "===\n"
                     + "commit " + shaValue + "\n"
-                    + "Merge: " + parent.substring(0, 7) + " " + mergedBranch.substring(0, 7) + "\n"
+                    + "Merge: " + parent.substring(0, 7)
+                    + " " + mergedBranch.substring(0, 7) + "\n"
                     + "Date: " + timestamp + "\n"
                     + _message + "\n\n";
         }

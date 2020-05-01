@@ -2,7 +2,6 @@ package gitlet;
 
 import java.io.File;
 import static gitlet.Objects.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,11 +12,12 @@ public class Commands {
     /** The last commit made on the current branch. */
     private Commit lastCommit = getCommit("HEAD");
 
+    /** Adds a FILENAME to the commit. */
     public static void addFile(String fileName) {
         String[] currentWD = Utils.plainFilenamesIn(CWD).toArray(new String[0]);
         boolean flag = false;
         for (String string : currentWD) {
-            if(string.equals(fileName)) {
+            if (string.equals(fileName)) {
                 flag = true;
             }
         }
@@ -30,6 +30,7 @@ public class Commands {
             System.out.println("File does not exist.");
         }
     }
+    /** Reverts a FILENAME to a COMMIT. */
     public static void checkout(String commit, String fileName) {
         Commit checkout;
         if (commit == null) {
@@ -48,19 +49,21 @@ public class Commands {
         }
 
     }
-
+    /** Checks out BRANCHHEAD. */
     public static void checkout(String branchHead) {
-        String[] branchList = Utils.plainFilenamesIn(BRANCH).toArray(new String[0]);
+        String[] branchList = Utils
+                .plainFilenamesIn(BRANCH).toArray(new String[0]);
         String currentBranch = Utils.readContentsAsString(HEAD);
         if (branchHead.equals(currentBranch)) {
             System.out.println("No need to checkout the current branch.");
         } else if (doesFileExist(branchList, branchHead)) {
-            String[] cwd = Utils.plainFilenamesIn(CWD).toArray(new String[0]);
+            String[] cwd = Utils.
+                    plainFilenamesIn(CWD).toArray(new String[0]);
             boolean flag = false;
             for (String fileName : cwd) {
                 if (!doesFileExist(cwd, fileName)) {
-                    System.out.println("There is an untracked file in the way; " +
-                            "delete it, or add and commit it first.");
+                    System.out.println("There is an untracked file in the way; "
+                            + "delete it, or add and commit it first.");
                     flag = true;
                     break;
                 }

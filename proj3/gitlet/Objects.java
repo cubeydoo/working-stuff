@@ -1,15 +1,14 @@
 package gitlet;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 /** Driver class for Gitlet, the tiny stupid version-control system.
  *  @author Tyler Rathkamp
  */
 public class Objects {
     /** Gitlet file. */
-    public static final File GITLET = Utils.join(System.getProperty("user.dir"), ".gitlet");
+    public static final File GITLET =
+            Utils.join(System.getProperty("user.dir"), ".gitlet");
     /** A mapping between file names and SHA value of file contents. */
     public static final File HEAD = Utils.join(GITLET, "HEAD.txt");;
     /** A mapping between file names and SHA value of file contents. */
@@ -28,6 +27,8 @@ public class Objects {
     public static final File CWD = new File(System.getProperty("user.dir"));
 
 
+    /** Gets the commit object at the BRANCHHEAD of a certain branch.
+     * @return Commit object. */
     public static Commit getCommit(String branchHead) {
         File correctBranch;
         if (branchHead.equals("HEAD")) {
@@ -40,11 +41,13 @@ public class Objects {
         return getCommitfromSHA(shaVal);
     }
 
+    /** Returns the commit specified by SHAVAL. */
     public static Commit getCommitfromSHA(String shaVal) {
         boolean flag = false;
-        String[] objectFiles = Utils.plainFilenamesIn(COMMIT).toArray(new String[0]);
+        String[] objectFiles =
+                Utils.plainFilenamesIn(COMMIT).toArray(new String[0]);
         for (String string : objectFiles) {
-            if(string.equals(shaVal)) {
+            if (string.equals(shaVal)) {
                 flag = true;
             }
         }
@@ -58,12 +61,14 @@ public class Objects {
         }
     }
 
-    /** Returns the string contents of a HASH file in .gitlet/refs/objects. Returns NULL if File is not found. */
+    /** Returns the string contents of a HASH file in
+     * .gitlet/refs/objects. Returns NULL if File is not found. */
     public static String getFileContents(String hash) {
-        String[] objectFiles = Utils.plainFilenamesIn(OBJECTS).toArray(new String[0]);
+        String[] objectFiles =
+                Utils.plainFilenamesIn(OBJECTS).toArray(new String[0]);
         boolean flag = false;
         for (String string : objectFiles) {
-            if(string.equals(hash)) {
+            if (string.equals(hash)) {
                 flag = true;
             }
         }
@@ -76,10 +81,11 @@ public class Objects {
         }
     }
 
+    /** Returns if FILENAME exists in the FILES, ultimately useless. */
     public static boolean doesFileExist(String[] files, String fileName) {
         boolean flag = false;
         for (String string : files) {
-            if(string.equals(fileName)) {
+            if (string.equals(fileName)) {
                 flag = true;
             }
         }
