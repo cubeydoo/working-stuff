@@ -126,7 +126,7 @@ public class Commit implements Serializable {
         } else if (!wd.exists()) {
             System.out.println("No reason to remove the file.");
         }
- 
+
         if (wd.exists()) {
             Utils.restrictedDelete(wd);
         }

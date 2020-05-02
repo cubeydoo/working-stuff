@@ -35,32 +35,34 @@ public class Display  {
     /** Returns the status. */
     @SuppressWarnings("unchecked")
     public static void status() {
-        System.out.println("=== Branches ===\n");
+        System.out.println("=== Branches ===");
         List<String> branchNames = Utils.plainFilenamesIn(BRANCH);
         Collections.sort(branchNames);
         String curBranch = Utils.readContentsAsString(HEAD);
         for (String branch : branchNames) {
             if (branch.equals(curBranch)) {
-                curBranch = "*" + curBranch + "\n";
+                curBranch = curBranch.substring(0, curBranch.lastIndexOf('.'));
+                curBranch = "*" + curBranch;
                 System.out.println(curBranch);
             } else {
-                System.out.println(branch + "\n");
+                branch = branch.substring(0, branch.lastIndexOf('.'));
+                System.out.println(branch);
             }
         }
-        System.out.println("\n");
-        System.out.println("=== Staged Files ===\n");
+        System.out.print("\n");
+        System.out.println("=== Staged Files ===");
         List<String> stagedFiles = Utils.plainFilenamesIn(STAGING);
         for (String fileName : stagedFiles) {
             System.out.println(fileName + "\n");
         }
         System.out.println("\n"
-                + "=== Removed Files ===\n");
+                + "=== Removed Files ===");
         ArrayList<String> remFiles =
                 Utils.readObject(TOREMOVE, ArrayList.class);
         for (String file : remFiles) {
-            System.out.println(file + "\n");
+            System.out.println(file);
         }
-        System.out.println("\n=== Modifications Not Staged For Commit ===\n");
+        System.out.println("\n=== Modifications Not Staged For Commit ===");
         System.out.println("\n=== Untracked Files ===\n\n");
     }
 }
