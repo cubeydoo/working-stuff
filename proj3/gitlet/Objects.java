@@ -43,18 +43,9 @@ public class Objects {
 
     /** Returns the commit specified by SHAVAL. */
     public static Commit getCommitfromSHA(String shaVal) {
-        boolean flag = false;
-        String[] objectFiles =
-                Utils.plainFilenamesIn(COMMIT).toArray(new String[0]);
-        for (String string : objectFiles) {
-            if (string.equals(shaVal)) {
-                flag = true;
-            }
-        }
-        if (flag) {
-            File correctBranch = Utils.join(COMMIT, shaVal);
-            Commit lastCommit = Utils.readObject(correctBranch, Commit.class);
-            return lastCommit;
+        File correctBranch = Utils.join(COMMIT, shaVal);
+        if (correctBranch.exists()) {
+            return Utils.readObject(correctBranch, Commit.class);
         } else {
             System.out.println("No commit with that id exists.");
             return null;

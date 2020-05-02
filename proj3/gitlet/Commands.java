@@ -14,16 +14,14 @@ public class Commands {
 
     /** Adds a FILENAME to the commit. */
     public static void addFile(String fileName) {
-        String[] currentWD = Utils.plainFilenamesIn(CWD).toArray(new String[0]);
-        boolean flag = false;
-        for (String string : currentWD) {
-            if (string.equals(fileName)) {
-                flag = true;
-            }
-        }
+        File current = Utils.join(CWD, fileName);
+        Commit lastCommit = getCommit("HEAD");
+        String hash = lastCommit.getFiles().get(fileName);
+        String contents = Utils.readContentsAsString(current);
+        boolean flag = Utils.sha1(contents).equals(hash);
         if (flag) {
-            File current = new File(fileName);
-            String contents = Utils.readContentsAsString(current);
+            return;
+        } else if (current.exists()) {
             File output = Utils.join(STAGING, fileName);
             Utils.writeContents(output, contents);
         } else {

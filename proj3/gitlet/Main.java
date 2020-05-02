@@ -25,7 +25,7 @@ public class Main {
             case "checkout":
                 if (args[1].equals("--")) {
                     Commands.checkout(null, args[2]);
-                } else if (args[1].equals("++")) {
+                } else if (args[2].equals("++")) {
                     System.out.println("Incorrect operands.");
                 } else if (args.length == 4) {
                     Commands.checkout(args[1], args[3]);
