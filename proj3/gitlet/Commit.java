@@ -13,6 +13,7 @@ import static gitlet.Objects.*;
 public class Commit implements Serializable {
 
     /** Makes a new Commit object with MESSAGE. */
+    @SuppressWarnings("unchecked")
     public Commit(String message) {
         _message = message;
         boolean firstCommit = false;
@@ -34,11 +35,11 @@ public class Commit implements Serializable {
             Commit lastCommit = getCommit("HEAD");
             parent = lastCommit.shaValue;
             files = lastCommit.files;
-            String[] toRemove = Utils.readObject(TOREMOVE, String[].class);
+            ArrayList<String> toRemove = Utils.readObject(TOREMOVE, ArrayList.class);
             for (String fileName : toRemove) {
                 files.remove(fileName);
             }
-            String[] remove = {};
+            ArrayList<String> remove = new ArrayList<>();
             Utils.writeObject(TOREMOVE, remove);
             for (String fileName : stageFileNames) {
                 File current = Utils.join(STAGING, fileName);
