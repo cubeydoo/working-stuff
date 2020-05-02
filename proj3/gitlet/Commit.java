@@ -115,21 +115,18 @@ public class Commit implements Serializable {
     public static void rm(String filename) {
         File wd = Utils.join(STAGING, filename);
         Commit lastCommit = getCommit("HEAD");
-        if (lastCommit != null) {
-            HashMap<String, String> lastComfiles = lastCommit.getFiles();
-            if (lastComfiles.containsKey(filename)) {
-                File file = Utils.join(CWD, filename);
-                file.delete();
-                ArrayList<String> remove =
-                        Utils.readObject(TOREMOVE, ArrayList.class);
-                remove.add(filename);
-                Utils.writeObject(TOREMOVE, remove);
-            } else if (!wd.exists()) {
-                System.out.println("No reason to remove the file.");
-            }
+        HashMap<String, String> lastComfiles = lastCommit.getFiles();
+        if (lastComfiles.containsKey(filename)) {
+            File file = Utils.join(CWD, filename);
+            file.delete();
+            ArrayList<String> remove =
+                    Utils.readObject(TOREMOVE, ArrayList.class);
+            remove.add(filename);
+            Utils.writeObject(TOREMOVE, remove);
         } else if (!wd.exists()) {
             System.out.println("No reason to remove the file.");
         }
+ 
         if (wd.exists()) {
             Utils.restrictedDelete(wd);
         }
