@@ -49,20 +49,18 @@ public class Display  {
                 System.out.println(branch);
             }
         }
-        System.out.print("\n");
-        System.out.println("=== Staged Files ===");
+        System.out.println("\n=== Staged Files ===");
         List<String> stagedFiles = Utils.plainFilenamesIn(STAGING);
         for (String fileName : stagedFiles) {
             System.out.println(fileName + "\n");
         }
-        System.out.println("\n"
-                + "=== Removed Files ===");
+        System.out.println("\n=== Removed Files ===");
         ArrayList<String> remFiles =
                 Utils.readObject(TOREMOVE, ArrayList.class);
         for (String file : remFiles) {
             System.out.println(file);
         }
         System.out.println("\n=== Modifications Not Staged For Commit ===");
-        System.out.println("\n=== Untracked Files ===\n\n");
+        System.out.println("\n=== Untracked Files ===\n");
     }
 }
