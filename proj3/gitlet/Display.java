@@ -61,6 +61,6 @@ public class Display  {
             System.out.println(file + "\n");
         }
         System.out.println("\n=== Modifications Not Staged For Commit ===\n");
-        System.out.println("\n=== Untracked Files ===\n");
+        System.out.println("\n=== Untracked Files ===\n\n");
     }
 }

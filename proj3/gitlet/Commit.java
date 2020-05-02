@@ -112,9 +112,9 @@ public class Commit implements Serializable {
 
     /** Removes a FILENAME from the commit. */
     @SuppressWarnings("unchecked")
-    public void rm(String filename) {
+    public static void rm(String filename) {
         File wd = Utils.join(STAGING, filename);
-        Commit lastCommit = getCommitfromSHA(parent);
+        Commit lastCommit = getCommit("HEAD");
         if (lastCommit != null) {
             HashMap<String, String> lastComfiles = lastCommit.getFiles();
             if (lastComfiles.containsKey(filename)) {

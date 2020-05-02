@@ -37,8 +37,7 @@ public class Main {
                 Display.log();
                 break;
             case "rm":
-                Commit current = getCommit("HEAD");
-                current.rm(args[1]);
+                Commit.rm(args[1]);
                 break;
             case "global-log":
                 Display.globalLog();
