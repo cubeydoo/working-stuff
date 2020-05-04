@@ -187,6 +187,11 @@ public class Commands {
                 }
             }
         }
+        for (String fileName : unchangedFiles(ancestor, branch)) {
+            if (latestFiles.get(fileName) == null) {
+                Commit.rm(fileName);
+            }
+        }
         String curBranch = Utils.readContentsAsString(HEAD);
         curBranch = curBranch.substring(0, curBranch.lastIndexOf('.'));
         branchName = branchName.substring(0, branchName.lastIndexOf('.'));

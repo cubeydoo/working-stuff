@@ -48,6 +48,14 @@ public class Objects {
 
     /** Returns the commit specified by SHAVAL. */
     public static Commit getCommitfromSHA(String shaVal) {
+        String[] commitFiles =
+                Utils.plainFilenamesIn(COMMIT).toArray(new String[0]);
+        for (String commitHash : commitFiles) {
+            if (commitHash.contains(shaVal)) {
+                shaVal = commitHash;
+                break;
+            }
+        }
         File correctBranch = Utils.join(COMMIT, shaVal);
         String[] objectFiles =
                 Utils.plainFilenamesIn(OBJECTS).toArray(new String[0]);
