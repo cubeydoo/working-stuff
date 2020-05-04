@@ -1,4 +1,6 @@
 package gitlet;
+import java.util.Arrays;
+
 import static gitlet.Objects.*;
 
 /** A file storing system.
@@ -57,6 +59,7 @@ public class Main {
             default:
                 System.out.println(args[0]);
                 System.out.println("I don't understand.");
+                System.out.println(Arrays.toString(args));
             }
         }
     }
