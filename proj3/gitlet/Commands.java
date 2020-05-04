@@ -49,6 +49,7 @@ public class Commands {
     }
     /** Makes a new branch with name BRANCHNAME. */
     public static void branch(String branchName) {
+        branchName = branchName + ".txt";
         File branch = Utils.join(BRANCH, branchName);
         if (branch.exists()) {
             System.out.println("A branch with that name already exists.");
@@ -59,6 +60,7 @@ public class Commands {
     }
     /** Checks out BRANCHHEAD. */
     public static void checkout(String branchHead) {
+        branchHead += ".txt";
         String[] branchList = Utils
                 .plainFilenamesIn(BRANCH).toArray(new String[0]);
         String currentBranch = Utils.readContentsAsString(HEAD);
