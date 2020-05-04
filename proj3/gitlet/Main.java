@@ -11,7 +11,9 @@ public class Main {
     }
     /** A file storing system. ARGS is a command. */
     public static void main(String... args) {
-        if (args[0].equals("init")) {
+        if (args.length == 0) {
+            System.out.println("Please enter a command.");
+        } else if (args[0].equals("init")) {
             new Commit("initial commit");
         } else if (!GITLET.exists()) {
             System.out.println("Not in an initialized Gitlet directory.");
@@ -62,7 +64,7 @@ public class Main {
                 Commands.rmbranch(args[1]);
                 break;
             default:
-                System.out.println("I don't understand.");
+                System.out.println("No command with that name exists.");
             }
         }
     }
