@@ -1,46 +1,126 @@
-# Test of abbreviated UIDs.
-# Check that we can check out a previous version.
-> init
+# Check reset command.
+I setup2.inc
+> branch other
 <<<
-+ wug.txt wug.txt
-> add wug.txt
++ h.txt wug2.txt
+> add h.txt
 <<<
-> commit "version 1 of wug.txt"
+> rm g.txt
 <<<
-+ wug.txt notwug.txt
-> add wug.txt
+> commit "Add h.txt and remove g.txt"
 <<<
-> commit "version 2 of wug.txt"
+> checkout other
 <<<
-= wug.txt notwug.txt
-# Each ${HEADER} captures an abbreviation of its full commit UID.
-# With high probability, it is unique.
-D HEADER "commit ([a-f0-9]{8})[a-f0-9]+"
-D DATE "Date: \w\w\w \w\w\w \d+ \d\d:\d\d:\d\d \d\d\d\d [-+]\d\d\d\d"
+> rm f.txt
+<<<
++ k.txt wug3.txt
+> add k.txt
+<<<
+> commit "Add k.txt and remove f.txt"
+<<<
 > log
 ===
-${HEADER}
-${DATE}
-version 2 of wug.txt
+${COMMIT_HEAD}
+Add k.txt and remove f.txt
 
 ===
-${HEADER}
-${DATE}
-version 1 of wug.txt
+${COMMIT_HEAD}
+Two files
 
 ===
-${HEADER}
-${DATE}
+${COMMIT_HEAD}
 initial commit
 
 <<<*
-# UID of second version
-D UID2 "${1}"
-# UID of current version
-D UID1 "${2}"
-> checkout ${UID1} -- wug.txt
+D INIT "${3}"
+D TWO "${2}"
+D OTHER1 "${1}"
+
+> checkout master
 <<<
-= wug.txt wug.txt
-> checkout ${UID2} -- wug.txt
+> log
+===
+${COMMIT_HEAD}
+Add h.txt and remove g.txt
+
+===
+${COMMIT_HEAD}
+Two files
+
+===
+${COMMIT_HEAD}
+initial commit
+<<<*
+D MASTER1 "${1}"
++ m.txt wug.txt
+> add m.txt
 <<<
-= wug.txt notwug.txt
+> reset ${TWO}
+<<<
+> status
+=== Branches ===
+\*master
+other
+
+=== Staged Files ===
+
+=== Removed Files ===
+
+=== Modifications Not Staged For Commit ===
+
+=== Untracked Files ===
+(m\.txt\n)?\s*
+<<<*
+
+> log
+===
+${COMMIT_HEAD}
+Two files
+
+===
+${COMMIT_HEAD}
+initial commit
+<<<*
+> checkout other
+<<<
+> log
+===
+${COMMIT_HEAD}
+Add k.txt and remove f.txt
+
+===
+${COMMIT_HEAD}
+Two files
+
+===
+${COMMIT_HEAD}
+initial commit
+
+<<<*
+> checkout master
+<<<
+> log
+===
+${COMMIT_HEAD}
+Two files
+
+===
+${COMMIT_HEAD}
+initial commit
+<<<*
+> reset ${MASTER1}
+<<<
+> log
+===
+${COMMIT_HEAD}
+Add h.txt and remove g.txt
+
+===
+${COMMIT_HEAD}
+Two files
+
+===
+${COMMIT_HEAD}
+initial commit
+
+<<<*

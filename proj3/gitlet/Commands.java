@@ -263,6 +263,12 @@ public class Commands {
             String branchName = Utils.readContentsAsString(HEAD);
             File branch = Utils.join(BRANCH, branchName);
             Utils.writeContents(branch, commit);
+            String[] staged =
+                    Utils.plainFilenamesIn(STAGING).toArray(new String[0]);
+            for (String file : staged) {
+                File current = Utils.join(STAGING, file);
+                current.delete();
+            }
             checkout(branchName, 1);
         }
     }
@@ -302,6 +308,8 @@ public class Commands {
             }
         }
         if (doesFileExist(branchList, branchHead)) {
+            Commit checkout = getCommit(branchHead);
+            HashMap<String, String> files = checkout.getFiles();
             String[] cwd = Utils.
                     plainFilenamesIn(CWD).toArray(new String[0]);
             boolean flag = false;
@@ -309,7 +317,8 @@ public class Commands {
             HashMap<String, String> thesefiles = lastCommit.getFiles();
             for (String fileName : cwd) {
                 File staged = Utils.join(STAGING, fileName);
-                if (thesefiles.get(fileName) == null && !staged.exists()) {
+                if (thesefiles.get(fileName) == null && !staged.exists()
+                && files.get(fileName) != null) {
                     System.out.println("There is an untracked file in the way; "
                             + "delete it, or add and commit it first.");
                     flag = true;
@@ -319,10 +328,10 @@ public class Commands {
             if (!flag) {
                 for (String fileName : cwd) {
                     File current = Utils.join(CWD, fileName);
-                    current.delete();
+                    if (files.get(fileName) == null) {
+                        current.delete();
+                    }
                 }
-                Commit checkout = getCommit(branchHead);
-                HashMap<String, String> files = checkout.getFiles();
                 for (Map.Entry curr : files.entrySet()) {
                     String fileName = (String) curr.getKey();
                     String hash = (String) curr.getValue();
