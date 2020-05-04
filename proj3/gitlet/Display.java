@@ -52,7 +52,7 @@ public class Display  {
         System.out.println("\n=== Staged Files ===");
         List<String> stagedFiles = Utils.plainFilenamesIn(STAGING);
         for (String fileName : stagedFiles) {
-            System.out.println(fileName + "\n");
+            System.out.println(fileName);
         }
         System.out.println("\n=== Removed Files ===");
         ArrayList<String> remFiles =
