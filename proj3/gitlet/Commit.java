@@ -93,6 +93,11 @@ public class Commit implements Serializable {
         return this._message;
     }
 
+    /** Returns the mergeParent. */
+    public String getMergedBranch() {
+        return this.mergedBranch;
+    }
+
     /** Getter method for @return files. */
     public HashMap<String, String> getFiles() {
         return files;

@@ -51,6 +51,48 @@ public class Commands {
         }
         return unchanged;
     }
+
+    /** Returns a HashMap of shavals and their distance from the head of
+     * the given BRANCHNAME.
+     * @return Distances. */
+    public static HashMap<String, Integer> getDistances(String branchName, Integer distance) {
+        Commit head = getCommit(branchName);
+        HashMap<String, Integer> headCommits = new HashMap<>();
+        while (head.getParent() != null) {
+            headCommits.put(head.getShaValue(), distance);
+            distance += 1;
+            if (head.getMergedBranch() != null) {
+                HashMap<String, Integer> mergedStuff =
+                        getDistances(head.getMergedBranch(), distance);
+                headCommits.putAll(mergedStuff);
+            }
+            head = getCommitfromSHA(head.getParent());
+        }
+        headCommits.put(head.getShaValue(), distance);
+        return headCommits;
+    }
+
+    /** Finds the commit where BRANCHNAME and HEAD diverged. */
+    public static String splitPoint(String branchName) {
+        HashMap<String, Integer> headDistances = getDistances("HEAD", 0);
+        HashMap<String, Integer> branchDistances = getDistances(branchName, 0);
+        String currentBest = "";
+        Integer currBest = 99;
+
+        for (Map.Entry entry : headDistances.entrySet()) {
+            String currentHash = (String) entry.getKey();
+            if (branchDistances.containsKey(currentHash) &&
+                    branchDistances.get(currentHash) < currBest) {
+                currBest = branchDistances.get(currentHash);
+                currentBest = currentHash;
+            }
+        }
+        return currentBest;
+    }
+    /** Merges the current branch with BRANCHNAME. */
+    public static void merge(String branchName) {
+
+    }
     /** Adds a FILENAME to the commit. */
     public static void addFile(String fileName) {
         File current = Utils.join(CWD, fileName);
