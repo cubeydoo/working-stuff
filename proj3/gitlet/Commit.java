@@ -12,7 +12,8 @@ import static gitlet.Objects.*;
  */
 public class Commit implements Serializable {
 
-    /** Makes a new Commit object with MESSAGE. */
+    /** Makes a new Commit object with MESSAGE. Sets MERGEBRANCH
+     * accordingly. */
     @SuppressWarnings("unchecked")
     public Commit(String message, String mergeBranch) {
         if (mergeBranch.equals("")) {

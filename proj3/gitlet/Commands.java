@@ -137,7 +137,8 @@ public class Commands {
         for (String fileName : cwd) {
             if (lastFiles.get(fileName) == null) {
                 System.out.println("There is an untracked "
-                        + "file in the way; delete it, or add and commit it first.");
+                        + "file in the way; delete it, "
+                        + "or add and commit it first.");
                 return 1;
             }
         }
@@ -202,6 +203,11 @@ public class Commands {
                 }
             }
         }
+        merge2(branchName, mergeFlag);
+    }
+
+    /** Merge continued with BRANCHNAME and MERGEFLAG. */
+    public static void merge2(String branchName, boolean mergeFlag) {
         String curBranch = Utils.readContentsAsString(HEAD);
         curBranch = curBranch.substring(0, curBranch.lastIndexOf('.'));
         branchName = branchName.substring(0, branchName.lastIndexOf('.'));
@@ -328,7 +334,7 @@ public class Commands {
             for (String fileName : cwd) {
                 File staged = Utils.join(STAGING, fileName);
                 if (thesefiles.get(fileName) == null && !staged.exists()
-                && files.get(fileName) != null) {
+                    && files.get(fileName) != null) {
                     System.out.println("There is an untracked file in the way; "
                             + "delete it, or add and commit it first.");
                     flag = true;
