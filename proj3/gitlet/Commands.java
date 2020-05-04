@@ -233,6 +233,7 @@ public class Commands {
     }
     /** Deletes a branch NAME if it exists. */
     public static void rmbranch(String name) {
+        name += ".txt";
         String curBranch = Utils.readContentsAsString(HEAD);
         if (name.equals(curBranch)) {
             System.out.println("Cannot remove the current branch.");
@@ -253,6 +254,7 @@ public class Commands {
         File branch = Utils.join(BRANCH, branchHead);
         if (!branch.exists()) {
             System.out.println("No such branch exists.");
+            return;
         }
         String[] branchList = Utils
                 .plainFilenamesIn(BRANCH).toArray(new String[0]);
