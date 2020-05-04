@@ -66,7 +66,7 @@ public class Commands {
             String branchName = Utils.readContentsAsString(HEAD);
             File branch = Utils.join(BRANCH, branchName);
             Utils.writeContents(branch, commit);
-            checkout(branchName);
+            checkout(branchName, 1);
         }
     }
     /** Deletes a branch NAME if it exists. */
@@ -83,13 +83,17 @@ public class Commands {
         }
     }
     /** Checks out BRANCHHEAD. */
-    public static void checkout(String branchHead) {
-        branchHead += ".txt";
+    public static void checkout(String branchHead, int numCheck) {
+        if (!branchHead.contains(".txt")) {
+            branchHead += ".txt";
+        }
         String[] branchList = Utils
                 .plainFilenamesIn(BRANCH).toArray(new String[0]);
         String currentBranch = Utils.readContentsAsString(HEAD);
-        if (branchHead.equals(currentBranch)) {
-            System.out.println("No need to checkout the current branch.");
+        if (numCheck == 0) {
+            if (branchHead.equals(currentBranch)) {
+                System.out.println("No need to checkout the current branch.");
+            }
         } else if (doesFileExist(branchList, branchHead)) {
             String[] cwd = Utils.
                     plainFilenamesIn(CWD).toArray(new String[0]);
