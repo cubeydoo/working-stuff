@@ -1,4 +1,4 @@
-# Check reset command.
+# Create two branches and merge other into master with a merge conflict.
 I setup2.inc
 > branch other
 <<<
@@ -7,56 +7,42 @@ I setup2.inc
 <<<
 > rm g.txt
 <<<
-> commit "Add h.txt and remove g.txt"
++ f.txt wug2.txt
+> add f.txt
+<<<
+> commit "Add h.txt, remove g.txt, and change f.txt"
 <<<
 > checkout other
 <<<
-> rm f.txt
++ f.txt notwug.txt
+> add f.txt
 <<<
 + k.txt wug3.txt
 > add k.txt
 <<<
-> commit "Add k.txt and remove f.txt"
+> commit "Add k.txt and modify f.txt"
 <<<
-> log
-===
-${COMMIT_HEAD}
-Add k.txt and remove f.txt
-
-===
-${COMMIT_HEAD}
-Two files
-
-===
-${COMMIT_HEAD}
-initial commit
-
-<<<*
-D INIT "${3}"
-D TWO "${2}"
-D OTHER1 "${1}"
-
 > checkout master
 <<<
 > log
 ===
 ${COMMIT_HEAD}
-Add h.txt and remove g.txt
-
-===
-${COMMIT_HEAD}
-Two files
-
-===
-${COMMIT_HEAD}
-initial commit
+${ARBLINES}
 <<<*
-D MASTER1 "${1}"
-+ m.txt wug.txt
-> add m.txt
+D MASTER_HEAD "${1}"
+> merge other
+Encountered a merge conflict.
 <<<
-> reset ${TWO}
-<<<
+* g.txt
+= h.txt wug2.txt
+= k.txt wug3.txt
+= f.txt conflict1.txt
+> log
+${COMMIT_LOG}
+===
+commit ${MASTER_HEAD}
+${ARBLINES}
+<<<*
 > status
 === Branches ===
 \*master
@@ -69,58 +55,5 @@ other
 === Modifications Not Staged For Commit ===
 
 === Untracked Files ===
-(m\.txt\n)?\s*
-<<<*
-
-> log
-===
-${COMMIT_HEAD}
-Two files
-
-===
-${COMMIT_HEAD}
-initial commit
-<<<*
-> checkout other
-<<<
-> log
-===
-${COMMIT_HEAD}
-Add k.txt and remove f.txt
-
-===
-${COMMIT_HEAD}
-Two files
-
-===
-${COMMIT_HEAD}
-initial commit
-
-<<<*
-> checkout master
-<<<
-> log
-===
-${COMMIT_HEAD}
-Two files
-
-===
-${COMMIT_HEAD}
-initial commit
-<<<*
-> reset ${MASTER1}
-<<<
-> log
-===
-${COMMIT_HEAD}
-Add h.txt and remove g.txt
-
-===
-${COMMIT_HEAD}
-Two files
-
-===
-${COMMIT_HEAD}
-initial commit
 
 <<<*

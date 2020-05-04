@@ -193,7 +193,10 @@ public class Commands {
         }
         for (String fileName : unchangedFiles(ancestor, branch)) {
             if (latestFiles.get(fileName) == null) {
-                Commit.rm(fileName);
+                File wd = Utils.join(STAGING, fileName);
+                if (wd.exists()) {
+                    Commit.rm(fileName);
+                }
             }
         }
         String curBranch = Utils.readContentsAsString(HEAD);
