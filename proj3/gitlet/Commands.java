@@ -110,7 +110,7 @@ public class Commands {
             System.out.println("Cannot merge a branch with itself.");
             return 1;
         }
-        File branchFile = Utils.join(BRANCH, branchName + ".txt");
+        File branchFile = Utils.join(BRANCH, branchName);
         if (!branchFile.exists()) {
             System.out.println("A branch with that name does not exist.");
             return 1;
@@ -122,13 +122,24 @@ public class Commands {
         if (toRemove.size() != 0 || stagedFiles.length != 0) {
             System.out.println("You have uncommitted changes.");
             return 1;
-        } else {
-            return 0;
         }
+        HashMap<String, String> lastFiles =
+                getCommit("HEAD").getFiles();
+        String[] cwd =
+                Utils.plainFilenamesIn(CWD).toArray(new String[0]);
+        for (String fileName : cwd) {
+            if (lastFiles.get(fileName) == null) {
+                System.out.println("There is an untracked "
+                        + "file in the way; delete it, or add and commit it first.");
+                return 1;
+            }
+        }
+        return 0;
     }
     /** Merges the current branch with BRANCHNAME. */
     @SuppressWarnings("unchecked")
     public static void merge(String branchName) {
+        branchName += ".txt";
         if (mergeError(branchName) == 1) {
             return;
         }
@@ -178,6 +189,7 @@ public class Commands {
         }
         String curBranch = Utils.readContentsAsString(HEAD);
         curBranch = curBranch.substring(0, curBranch.lastIndexOf('.'));
+        branchName = branchName.substring(0, branchName.lastIndexOf('.'));
         String message = "Merged " + branchName + " into "
                 + curBranch + ".";
         Commit woo = new Commit(message, branchName);
@@ -227,7 +239,9 @@ public class Commands {
     }
     /** Makes a new branch with name BRANCHNAME. */
     public static void branch(String branchName) {
-        branchName = branchName + ".txt";
+        if (!branchName.contains(".txt")) {
+            branchName += ".txt";
+        }
         File branch = Utils.join(BRANCH, branchName);
         if (branch.exists()) {
             System.out.println("A branch with that name already exists.");
