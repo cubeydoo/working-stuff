@@ -1,53 +1,25 @@
-# Criss-cross merge.
-> init
+# Test special cases of merge.
+I setup2.inc
+> branch b1
 <<<
-> branch given
++ h.txt wug2.txt
+> add h.txt
 <<<
-+ f.txt wug.txt
-> add f.txt
+> commit "Add h.txt"
 <<<
-> commit "Add f.txt containing wug.txt"
-<<<
-> checkout given
-<<<
-+ f.txt notwug.txt
-> add f.txt
-<<<
-> commit "Add f.txt containing notwug.txt"
-<<<
-> branch B
-<<<
-> merge master
-Encountered a merge conflict.
-<<<
-= f.txt conflict3.txt
-+ f.txt notwug.txt
-> add f.txt
-<<<
-> commit "Reset f to notwug.txt"
+> branch b2
 <<<
 > rm f.txt
 <<<
-> commit "given now empty."
+> commit "remove f.txt"
 <<<
-> checkout master
+> merge b1
+Given branch is an ancestor of the current branch.
 <<<
-+ g.txt wug2.txt
-> add g.txt
+> checkout b2
 <<<
-> commit "Added g.txt"
+= f.txt wug.txt
+> merge master
+Current branch fast-forwarded.
 <<<
-> merge B
-Encountered a merge conflict.
-<<<
-= f.txt conflict4.txt
-+ f.txt wug.txt
-> add f.txt
-<<<
-> commit "Reset f to wug.txt"
-<<<
-> merge given
-Encountered a merge conflict.
-<<<
-= f.txt conflict5.txt
-= g.txt wug2.txt
+* f.txt

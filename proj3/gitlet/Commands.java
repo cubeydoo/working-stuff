@@ -148,12 +148,16 @@ public class Commands {
     @SuppressWarnings("unchecked")
     public static void merge(String branchName) {
         branchName += ".txt";
+        Commit branch = getCommit(branchName);
+        String sha = splitPoint(branchName);
+        if (sha == null) {
+            return;
+        }
+        Commit ancestor = getCommitfromSHA(sha);
+        Commit latestCommit = getCommit("HEAD");
         if (mergeError(branchName) == 1) {
             return;
         }
-        Commit branch = getCommit(branchName);
-        Commit ancestor = getCommitfromSHA(splitPoint(branchName));
-        Commit latestCommit = getCommit("HEAD");
         ArrayList<String> test1 = unchangedFiles(ancestor, latestCommit);
         for (String fileName: changedFiles(ancestor, branch)) {
             if (test1.contains(fileName)) {
@@ -188,7 +192,7 @@ public class Commands {
                     File problem = Utils.join(CWD, fileName);
                     String newContents = "<<<<<<< HEAD\n"
                             + getFileContents(hash1) + "=======\n"
-                            + getFileContents(hash2) + ">>>>>>>";
+                            + getFileContents(hash2) + ">>>>>>>\n";
                     Utils.writeContents(problem, newContents);
                     addFile(fileName);
                     mergeFlag = true;
