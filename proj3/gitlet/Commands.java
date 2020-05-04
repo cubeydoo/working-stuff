@@ -90,7 +90,22 @@ public class Commands {
         return currentBest;
     }
     /** Merges the current branch with BRANCHNAME. */
+    @SuppressWarnings("unchecked")
     public static void merge(String branchName) {
+        String curBranchName = Utils.readContentsAsString(HEAD);
+        if (curBranchName.equals(branchName)) {
+            System.out.println("Cannot merge a branch with itself.");
+        }
+        File branch = Utils.join(BRANCH, branchName + ".txt");
+        if (!branch.exists()) {
+            System.out.println("A branch with that name does not exist.");
+        }
+        ArrayList<String> toRemove = Utils.readObject(TOREMOVE, ArrayList.class);
+        String[] stagedFiles = Utils
+                .plainFilenamesIn(STAGING).toArray(new String[0]);
+        if (toRemove.size() != 0 || stagedFiles.length != 0) {
+            System.out.println("You have uncommitted changes.");
+        }
 
     }
     /** Adds a FILENAME to the commit. */
@@ -164,6 +179,7 @@ public class Commands {
         }
     }
     /** Checks out BRANCHHEAD. */
+    @SuppressWarnings("unchecked")
     public static void checkout(String branchHead, int numCheck) {
         if (!branchHead.contains(".txt")) {
             branchHead += ".txt";

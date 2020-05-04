@@ -56,6 +56,9 @@ public class Main {
             case "reset":
                 Commands.reset(args[1]);
                 break;
+            case "merge":
+                Commands.merge(args[1]);
+                break;
             default:
                 System.out.println(args[0]);
                 System.out.println("I don't understand.");
