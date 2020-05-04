@@ -18,7 +18,7 @@ public class Display  {
             lastCommit = Objects.getCommitfromSHA(lastCommit.getParent());
         }
         returnMe = returnMe + lastCommit.toString();
-        System.out.println(returnMe);
+        System.out.print(returnMe);
     }
     /** Logs of all commits. */
     public static void globalLog() {
@@ -29,7 +29,7 @@ public class Display  {
             Commit lastCommit = getCommitfromSHA(branchName);
             returnMe = returnMe + lastCommit.toString();
         }
-        System.out.println(returnMe);
+        System.out.print(returnMe);
     }
 
     /** Returns the status. */

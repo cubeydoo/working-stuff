@@ -23,7 +23,9 @@ public class Commit implements Serializable {
         }
         String[] stageFileNames = Utils.
                 plainFilenamesIn(STAGING).toArray(new String[0]);
-        if (stageFileNames.length == 0 && !firstCommit) {
+        ArrayList<String> toRemove = Utils.readObject(TOREMOVE, ArrayList.class);
+        if (stageFileNames.length == 0 && !firstCommit
+        && toRemove.size() == 0) {
             System.out.println("No changes added to the commit.");
             return;
         } else if (message.equals("")) {
