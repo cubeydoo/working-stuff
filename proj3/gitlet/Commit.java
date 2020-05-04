@@ -23,9 +23,10 @@ public class Commit implements Serializable {
         }
         String[] stageFileNames = Utils.
                 plainFilenamesIn(STAGING).toArray(new String[0]);
-        ArrayList<String> toRemove = Utils.readObject(TOREMOVE, ArrayList.class);
+        ArrayList<String> toRemove =
+                Utils.readObject(TOREMOVE, ArrayList.class);
         if (stageFileNames.length == 0 && !firstCommit
-        && toRemove.size() == 0) {
+            && toRemove.size() == 0) {
             System.out.println("No changes added to the commit.");
             return;
         } else if (message.equals("")) {
@@ -61,10 +62,11 @@ public class Commit implements Serializable {
         Utils.writeObject(saveMe, this);
     }
 
-    /** Makes a Commit object with mergeparent PARENT. */
-    public Commit(String message, String parent) {
+    /** Makes a Commit object with mergeparent INPARENT. MESSAGE
+     * is the commit message. */
+    public Commit(String message, String inparent) {
         this(message);
-        this.mergedBranch = parent;
+        this.mergedBranch = inparent;
     }
 
     /** Get the timestamp.

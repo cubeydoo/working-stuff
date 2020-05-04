@@ -16,26 +16,25 @@ public class Commands {
 
 
     /** Returns an ArrayList of all files and filehashes that have
-     * changed between OLD and NEW commits.
+     * changed between OLD and CNEW commits.
      * @return ArrayList of changedFiles by name. */
-     public static ArrayList<String> changedFiles(Commit old, Commit cnew) {
-         ArrayList<String> changed = new ArrayList<>();
-         HashMap<String, String> oldfiles = old.getFiles();
-         HashMap<String, String> newFiles = cnew.getFiles();
-         for (Map.Entry<String, String> entry : oldfiles.entrySet()) {
-             String filename = entry.getKey();
-             String oldhash = oldfiles.get(filename);
-             String newhash = newFiles.get(filename);
-             if (oldhash != null && newhash != null
-             && !oldhash.equals(newhash)) {
-                 changed.add(filename);
-             }
-         }
-         return changed;
-     }
-
+    public static ArrayList<String> changedFiles(Commit old, Commit cnew) {
+        ArrayList<String> changed = new ArrayList<>();
+        HashMap<String, String> oldfiles = old.getFiles();
+        HashMap<String, String> newFiles = cnew.getFiles();
+        for (Map.Entry<String, String> entry : oldfiles.entrySet()) {
+            String filename = entry.getKey();
+            String oldhash = oldfiles.get(filename);
+            String newhash = newFiles.get(filename);
+            if (oldhash != null && newhash != null
+                    && !oldhash.equals(newhash)) {
+                changed.add(filename);
+            }
+        }
+        return changed;
+    }
     /** Returns an ArrayList of all files and filehashes that have not
-     * changed between OLD and NEW commits.
+     * changed between OLD and CNEW commits.
      * @return ArrayList of unchangedFiles by name. */
     public static ArrayList<String> unchangedFiles(Commit old, Commit cnew) {
         ArrayList<String> unchanged = new ArrayList<>();
@@ -52,10 +51,11 @@ public class Commands {
         return unchanged;
     }
 
-    /** Returns a HashMap of shavals and their distance from the head of
+    /** Returns a HashMap of shavals and their DISTANCE from the head of
      * the given BRANCHNAME.
      * @return Distances. */
-    public static HashMap<String, Integer> getDistances(String branchName, Integer distance) {
+    public static HashMap<String, Integer>
+        getDistances(String branchName, Integer distance) {
         Commit head = getCommit(branchName);
         HashMap<String, Integer> headCommits = new HashMap<>();
         while (head.getParent() != null) {
@@ -72,17 +72,18 @@ public class Commands {
         return headCommits;
     }
 
-    /** Finds the commit where BRANCHNAME and HEAD diverged. */
+    /** Finds the commit where BRANCHNAME and HEAD diverged.
+     * @return String. */
     public static String splitPoint(String branchName) {
         HashMap<String, Integer> headDistances = getDistances("HEAD", 0);
         HashMap<String, Integer> branchDistances = getDistances(branchName, 0);
         String currentBest = "";
-        Integer currBest = 99;
+        Integer currBest = 12;
 
         for (Map.Entry entry : headDistances.entrySet()) {
             String currentHash = (String) entry.getKey();
-            if (branchDistances.containsKey(currentHash) &&
-                    branchDistances.get(currentHash) < currBest) {
+            if (branchDistances.containsKey(currentHash)
+                    && branchDistances.get(currentHash) < currBest) {
                 currBest = branchDistances.get(currentHash);
                 currentBest = currentHash;
             }
@@ -90,7 +91,8 @@ public class Commands {
         Commit givenBranch = getCommit(branchName);
         Commit current = getCommit("HEAD");
         if (currentBest.equals(givenBranch.getShaValue())) {
-            System.out.println("Given branch is an ancestor of the current branch.");
+            System.out.println(
+                    "Given branch is an ancestor of the current branch.");
             return null;
         } else if (current.getShaValue().equals(currentBest)) {
             checkout(branchName, 1);
@@ -99,27 +101,40 @@ public class Commands {
         }
         return currentBest;
     }
-    /** Merges the current branch with BRANCHNAME. */
+    /** Checks the errors for merge called on BRANCHNAME.
+     * @return Returns 1 if an error was found. */
     @SuppressWarnings("unchecked")
-    public static void merge(String branchName) {
+    public static int mergeError(String branchName) {
         String curBranchName = Utils.readContentsAsString(HEAD);
         if (curBranchName.equals(branchName)) {
             System.out.println("Cannot merge a branch with itself.");
+            return 1;
         }
         File branchFile = Utils.join(BRANCH, branchName + ".txt");
         if (!branchFile.exists()) {
             System.out.println("A branch with that name does not exist.");
+            return 1;
         }
-        ArrayList<String> toRemove = Utils.readObject(TOREMOVE, ArrayList.class);
+        ArrayList<String> toRemove =
+                Utils.readObject(TOREMOVE, ArrayList.class);
         String[] stagedFiles = Utils
                 .plainFilenamesIn(STAGING).toArray(new String[0]);
         if (toRemove.size() != 0 || stagedFiles.length != 0) {
             System.out.println("You have uncommitted changes.");
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+    /** Merges the current branch with BRANCHNAME. */
+    @SuppressWarnings("unchecked")
+    public static void merge(String branchName) {
+        if (mergeError(branchName) == 1) {
+            return;
         }
         Commit branch = getCommit(branchName);
         Commit ancestor = getCommitfromSHA(splitPoint(branchName));
         Commit latestCommit = getCommit("HEAD");
-
         ArrayList<String> test1 = unchangedFiles(ancestor, latestCommit);
         for (String fileName: changedFiles(ancestor, branch)) {
             if (test1.contains(fileName)) {
@@ -133,7 +148,7 @@ public class Commands {
         for (Map.Entry entry : branchFiles.entrySet()) {
             String fileName = (String) entry.getKey();
             if (ancestorFiles.get(fileName) == null
-            && latestFiles.get(fileName) == null) {
+                && latestFiles.get(fileName) == null) {
                 checkout(branch.getShaValue(), fileName);
                 addFile(fileName);
             }
@@ -179,7 +194,8 @@ public class Commands {
         if (current.exists()) {
             String contents = Utils.readContentsAsString(current);
             if (Utils.sha1(contents).equals(hash)) {
-                ArrayList<String> toRemove = Utils.readObject(TOREMOVE, ArrayList.class);
+                ArrayList<String> toRemove =
+                        Utils.readObject(TOREMOVE, ArrayList.class);
                 toRemove.remove(fileName);
                 Utils.writeObject(TOREMOVE, toRemove);
                 return;
@@ -246,7 +262,7 @@ public class Commands {
             System.out.println("A branch with that name does not exist.");
         }
     }
-    /** Checks out BRANCHHEAD. */
+    /** Checks out BRANCHHEAD. NUMCHECK is used to reuse code. */
     @SuppressWarnings("unchecked")
     public static void checkout(String branchHead, int numCheck) {
         if (!branchHead.contains(".txt")) {

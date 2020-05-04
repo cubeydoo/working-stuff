@@ -1,5 +1,4 @@
 package gitlet;
-import java.util.Arrays;
 
 import static gitlet.Objects.*;
 
