@@ -69,12 +69,17 @@ public class Display  {
         String[] fileNames = Utils.plainFilenamesIn
                 (COMMIT).toArray(new String[0]);
         String returnme = "";
+        boolean flag = false;
         for (String branchName : fileNames) {
             Commit lastCommit = getCommitfromSHA(branchName);
             String message = lastCommit.getMessage();
             if (message != null && message.contains(key)) {
                 System.out.println(branchName);
+                flag = true;
             }
+        }
+        if (!flag) {
+            System.out.println("Found no commit with that message.");
         }
     }
 }

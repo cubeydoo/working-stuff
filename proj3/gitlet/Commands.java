@@ -171,6 +171,7 @@ public class Commands {
         }
     }
     /** Adds a FILENAME to the commit. */
+    @SuppressWarnings("unchecked")
     public static void addFile(String fileName) {
         File current = Utils.join(CWD, fileName);
         Commit lastCommit = getCommit("HEAD");
@@ -178,6 +179,9 @@ public class Commands {
         if (current.exists()) {
             String contents = Utils.readContentsAsString(current);
             if (Utils.sha1(contents).equals(hash)) {
+                ArrayList<String> toRemove = Utils.readObject(TOREMOVE, ArrayList.class);
+                toRemove.remove(fileName);
+                Utils.writeObject(TOREMOVE, toRemove);
                 return;
             }
             File output = Utils.join(STAGING, fileName);
@@ -246,6 +250,10 @@ public class Commands {
         if (!branchHead.contains(".txt")) {
             branchHead += ".txt";
         }
+        File branch = Utils.join(BRANCH, branchHead);
+        if (!branch.exists()) {
+            System.out.println("No such branch exists.");
+        }
         String[] branchList = Utils
                 .plainFilenamesIn(BRANCH).toArray(new String[0]);
         String currentBranch = Utils.readContentsAsString(HEAD);
@@ -253,7 +261,8 @@ public class Commands {
             if (branchHead.equals(currentBranch)) {
                 System.out.println("No need to checkout the current branch.");
             }
-        } else if (doesFileExist(branchList, branchHead)) {
+        }
+        if (doesFileExist(branchList, branchHead)) {
             String[] cwd = Utils.
                     plainFilenamesIn(CWD).toArray(new String[0]);
             boolean flag = false;
@@ -281,6 +290,7 @@ public class Commands {
                         Utils.writeContents(current, contents);
                     }
                 }
+                Utils.writeContents(HEAD, branchHead);
             }
         } else {
             System.out.println("No such branch exists.");
