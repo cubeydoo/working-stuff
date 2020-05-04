@@ -51,7 +51,11 @@ public class Main {
             case "branch":
                 Commands.branch(args[1]);
                 break;
+            case "reset":
+                Commands.reset(args[1]);
+                break;
             default:
+                System.out.println(args[0]);
                 System.out.println("I don't understand.");
             }
         }

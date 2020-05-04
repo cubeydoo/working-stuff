@@ -37,7 +37,6 @@ public class Commit implements Serializable {
             Commit lastCommit = getCommit("HEAD");
             parent = lastCommit.shaValue;
             files = lastCommit.files;
-            ArrayList<String> toRemove = Utils.readObject(TOREMOVE, ArrayList.class);
             for (String fileName : toRemove) {
                 files.remove(fileName);
             }

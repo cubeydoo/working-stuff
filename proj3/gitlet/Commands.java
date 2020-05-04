@@ -58,6 +58,30 @@ public class Commands {
             Utils.writeContents(branch, current.getShaValue());
         }
     }
+
+    /** Resets the COMMIT. */
+    public static void reset(String commit) {
+        Commit thisCommit = getCommitfromSHA(commit);
+        if (thisCommit != null) {
+            String branchName = Utils.readContentsAsString(HEAD);
+            File branch = Utils.join(BRANCH, branchName);
+            Utils.writeContents(branch, commit);
+            checkout(branchName);
+        }
+    }
+    /** Deletes a branch NAME if it exists. */
+    public static void rmbranch(String name) {
+        String curBranch = Utils.readContentsAsString(HEAD);
+        if (name.equals(curBranch)) {
+            System.out.println("Cannot remove the current branch.");
+        }
+        File branch = Utils.join(BRANCH, name);
+        if (branch.exists()) {
+            branch.delete();
+        } else {
+            System.out.println("A branch with that name does not exist.");
+        }
+    }
     /** Checks out BRANCHHEAD. */
     public static void checkout(String branchHead) {
         branchHead += ".txt";

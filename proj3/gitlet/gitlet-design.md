@@ -4,10 +4,10 @@
 
 ```
 TODO
-1. Need to handle Partial commit IDs in checkout, reset
-2. Handling latest common ancestor for merge commits
-3. Optional Commands in status
-4. Remote Commands 
+  Need to handle Partial commit IDs in checkout, reset
+  Handling latest common ancestor for merge commits
+  Optional Commands in status
+  Remote Commands 
 ```
 
 ## Classes and Data Structures

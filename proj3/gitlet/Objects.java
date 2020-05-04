@@ -37,16 +37,29 @@ public class Objects {
         } else {
             correctBranch = Utils.join(BRANCH, branchHead);
         }
-        String shaVal = Utils.readContentsAsString(correctBranch);
-        return getCommitfromSHA(shaVal);
+        if (correctBranch.exists()) {
+            String shaVal = Utils.readContentsAsString(correctBranch);
+            return getCommitfromSHA(shaVal);
+        } else {
+            System.out.println("A branch with that name does not exist.");
+            return null;
+        }
     }
 
     /** Returns the commit specified by SHAVAL. */
     public static Commit getCommitfromSHA(String shaVal) {
         File correctBranch = Utils.join(COMMIT, shaVal);
+        String[] objectFiles =
+                Utils.plainFilenamesIn(OBJECTS).toArray(new String[0]);
         if (correctBranch.exists()) {
             return Utils.readObject(correctBranch, Commit.class);
         } else {
+            for (String fileName : objectFiles) {
+                if (fileName.contains(shaVal)) {
+                    File correcto = Utils.join(COMMIT, fileName);
+                    return Utils.readObject(correcto, Commit.class);
+                }
+            }
             System.out.println("No commit with that id exists.");
             return null;
         }
