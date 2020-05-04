@@ -61,6 +61,12 @@ public class Commit implements Serializable {
         Utils.writeObject(saveMe, this);
     }
 
+    /** Makes a Commit object with mergeparent PARENT. */
+    public Commit(String message, String parent) {
+        this(message);
+        this.mergedBranch = parent;
+    }
+
     /** Get the timestamp.
      * @return Timestamp. */
     public String getTimestamp() {

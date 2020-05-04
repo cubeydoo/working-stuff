@@ -138,7 +138,37 @@ public class Commands {
                 addFile(fileName);
             }
         }
-
+        for (String fileName : test1) {
+            if (branchFiles.get(fileName) == null) {
+                Commit.rm(fileName);
+            }
+        }
+        ArrayList<String> branchChanged = changedFiles(ancestor, branch);
+        ArrayList<String> currChanged = changedFiles(ancestor, latestCommit);
+        boolean mergeFlag = false;
+        for (String fileName : branchChanged) {
+            if (currChanged.contains(fileName)) {
+                String hash1 = branchFiles.get(fileName);
+                String hash2 = latestFiles.get(fileName);
+                if (!hash1.equals(hash2)) {
+                    File problem = Utils.join(CWD, fileName);
+                    String newContents = "<<<<<<< HEAD\n"
+                            + getFileContents(hash1) + "=======\n"
+                            + getFileContents(hash2) + ">>>>>>>";
+                    Utils.writeContents(problem, newContents);
+                    addFile(fileName);
+                    mergeFlag = true;
+                }
+            }
+        }
+        String curBranch = Utils.readContentsAsString(HEAD);
+        curBranch = curBranch.substring(0, curBranch.lastIndexOf('.'));
+        String message = "Merged " + branchName + " into "
+                + curBranch + ".";
+        Commit woo = new Commit(message, branchName);
+        if (mergeFlag) {
+            System.out.println("Encountered a merge conflict.");
+        }
     }
     /** Adds a FILENAME to the commit. */
     public static void addFile(String fileName) {
