@@ -1,47 +1,53 @@
-# Create two branches and merge where second merge parents must be followed.
-I prelude1.inc
-> branch B1
+# Criss-cross merge.
+> init
 <<<
-> branch B2
-<<<
-> checkout B1
-<<<
-+ h.txt wug.txt
-> add h.txt
-<<<
-> commit "Add h.txt"
-<<<
-> checkout B2
+> branch given
 <<<
 + f.txt wug.txt
 > add f.txt
 <<<
-> commit "f.txt added"
+> commit "Add f.txt containing wug.txt"
 <<<
-> branch C1
+> checkout given
 <<<
-+ g.txt notwug.txt
-> add g.txt
++ f.txt notwug.txt
+> add f.txt
+<<<
+> commit "Add f.txt containing notwug.txt"
+<<<
+> branch B
+<<<
+> merge master
+Encountered a merge conflict.
+<<<
+= f.txt conflict3.txt
++ f.txt notwug.txt
+> add f.txt
+<<<
+> commit "Reset f to notwug.txt"
 <<<
 > rm f.txt
 <<<
-> commit "g.txt added, f.txt removed"
+> commit "given now empty."
 <<<
-= g.txt notwug.txt
-* f.txt
-* h.txt
-> checkout B1
+> checkout master
 <<<
-= h.txt wug.txt
-* f.txt
-* g.txt
-> merge C1
++ g.txt wug2.txt
+> add g.txt
 <<<
-= f.txt wug.txt
-= h.txt wug.txt
-* g.txt
-> merge B2
+> commit "Added g.txt"
 <<<
-* f.txt
-= g.txt notwug.txt
-= h.txt wug.txt
+> merge B
+Encountered a merge conflict.
+<<<
+= f.txt conflict4.txt
++ f.txt wug.txt
+> add f.txt
+<<<
+> commit "Reset f to wug.txt"
+<<<
+> merge given
+Encountered a merge conflict.
+<<<
+= f.txt conflict5.txt
+= g.txt wug2.txt

@@ -22,12 +22,15 @@ public class Commands {
         ArrayList<String> changed = new ArrayList<>();
         HashMap<String, String> oldfiles = old.getFiles();
         HashMap<String, String> newFiles = cnew.getFiles();
-        for (Map.Entry<String, String> entry : oldfiles.entrySet()) {
+        for (Map.Entry<String, String> entry : newFiles.entrySet()) {
             String filename = entry.getKey();
-            String oldhash = oldfiles.get(filename);
-            String newhash = newFiles.get(filename);
-            if (oldhash != null && newhash != null
-                    && !oldhash.equals(newhash)) {
+            if (oldfiles.containsKey(filename)) {
+                String oldhash = oldfiles.get(filename);
+                String newhash = newFiles.get(filename);
+                if (!oldhash.equals(newhash)) {
+                    changed.add(filename);
+                }
+            } else {
                 changed.add(filename);
             }
         }
@@ -84,11 +87,11 @@ public class Commands {
         String currentBest = "";
         Integer currBest = 12;
 
-        for (Map.Entry entry : headDistances.entrySet()) {
+        for (Map.Entry entry : branchDistances.entrySet()) {
             String currentHash = (String) entry.getKey();
-            if (branchDistances.containsKey(currentHash)
-                    && branchDistances.get(currentHash) < currBest) {
-                currBest = branchDistances.get(currentHash);
+            if (headDistances.containsKey(currentHash)
+                    && headDistances.get(currentHash) < currBest) {
+                currBest = headDistances.get(currentHash);
                 currentBest = currentHash;
             }
         }

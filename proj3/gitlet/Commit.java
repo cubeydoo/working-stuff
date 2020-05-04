@@ -33,7 +33,7 @@ public class Commit implements Serializable {
         ArrayList<String> toRemove =
                 Utils.readObject(TOREMOVE, ArrayList.class);
         if (stageFileNames.length == 0 && !firstCommit
-            && toRemove.size() == 0) {
+            && toRemove.size() == 0 && mergedBranch == null) {
             System.out.println("No changes added to the commit.");
             return;
         } else if (message.equals("")) {
