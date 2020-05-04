@@ -128,7 +128,7 @@ public class Commit implements Serializable {
         }
 
         if (wd.exists()) {
-            Utils.restrictedDelete(wd);
+            wd.delete();
         }
 
     }

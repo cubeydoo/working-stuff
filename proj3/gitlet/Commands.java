@@ -17,11 +17,11 @@ public class Commands {
         File current = Utils.join(CWD, fileName);
         Commit lastCommit = getCommit("HEAD");
         String hash = lastCommit.getFiles().get(fileName);
-        String contents = Utils.readContentsAsString(current);
-        boolean flag = Utils.sha1(contents).equals(hash);
-        if (flag) {
-            return;
-        } else if (current.exists()) {
+        if (current.exists()) {
+            String contents = Utils.readContentsAsString(current);
+            if (Utils.sha1(contents).equals(hash)) {
+                return;
+            }
             File output = Utils.join(STAGING, fileName);
             Utils.writeContents(output, contents);
         } else {
