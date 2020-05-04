@@ -48,6 +48,9 @@ public class Main {
             case "find":
                 Display.find(args[1]);
                 break;
+            case "branch":
+                Commands.branch(args[1]);
+                break;
             default:
                 System.out.println("I don't understand.");
             }

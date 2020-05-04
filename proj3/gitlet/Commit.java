@@ -82,6 +82,11 @@ public class Commit implements Serializable {
         return this.parent;
     }
 
+    /** Returns the ShaVal of this commit object. */
+    public String getShaValue() {
+        return this.shaValue;
+    }
+
     /** Returns the message. */
     public String getMessage() {
         return this._message;

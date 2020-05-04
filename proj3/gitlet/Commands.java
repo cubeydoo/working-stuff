@@ -47,6 +47,16 @@ public class Commands {
         }
 
     }
+    /** Makes a new branch with name BRANCHNAME. */
+    public static void branch(String branchName) {
+        File branch = Utils.join(BRANCH, branchName);
+        if (branch.exists()) {
+            System.out.println("A branch with that name already exists.");
+        } else {
+            Commit current = getCommit("HEAD");
+            Utils.writeContents(branch, current.getShaValue());
+        }
+    }
     /** Checks out BRANCHHEAD. */
     public static void checkout(String branchHead) {
         String[] branchList = Utils
