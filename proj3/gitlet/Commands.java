@@ -237,6 +237,7 @@ public class Commands {
         String curBranch = Utils.readContentsAsString(HEAD);
         if (name.equals(curBranch)) {
             System.out.println("Cannot remove the current branch.");
+            return;
         }
         File branch = Utils.join(BRANCH, name);
         if (branch.exists()) {
@@ -262,14 +263,18 @@ public class Commands {
         if (numCheck == 0) {
             if (branchHead.equals(currentBranch)) {
                 System.out.println("No need to checkout the current branch.");
+                return;
             }
         }
         if (doesFileExist(branchList, branchHead)) {
             String[] cwd = Utils.
                     plainFilenamesIn(CWD).toArray(new String[0]);
             boolean flag = false;
+            Commit lastCommit = getCommit(currentBranch);
+            HashMap<String, String> thesefiles = lastCommit.getFiles();
             for (String fileName : cwd) {
-                if (!doesFileExist(cwd, fileName)) {
+                File staged = Utils.join(STAGING, fileName);
+                if (thesefiles.get(fileName) == null && !staged.exists()) {
                     System.out.println("There is an untracked file in the way; "
                             + "delete it, or add and commit it first.");
                     flag = true;
@@ -294,8 +299,6 @@ public class Commands {
                 }
                 Utils.writeContents(HEAD, branchHead);
             }
-        } else {
-            System.out.println("No such branch exists.");
         }
     }
 }
