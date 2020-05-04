@@ -2,6 +2,8 @@ package gitlet;
 
 import java.io.File;
 import static gitlet.Objects.*;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,6 +14,43 @@ public class Commands {
     /** The last commit made on the current branch. */
     private Commit lastCommit = getCommit("HEAD");
 
+
+    /** Returns an ArrayList of all files and filehashes that have
+     * changed between OLD and NEW commits.
+     * @return ArrayList of changedFiles by name. */
+     public static ArrayList<String> changedFiles(Commit old, Commit cnew) {
+         ArrayList<String> changed = new ArrayList<>();
+         HashMap<String, String> oldfiles = old.getFiles();
+         HashMap<String, String> newFiles = cnew.getFiles();
+         for (Map.Entry<String, String> entry : oldfiles.entrySet()) {
+             String filename = entry.getKey();
+             String oldhash = oldfiles.get(filename);
+             String newhash = newFiles.get(filename);
+             if (oldhash != null && newhash != null
+             && !oldhash.equals(newhash)) {
+                 changed.add(filename);
+             }
+         }
+         return changed;
+     }
+
+    /** Returns an ArrayList of all files and filehashes that have not
+     * changed between OLD and NEW commits.
+     * @return ArrayList of unchangedFiles by name. */
+    public static ArrayList<String> unchangedFiles(Commit old, Commit cnew) {
+        ArrayList<String> unchanged = new ArrayList<>();
+        HashMap<String, String> oldfiles = old.getFiles();
+        HashMap<String, String> newFiles = cnew.getFiles();
+        for (Map.Entry<String, String> entry : oldfiles.entrySet()) {
+            String filename = entry.getKey();
+            String oldhash = oldfiles.get(filename);
+            String newhash = newFiles.get(filename);
+            if (oldhash != null && oldhash.equals(newhash)) {
+                unchanged.add(filename);
+            }
+        }
+        return unchanged;
+    }
     /** Adds a FILENAME to the commit. */
     public static void addFile(String fileName) {
         File current = Utils.join(CWD, fileName);
