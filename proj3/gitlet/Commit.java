@@ -82,6 +82,11 @@ public class Commit implements Serializable {
         return this.parent;
     }
 
+    /** Returns the message. */
+    public String getMessage() {
+        return this._message;
+    }
+
     /** Getter method for @return files. */
     public HashMap<String, String> getFiles() {
         return files;

@@ -63,4 +63,18 @@ public class Display  {
         System.out.println("\n=== Modifications Not Staged For Commit ===");
         System.out.println("\n=== Untracked Files ===\n");
     }
+
+    /** Returns all commitHash's that's message contains KEY. */
+    public static void find(String key) {
+        String[] fileNames = Utils.plainFilenamesIn
+                (COMMIT).toArray(new String[0]);
+        String returnme = "";
+        for (String branchName : fileNames) {
+            Commit lastCommit = getCommitfromSHA(branchName);
+            String message = lastCommit.getMessage();
+            if (message != null && message.contains(key)) {
+                System.out.println(branchName);
+            }
+        }
+    }
 }

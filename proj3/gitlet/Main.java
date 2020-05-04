@@ -45,6 +45,9 @@ public class Main {
             case "status":
                 Display.status();
                 break;
+            case "find":
+                Display.find(args[1]);
+                break;
             default:
                 System.out.println("I don't understand.");
             }
