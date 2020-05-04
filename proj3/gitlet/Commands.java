@@ -87,6 +87,16 @@ public class Commands {
                 currentBest = currentHash;
             }
         }
+        Commit givenBranch = getCommit(branchName);
+        Commit current = getCommit("HEAD");
+        if (currentBest.equals(givenBranch.getShaValue())) {
+            System.out.println("Given branch is an ancestor of the current branch.");
+            return null;
+        } else if (current.getShaValue().equals(currentBest)) {
+            checkout(branchName, 1);
+            System.out.println("Current branch fast forwarded.");
+            return null;
+        }
         return currentBest;
     }
     /** Merges the current branch with BRANCHNAME. */
@@ -96,8 +106,8 @@ public class Commands {
         if (curBranchName.equals(branchName)) {
             System.out.println("Cannot merge a branch with itself.");
         }
-        File branch = Utils.join(BRANCH, branchName + ".txt");
-        if (!branch.exists()) {
+        File branchFile = Utils.join(BRANCH, branchName + ".txt");
+        if (!branchFile.exists()) {
             System.out.println("A branch with that name does not exist.");
         }
         ArrayList<String> toRemove = Utils.readObject(TOREMOVE, ArrayList.class);
@@ -105,6 +115,28 @@ public class Commands {
                 .plainFilenamesIn(STAGING).toArray(new String[0]);
         if (toRemove.size() != 0 || stagedFiles.length != 0) {
             System.out.println("You have uncommitted changes.");
+        }
+        Commit branch = getCommit(branchName);
+        Commit ancestor = getCommitfromSHA(splitPoint(branchName));
+        Commit latestCommit = getCommit("HEAD");
+
+        ArrayList<String> test1 = unchangedFiles(ancestor, latestCommit);
+        for (String fileName: changedFiles(ancestor, branch)) {
+            if (test1.contains(fileName)) {
+                checkout(branch.getShaValue(), fileName);
+                addFile(fileName);
+            }
+        }
+        HashMap<String, String> branchFiles = branch.getFiles();
+        HashMap<String, String> ancestorFiles = ancestor.getFiles();
+        HashMap<String, String> latestFiles = latestCommit.getFiles();
+        for (Map.Entry entry : branchFiles.entrySet()) {
+            String fileName = (String) entry.getKey();
+            if (ancestorFiles.get(fileName) == null
+            && latestFiles.get(fileName) == null) {
+                checkout(branch.getShaValue(), fileName);
+                addFile(fileName);
+            }
         }
 
     }
