@@ -14,7 +14,14 @@ public class Commit implements Serializable {
 
     /** Makes a new Commit object with MESSAGE. */
     @SuppressWarnings("unchecked")
-    public Commit(String message) {
+    public Commit(String message, String mergeBranch) {
+        if (mergeBranch.equals("")) {
+            mergedBranch = null;
+        } else {
+            mergeBranch += ".txt";
+            File branchName = Utils.join(BRANCH, mergeBranch);
+            mergedBranch = Utils.readContentsAsString(branchName);
+        }
         _message = message;
         boolean firstCommit = false;
         if (this._message.equals("initial commit")) {
@@ -60,13 +67,6 @@ public class Commit implements Serializable {
         Utils.writeContents(correctBranch, shaValue);
         File saveMe = Utils.join(COMMIT, shaValue);
         Utils.writeObject(saveMe, this);
-    }
-
-    /** Makes a Commit object with mergeparent INPARENT. MESSAGE
-     * is the commit message. */
-    public Commit(String message, String inparent) {
-        this(message);
-        this.mergedBranch = inparent;
     }
 
     /** Get the timestamp.

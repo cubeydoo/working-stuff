@@ -14,7 +14,7 @@ public class Main {
         if (args.length == 0) {
             System.out.println("Please enter a command.");
         } else if (args[0].equals("init")) {
-            new Commit("initial commit");
+            new Commit("initial commit", "");
         } else if (!GITLET.exists()) {
             System.out.println("Not in an initialized Gitlet directory.");
         } else {
@@ -23,7 +23,7 @@ public class Main {
                 Commands.addFile(args[1]);
                 break;
             case "commit":
-                new Commit(args[1]);
+                new Commit(args[1], "");
                 break;
             case "checkout":
                 if (args[1].equals("--")) {

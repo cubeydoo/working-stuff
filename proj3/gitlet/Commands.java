@@ -56,7 +56,7 @@ public class Commands {
      * @return Distances. */
     public static HashMap<String, Integer>
         getDistances(String branchName, Integer distance) {
-        Commit head = getCommit(branchName);
+        Commit head = getCommitfromSHA(branchName);
         HashMap<String, Integer> headCommits = new HashMap<>();
         while (head.getParent() != null) {
             headCommits.put(head.getShaValue(), distance);
@@ -75,8 +75,12 @@ public class Commands {
     /** Finds the commit where BRANCHNAME and HEAD diverged.
      * @return String. */
     public static String splitPoint(String branchName) {
-        HashMap<String, Integer> headDistances = getDistances("HEAD", 0);
-        HashMap<String, Integer> branchDistances = getDistances(branchName, 0);
+        Commit head = getCommit("HEAD");
+        Commit branch = getCommit(branchName);
+        HashMap<String, Integer> headDistances =
+                getDistances(head.getShaValue(), 0);
+        HashMap<String, Integer> branchDistances =
+                getDistances(branch.getShaValue(), 0);
         String currentBest = "";
         Integer currBest = 12;
 
