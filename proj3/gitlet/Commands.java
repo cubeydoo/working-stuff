@@ -336,7 +336,8 @@ public class Commands {
                 if (files.containsKey(fileName)
                         && !tracked.containsKey(fileName)) {
                     System.out.println("There is an untracked file "
-                            + "in the way; delete it, or add and commit it first.");
+                            + "in the way; delete it, or "
+                             + "add and commit it first.");
                     return;
                 }
             }
