@@ -278,7 +278,8 @@ public class Commands {
         if (checkout == null) {
             return;
         }
-        String fileHash = checkout.getFiles().get(fileName);
+        HashMap<String, String> files = checkout.getFiles();
+        String fileHash = files.get(fileName);
         String contents = getFileContents(fileHash);
         File current = Utils.join(CWD, fileName);
         if (!(contents == null)) {

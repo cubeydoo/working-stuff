@@ -1,45 +1,45 @@
-# Standard commands and definitions
-> init
+# Check that we can check out a previous version.
+I prelude1.inc
++ wug.txt wug.txt
+> add wug.txt
 <<<
-D DATE "Date: \w\w\w \w\w\w \d+ \d\d:\d\d:\d\d \d\d\d\d [-+]\d\d\d\d"
-# A status log header RE.  Captures the commit id in its sole group.
-D COMMIT_HEAD "commit ([a-f0-9]+)[ \t]*\n(?:Merge:\s+[0-9a-f]{7}\s+[0-9a-f]{7}[ ]*\n)?${DATE}"
-# A full log entry.  Captures the entry. Assume logs messages don't contain
-# "==="
-D COMMIT_LOG "(===[ ]*\ncommit [a-f0-9]+[ ]*\n(?:Merge:\s+[0-9a-f]{7}\s+[0-9a-f]{7}[ ]*\n)?${DATE}[ ]*\n(?:.|\n)*?(?=\Z|\n===))"
-# An arbitrary line of text (works even with ?s)
-D ARBLINE "[^\n]*(?=\n|\Z)"
-# Zero or more arbitrary full lines of text.
-D ARBLINES "(?:(?:.|\n)*(?:\n|\Z)|\A|\Z)"
-# Create two branches and switch between them
-> branch other
+> commit "version 1 of wug.txt"
 <<<
-+ f.txt wug.txt
-+ g.txt notwug.txt
-> add g.txt
++ wug.txt notwug.txt
+> add wug.txt
 <<<
-> add f.txt
+> commit "version 2 of wug.txt"
 <<<
-> commit "Main two files"
+> log
+===
+${COMMIT_HEAD}
+version 2 of wug.txt
+
+===
+${COMMIT_HEAD}
+version 1 of wug.txt
+
+===
+${COMMIT_HEAD}
+initial commit
+
+<<<*
+# UID of second version
+D UID2 "${1}"
+# UID of current version
+D UID1 "${2}"
+> checkout ${UID2} -- warg.txt
+File does not exist in that commit.
 <<<
-E f.txt
-E g.txt
-> checkout other
+> checkout 5d0bc169a1737e955f9cb26b9e7aa21e4afd4d12 -- wug.txt
+No commit with that id exists.
 <<<
-* f.txt
-* g.txt
-+ f.txt notwug.txt
-> add f.txt
+> checkout ${UID2} ++ wug.txt
+Incorrect operands.
 <<<
-> commit "Alternative file"
+> checkout foobar
+No such branch exists.
 <<<
-= f.txt notwug.txt
-* g.txt
 > checkout master
+No need to checkout the current branch.
 <<<
-= f.txt wug.txt
-= g.txt notwug.txt
-> checkout other
-<<<
-= f.txt notwug.txt
-* g.txt

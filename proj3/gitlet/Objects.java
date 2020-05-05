@@ -76,6 +76,10 @@ public class Objects {
     /** Returns the string contents of a HASH file in
      * .gitlet/refs/objects. Returns NULL if File is not found. */
     public static String getFileContents(String hash) {
+        if (hash == null) {
+            System.out.println("File does not exist in that commit.");
+            return null;
+        }
         if (hash.equals("")) {
             return "";
         }
