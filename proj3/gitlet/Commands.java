@@ -326,7 +326,20 @@ public class Commands {
     /** Resets the COMMIT. */
     public static void reset(String commit) {
         Commit thisCommit = getCommitfromSHA(commit);
+        Commit head = getCommit("HEAD");
         if (thisCommit != null) {
+            HashMap<String, String> files = thisCommit.getFiles();
+            HashMap<String, String> tracked = head.getFiles();
+            String[] cwd =
+                    Utils.plainFilenamesIn(CWD).toArray(new String[0]);
+            for (String fileName : cwd) {
+                if (files.containsKey(fileName)
+                        && !tracked.containsKey(fileName)) {
+                    System.out.println("There is an untracked file "
+                            + "in the way; delete it, or add and commit it first.");
+                    return;
+                }
+            }
             String branchName = Utils.readContentsAsString(HEAD);
             File branch = Utils.join(BRANCH, branchName);
             Utils.writeContents(branch, commit);
@@ -384,15 +397,7 @@ public class Commands {
             HashMap<String, String> thesefiles = lastCommit.getFiles();
             for (String fileName : cwd) {
                 File staged = Utils.join(STAGING, fileName);
-                String sha = files.get(fileName);
-                File current = Utils.join(CWD, fileName);
-                String contents = Utils.readContentsAsString(current);
-                if (sha != null && !Utils.sha1(contents).equals(sha)) {
-                    System.out.println("There is an untracked file in the way; "
-                            + "delete it, or add and commit it first.");
-                    flag = true;
-                    break;
-                } else if (thesefiles.get(fileName) == null && !staged.exists()
+                if (thesefiles.get(fileName) == null && !staged.exists()
                     && files.get(fileName) != null) {
                     System.out.println("There is an untracked file in the way; "
                             + "delete it, or add and commit it first.");
