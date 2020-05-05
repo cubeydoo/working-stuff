@@ -34,6 +34,12 @@ public class Commands {
                 changed.add(filename);
             }
         }
+        for (Map.Entry<String, String> entry : oldfiles.entrySet()) {
+            String filename = entry.getKey();
+            if (!newFiles.containsKey(filename)) {
+                changed.add(filename);
+            }
+        }
         return changed;
     }
     /** Returns an ArrayList of all files and filehashes that have not
@@ -171,7 +177,7 @@ public class Commands {
         for (Map.Entry entry : branchFiles.entrySet()) {
             String fileName = (String) entry.getKey();
             if (ancestorFiles.get(fileName) == null
-                && latestFiles.get(fileName) == null) {
+                    && latestFiles.get(fileName) == null) {
                 checkout(branch.getShaValue(), fileName);
                 addFile(fileName);
             }
@@ -181,24 +187,7 @@ public class Commands {
                 Commit.rm(fileName);
             }
         }
-        ArrayList<String> branchChanged = changedFiles(ancestor, branch);
-        ArrayList<String> currChanged = changedFiles(ancestor, latestCommit);
-        boolean mergeFlag = false;
-        for (String fileName : branchChanged) {
-            if (currChanged.contains(fileName)) {
-                String hash1 = branchFiles.get(fileName);
-                String hash2 = latestFiles.get(fileName);
-                if (!hash1.equals(hash2)) {
-                    File problem = Utils.join(CWD, fileName);
-                    String newContents = "<<<<<<< HEAD\n"
-                            + getFileContents(hash1) + "=======\n"
-                            + getFileContents(hash2) + ">>>>>>>\n";
-                    Utils.writeContents(problem, newContents);
-                    addFile(fileName);
-                    mergeFlag = true;
-                }
-            }
-        }
+        boolean mergeFlag = merge3(branch, ancestor, latestCommit);
         for (String fileName : unchangedFiles(ancestor, branch)) {
             if (latestFiles.get(fileName) == null) {
                 File wd = Utils.join(STAGING, fileName);
@@ -221,6 +210,41 @@ public class Commands {
         if (mergeFlag) {
             System.out.println("Encountered a merge conflict.");
         }
+    }
+
+    /** Merge helper number 3. Uses BRANCH, ANCESTOR,
+     * and LATESTCOMMIT from the main func.
+     * @return True if merge conflict encountered. */
+    public static boolean
+        merge3(Commit branch, Commit ancestor, Commit latestCommit) {
+        HashMap<String, String> branchFiles = branch.getFiles();
+        HashMap<String, String> ancestorFiles = ancestor.getFiles();
+        HashMap<String, String> latestFiles = latestCommit.getFiles();
+        ArrayList<String> branchChanged = changedFiles(ancestor, branch);
+        ArrayList<String> currChanged = changedFiles(ancestor, latestCommit);
+        boolean mergeFlag = false;
+        for (String fileName : branchChanged) {
+            if (currChanged.contains(fileName)) {
+                String hash1 = branchFiles.get(fileName);
+                if (hash1 == null) {
+                    hash1 = "";
+                }
+                String hash2 = latestFiles.get(fileName);
+                if (hash2 == null) {
+                    hash2 = "";
+                }
+                if (!hash1.equals(hash2)) {
+                    File problem = Utils.join(CWD, fileName);
+                    String newContents = "<<<<<<< HEAD\n"
+                            + getFileContents(hash1) + "=======\n"
+                            + getFileContents(hash2) + ">>>>>>>\n";
+                    Utils.writeContents(problem, newContents);
+                    addFile(fileName);
+                    mergeFlag = true;
+                }
+            }
+        }
+        return mergeFlag;
     }
     /** Adds a FILENAME to the commit. */
     @SuppressWarnings("unchecked")

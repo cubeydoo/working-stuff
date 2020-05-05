@@ -76,6 +76,9 @@ public class Objects {
     /** Returns the string contents of a HASH file in
      * .gitlet/refs/objects. Returns NULL if File is not found. */
     public static String getFileContents(String hash) {
+        if (hash.equals("")) {
+            return "";
+        }
         String[] objectFiles =
                 Utils.plainFilenamesIn(OBJECTS).toArray(new String[0]);
         boolean flag = false;

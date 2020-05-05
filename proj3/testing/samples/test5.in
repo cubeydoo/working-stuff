@@ -1,46 +1,59 @@
-# Test of abbreviated UIDs.
-# Check that we can check out a previous version.
-> init
+# Create two branches and merge other into master with a conflict caused by
+# a file changed in one and removed in the other.
+I setup2.inc
+> branch other
 <<<
-+ wug.txt wug.txt
-> add wug.txt
++ h.txt wug2.txt
+> add h.txt
 <<<
-> commit "version 1 of wug.txt"
+> rm g.txt
 <<<
-+ wug.txt notwug.txt
-> add wug.txt
++ f.txt wug2.txt
+> add f.txt
 <<<
-> commit "version 2 of wug.txt"
+> commit "Add h.txt, remove g.txt, and change f.txt"
 <<<
-= wug.txt notwug.txt
-# Each ${HEADER} captures an abbreviation of its full commit UID.
-# With high probability, it is unique.
-D HEADER "commit ([a-f0-9]{8})[a-f0-9]+"
-D DATE "Date: \w\w\w \w\w\w \d+ \d\d:\d\d:\d\d \d\d\d\d [-+]\d\d\d\d"
+> checkout other
+<<<
+> rm f.txt
+<<<
++ k.txt wug3.txt
+> add k.txt
+<<<
+> commit "Add k.txt and remove f.txt"
+<<<
+> checkout master
+<<<
 > log
 ===
-${HEADER}
-${DATE}
-version 2 of wug.txt
-
+${COMMIT_HEAD}
+${ARBLINES}
+<<<*
+D MASTER_HEAD "${1}"
+> merge other
+Encountered a merge conflict.
+<<<
+* g.txt
+= h.txt wug2.txt
+= k.txt wug3.txt
+= f.txt conflict2.txt
+> log
+${COMMIT_LOG}
 ===
-${HEADER}
-${DATE}
-version 1 of wug.txt
+commit ${MASTER_HEAD}
+${ARBLINES}
+<<<*
+> status
+=== Branches ===
+\*master
+other
 
-===
-${HEADER}
-${DATE}
-initial commit
+=== Staged Files ===
+
+=== Removed Files ===
+
+=== Modifications Not Staged For Commit ===
+
+=== Untracked Files ===
 
 <<<*
-# UID of second version
-D UID2 "${1}"
-# UID of current version
-D UID1 "${2}"
-> checkout ${UID1} -- wug.txt
-<<<
-= wug.txt wug.txt
-> checkout ${UID2} -- wug.txt
-<<<
-= wug.txt notwug.txt
