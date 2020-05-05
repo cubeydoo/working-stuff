@@ -34,6 +34,28 @@ public class Commands {
                 changed.add(filename);
             }
         }
+        return changed;
+    }
+
+    /** Returns an ArrayList of all files and filehashes that have
+     * changed between OLD and CNEW commits.
+     * @return ArrayList of changedFiles by name. */
+    public static ArrayList<String> changedFiles2(Commit old, Commit cnew) {
+        ArrayList<String> changed = new ArrayList<>();
+        HashMap<String, String> oldfiles = old.getFiles();
+        HashMap<String, String> newFiles = cnew.getFiles();
+        for (Map.Entry<String, String> entry : newFiles.entrySet()) {
+            String filename = entry.getKey();
+            if (oldfiles.containsKey(filename)) {
+                String oldhash = oldfiles.get(filename);
+                String newhash = newFiles.get(filename);
+                if (!oldhash.equals(newhash)) {
+                    changed.add(filename);
+                }
+            } else {
+                changed.add(filename);
+            }
+        }
         for (Map.Entry<String, String> entry : oldfiles.entrySet()) {
             String filename = entry.getKey();
             if (!newFiles.containsKey(filename)) {
@@ -118,11 +140,6 @@ public class Commands {
      * @return Returns 1 if an error was found. */
     @SuppressWarnings("unchecked")
     public static int mergeError(String branchName) {
-        String curBranchName = Utils.readContentsAsString(HEAD);
-        if (curBranchName.equals(branchName)) {
-            System.out.println("Cannot merge a branch with itself.");
-            return 1;
-        }
         File branchFile = Utils.join(BRANCH, branchName);
         if (!branchFile.exists()) {
             System.out.println("A branch with that name does not exist.");
@@ -154,6 +171,14 @@ public class Commands {
     @SuppressWarnings("unchecked")
     public static void merge(String branchName) {
         branchName += ".txt";
+        String curBranchName = Utils.readContentsAsString(HEAD);
+        if (curBranchName.equals(branchName)) {
+            System.out.println("Cannot merge a branch with itself.");
+            return;
+        }
+        if (mergeError(branchName) == 1) {
+            return;
+        }
         Commit branch = getCommit(branchName);
         String sha = splitPoint(branchName);
         if (sha == null) {
@@ -161,9 +186,6 @@ public class Commands {
         }
         Commit ancestor = getCommitfromSHA(sha);
         Commit latestCommit = getCommit("HEAD");
-        if (mergeError(branchName) == 1) {
-            return;
-        }
         ArrayList<String> test1 = unchangedFiles(ancestor, latestCommit);
         for (String fileName: changedFiles(ancestor, branch)) {
             if (test1.contains(fileName)) {
@@ -220,8 +242,8 @@ public class Commands {
         HashMap<String, String> branchFiles = branch.getFiles();
         HashMap<String, String> ancestorFiles = ancestor.getFiles();
         HashMap<String, String> latestFiles = latestCommit.getFiles();
-        ArrayList<String> branchChanged = changedFiles(ancestor, branch);
-        ArrayList<String> currChanged = changedFiles(ancestor, latestCommit);
+        ArrayList<String> branchChanged = changedFiles2(ancestor, branch);
+        ArrayList<String> currChanged = changedFiles2(ancestor, latestCommit);
         boolean mergeFlag = false;
         for (String fileName : branchChanged) {
             if (currChanged.contains(fileName)) {
@@ -236,8 +258,8 @@ public class Commands {
                 if (!hash1.equals(hash2)) {
                     File problem = Utils.join(CWD, fileName);
                     String newContents = "<<<<<<< HEAD\n"
-                            + getFileContents(hash1) + "=======\n"
-                            + getFileContents(hash2) + ">>>>>>>\n";
+                            + getFileContents(hash2) + "=======\n"
+                            + getFileContents(hash1) + ">>>>>>>\n";
                     Utils.writeContents(problem, newContents);
                     addFile(fileName);
                     mergeFlag = true;
@@ -362,7 +384,15 @@ public class Commands {
             HashMap<String, String> thesefiles = lastCommit.getFiles();
             for (String fileName : cwd) {
                 File staged = Utils.join(STAGING, fileName);
-                if (thesefiles.get(fileName) == null && !staged.exists()
+                String sha = files.get(fileName);
+                File current = Utils.join(CWD, fileName);
+                String contents = Utils.readContentsAsString(current);
+                if (sha != null && !Utils.sha1(contents).equals(sha)) {
+                    System.out.println("There is an untracked file in the way; "
+                            + "delete it, or add and commit it first.");
+                    flag = true;
+                    break;
+                } else if (thesefiles.get(fileName) == null && !staged.exists()
                     && files.get(fileName) != null) {
                     System.out.println("There is an untracked file in the way; "
                             + "delete it, or add and commit it first.");
