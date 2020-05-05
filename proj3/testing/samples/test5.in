@@ -1,59 +1,29 @@
-# Create two branches and merge other into master with a conflict caused by
-# a file changed in one and removed in the other.
+# Check that global-log prints out commits in master branch.
+# FIXME: kludged around problem with regular-expression pattern characters in
+#        log.
 I setup2.inc
-> branch other
-<<<
-+ h.txt wug2.txt
+# Kludge starts.
+D DATE1 "Date: \w\w\w \w\w\w \d+ \d\d:\d\d:\d\d \d\d\d\d"
+D COMMIT_LOG "(===[ ]*\ncommit [a-f0-9]+[ ]*\n(?:Merge:\s+[0-9a-f]{7}\s+[0-9a-f]{7}[ ]*\n)?${DATE1}) [-+](\d\d\d\d[ ]*\n(?:.|\n)*?(?=\Z|\n===))"
++ h.txt wug.txt
 > add h.txt
 <<<
-> rm g.txt
+> commit "Add h"
 <<<
-+ f.txt wug2.txt
-> add f.txt
-<<<
-> commit "Add h.txt, remove g.txt, and change f.txt"
-<<<
-> checkout other
-<<<
-> rm f.txt
-<<<
-+ k.txt wug3.txt
-> add k.txt
-<<<
-> commit "Add k.txt and remove f.txt"
-<<<
-> checkout master
-<<<
-> log
-===
-${COMMIT_HEAD}
-${ARBLINES}
-<<<*
-D MASTER_HEAD "${1}"
-> merge other
-Encountered a merge conflict.
-<<<
-* g.txt
-= h.txt wug2.txt
-= k.txt wug3.txt
-= f.txt conflict2.txt
 > log
 ${COMMIT_LOG}
-===
-commit ${MASTER_HEAD}
-${ARBLINES}
+${COMMIT_LOG}
+${COMMIT_LOG}
 <<<*
-> status
-=== Branches ===
-\*master
-other
-
-=== Staged Files ===
-
-=== Removed Files ===
-
-=== Modifications Not Staged For Commit ===
-
-=== Untracked Files ===
-
+D L1 "${1} [-+]${2}"
+D L2 "${3} [-+]${4}"
+D L3 "${5} [-+]${6}"
+> global-log
+${ARBLINES}${L1}?${ARBLINES}
+<<<*
+> global-log
+${ARBLINES}${L2}?${ARBLINES}
+<<<*
+> global-log
+${ARBLINES}${L3}${ARBLINES}
 <<<*
