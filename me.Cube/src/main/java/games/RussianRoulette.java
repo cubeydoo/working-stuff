@@ -57,7 +57,7 @@ public class RussianRoulette extends AbstractGame {
             testEvent.gameInProgress = false;
             testEvent.game = "";
             testEvent.gameMap.remove(this);
-            event.getChannel().sendMessage("Quitting Russian Roulette.");
+            event.getChannel().sendMessage("Quitting Russian Roulette.").queue();
         }
         try {
             Member member = event.getMessage().getMentionedMembers().get(0);

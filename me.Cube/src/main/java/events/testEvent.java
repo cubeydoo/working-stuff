@@ -46,7 +46,9 @@ public class testEvent extends ListenerAdapter {
                 // handles the rest of commands that aren't tied to a game start
                 switch (messageSent[0]) {
                     case "!join":
-                        playerList.add(event.getAuthor());
+                        if (!playerList.contains(event.getAuthor())) {
+                            playerList.add(event.getAuthor());
+                        }
                         event.getChannel().sendMessage(event.getAuthor().getName() + " has joined!").queue();;
                 }
             }
