@@ -11,9 +11,9 @@ import java.util.HashMap;
 
 public class testEvent extends ListenerAdapter {
 
-    private boolean gameInProgress = false;
-    private static HashMap<String, AbstractGame> gameMap = new HashMap<>();
-    private static String game = "";
+    public static boolean gameInProgress = false;
+    public static HashMap<String, AbstractGame> gameMap = new HashMap<>();
+    public static String game = "";
     private static ArrayList<User> playerList = new ArrayList<>();
 
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
