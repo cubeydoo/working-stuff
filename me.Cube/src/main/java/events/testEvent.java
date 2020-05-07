@@ -19,18 +19,22 @@ public class testEvent extends ListenerAdapter {
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         String[] messageSent = event.getMessage().getContentRaw().split(" ");
         if (!event.getAuthor().isBot()) {
-            if (gameInProgress) {
+            if (gameMap.get(game) != null && gameMap.get(game).gameOver) {
+                gameInProgress = false;
+            } else if (gameInProgress) {
                 gameMap.get(game).execute(event);
-            }
-            if (messageSent[0].equals("!start")) {
+            } else if (messageSent[0].equals("!start")) {
                 if (gameInProgress) {
                     event.getChannel().sendMessage("Game in progress.").queue();
+                } else if (playerList.size() == 0) {
+                    event.getChannel().sendMessage("Nobody is here to play!").queue();
                 } else {
                     gameInProgress = true;
+                    // Switch case for starting a certain game
                     switch (messageSent[1]) {
                         case "rr":
-                            RussianRoulette rr = new RussianRoulette(playerList, event);
                             game = "rr";
+                            RussianRoulette rr = new RussianRoulette(playerList, event);
                             gameMap.put("rr", rr);
                             break;
                         default:
@@ -39,6 +43,7 @@ public class testEvent extends ListenerAdapter {
                     }
                 }
             } else {
+                // handles the rest of commands that aren't tied to a game start
                 switch (messageSent[0]) {
                     case "!join":
                         playerList.add(event.getAuthor());
