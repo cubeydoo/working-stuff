@@ -5,7 +5,6 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,7 +16,7 @@ public class RussianRoulette extends AbstractGame {
     public int[] clip = new int[6];
     private int currPlayerIndex = 0;
     private int clipIndex = -1;
-    private boolean[] forced;
+    private ArrayList<Boolean> forced = new ArrayList<>();
     public boolean gameOver = false;
     private ArrayList<User> _players;
     private ArrayList<User> _playersAtStart = new ArrayList<>();
@@ -28,13 +27,14 @@ public class RussianRoulette extends AbstractGame {
         Collections.shuffle(_players);
         _playersAtStart.addAll(_players);
         newRound(event);
+        for (int i = 0; i < _players.size(); i++) {
+            forced.add(false);
+        }
     }
 
     private void newRound(GuildMessageReceivedEvent event) {
-        currPlayerIndex = 0;
         clip = new int[6];
         clip[random.nextInt(6)] = 1;
-        forced = new boolean[_players.size()];
         event.getChannel().sendMessage(_players.size() + " players remain.\n"
         + _players.get(currPlayerIndex).getName() + " it is your turn!").queue();
     }
@@ -54,6 +54,7 @@ public class RussianRoulette extends AbstractGame {
             playerList = playerList.substring(0, playerList.length()-2);
             event.getChannel().sendMessage(playerList).queue();
         } else if (args[0].equals("!quit")) {
+            _players = _playersAtStart;
             testEvent.gameInProgress = false;
             testEvent.game = "";
             testEvent.gameMap.remove(this);
@@ -65,19 +66,19 @@ public class RussianRoulette extends AbstractGame {
         } catch (NullPointerException | IndexOutOfBoundsException e)  {
         }
         if (args[0].equals("!shoot") && event.getAuthor().equals(_players.get(currPlayerIndex))) {
-            if (user != null && !forced[currPlayerIndex]) {
+            if (user != null && !forced.get(currPlayerIndex)) {
                 if (nextShotVal() == 1) {
                     event.getChannel().sendMessage(":fire: BANG! :fire:").queue();
                     kill(event, user);
                 } else {
                     event.getChannel().sendMessage("Shot was a whiff. You must shoot yourself next.").queue();
-                    forced[currPlayerIndex] = true;
+                    forced.set(currPlayerIndex, false);
                     advance(event.getChannel(), event.getAuthor());
                 }
             }
             switch (args[1]) {
                 case "self":
-                    forced[currPlayerIndex] = false;
+                    forced.set(currPlayerIndex, false);
                     if (nextShotVal() == 1) {
                         event.getChannel().sendMessage(":fire: BANG! :fire:").queue();
                         kill(event, event.getAuthor());
@@ -86,7 +87,7 @@ public class RussianRoulette extends AbstractGame {
                     }
                     break;
                 case "sky":
-                    if (!forced[currPlayerIndex] && nextShotVal() == 1) {
+                    if (!forced.get(currPlayerIndex) && nextShotVal() == 1) {
                         event.getChannel().sendMessage(":fire: BANG! :fire:").queue();
                         declareWinner(event.getAuthor(), event);
                     } else {
@@ -105,7 +106,13 @@ public class RussianRoulette extends AbstractGame {
     private void kill(GuildMessageReceivedEvent event, User user) {
         event.getChannel().sendMessage(":skull: " + user.getName()
                 + " has died. ").queue();
+        int dindex = _players.indexOf(user);
+        int oindex = _players.indexOf(event.getAuthor());
+        if (oindex >= dindex) {
+            currPlayerIndex -= 1;
+        }
         _players.remove(user);
+        forced.remove(dindex);
         if (_players.size() == 1) {
             declareWinner(_players.get(0), event);
         } else {
@@ -130,6 +137,12 @@ public class RussianRoulette extends AbstractGame {
         event.getChannel().sendMessage("Use !shoot followed by self, sky, or @someone.").queue();
         _players.clear();
         _players.addAll(_playersAtStart);
+        Collections.shuffle(_players);
+        forced.clear();
+        currPlayerIndex = 0;
+        for (int i = 0; i < _players.size(); i++) {
+            forced.add(false);
+        }
         newRound(event);
     }
 
